@@ -1,0 +1,59 @@
+.sel-wrap{
+  position: relative;
+}
+
+.input-group{
+  padding: 25px;
+}
+
+.input-group label{
+  position: absolute;
+  bottom: 13px;
+  left: 15px;
+  z-index: 2;
+  transition: all 0.2s ease-out;
+  pointer-events: none;
+  color: grey;
+}
+
+.input-group label.filled{
+  left: 05px;
+  transform: translateY(-160%);
+  display: inherit;
+}
+
+.input-group label.active{
+  color: blue;
+}
+
+.selectize-control.single .selectize-input {
+  border: none;
+  background-image:none;
+/*   border-bottom: 1px solid grey; */
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
+  border-radius: 2px;
+  background-color: rgb(250, 250, 250);
+}
+
+.selectize-control.single .selectize-input input{
+  height: inherit;
+}
+
+.selectize-control.single .selectize-dropdown.single{
+  box-sizing: border-box;
+  box-shadow: 0 2px 5px rgba(0,0,0,.25);
+  border: none;
+}
+
+.selectize-control.single .selectize-dropdown.single .option{
+  line-height: 36px;
+  height: 36px;
+}
+
+.selectize-control.single .selectize-dropdown.single .option.active{
+  background-color: Gainsboro;
+}
+
+.selectize-control.single .selectize-dropdown.single .option.selected{
+  background-color: Silver;
+}

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Validator;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Utility\UtilityHelper;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
@@ -21,14 +23,15 @@ class AuthController extends Controller
     |
     */
 
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+    use AuthenticatesAndRegistersUsers, ThrottlesLogins,UtilityHelper;
 
     /**
      * Where to redirect users after login / registration.
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/users';
+    protected $redirectAfterLogout = '/';
 
     /**
      * Create a new authentication controller instance.
@@ -49,9 +52,14 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:6|max:60|confirmed',
+            'mobile_number' => 'required|min:11|max:13',
+            'telephone_number' => 'required|min:7|max:11',
+            'address' => 'required|max:255',
+            'last_name' => 'required|max:255',
         ]);
     }
 
@@ -64,9 +72,71 @@ class AuthController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
             'email' => $data['email'],
+            'mobile_number' => $data['mobile_number'],
+            'telephone_number' => $data['telephone_number'],
+            'address' => $data['address'],
             'password' => bcrypt($data['password']),
+            'user_type_id'=>1,
+            'is_active'=>1,
         ]);
     }
+
+    /*
+    *   Override Vendor Functions 
+    *   List of Overriden Functions:
+    *       - getLogin()
+    *
+    */
+
+    /**
+     * Show the application login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginForm()
+    {
+        $user = $this->searchUser(null);
+        return view('auth.login',
+                        compact('user'));
+    }
+
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        $user = $this->searchUser(null);
+        if(count($user)===0)
+            return view('auth.register');
+        else
+            return view('errors.503');
+        
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $validator = $this->validator($request->all());
+
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request, $validator
+            );
+        }
+
+         $this->create($request->all());
+        return redirect('/login');
+    }
+
+    
 }
