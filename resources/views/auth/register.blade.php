@@ -33,31 +33,31 @@
                             <div class="row">
                                 <div class="row">
                                     <div class="input-field col s12">
-                                        <input id="name" type="text" name="first_name">
+                                        <input id="name" type="text" name="first_name" value="{{ old('first_name') }}">
                                         <label for="first_name">First Name</label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s12">
-                                        <input id="name" type="text" name="last_name">
+                                        <input id="name" type="text" name="last_name" value="{{ old('last_name') }}">
                                         <label for="first_name">Last Name</label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s12">
-                                        <input id="name" type="text" name="address">
+                                        <input id="name" type="text" name="address" value="{{ old('address') }}">
                                         <label for="first_name">Address</label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s12">
-                                        <input id="number" type="text" name="telephone_number">
+                                        <input id="number" type="text" name="telephone_number" value="{{ old('telephone_number') }}">
                                         <label for="email">Tel No.</label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s12">
-                                        <input id="number" type="text" name="mobile_number">
+                                        <input id="number" type="text" name="mobile_number" value="{{ old('mobile_number') }}">
                                         <label for="email">Mobile No.</label>
                                     </div>
                                 </div>
@@ -71,7 +71,7 @@
                             <div class="row">
                                 <div class="row">
                                     <div class="input-field col s12">
-                                        <input id="email" type="email" name="email">
+                                        <input id="email" type="email" name="email" value="{{ old('email') }}">
                                         <label for="email">Email</label>
                                     </div>
                                 </div>

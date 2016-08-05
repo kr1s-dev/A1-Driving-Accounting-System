@@ -15,9 +15,13 @@ Route::get('/', function () {
     //return view('welcome');
     return Redirect::to('/login');
 });
-
-
-
 Route::auth();
 
-Route::get('/home', 'HomeController@index');
+// Uses authentication middleware, to avoid uneccessary access if not login
+Route::group(['middleware' => 'auth'], function () {
+	//Branch Routes
+	Route::resource('branches','Branches\BranchController');
+
+	//User Routes
+	Route::resource('user','Users\UserController');
+});

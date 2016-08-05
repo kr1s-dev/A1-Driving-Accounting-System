@@ -47,13 +47,13 @@
     <!-- START WRAPPER -->
     <div class="wrapper">
 
-      <!-- //////////////////////////////////////////////////////////////////////////// -->
+  <!-- //////////////////////////////////////////////////////////////////////////// -->
 
-      <!-- START CONTENT -->
-      <section id="content">
-        @yield('content')
-      </section>
-      <!-- END CONTENT -->
+  <!-- START CONTENT -->
+  <section id="content">
+    @yield('content')
+  </section>
+  <!-- END CONTENT -->
 
 
     <!-- ================================================
