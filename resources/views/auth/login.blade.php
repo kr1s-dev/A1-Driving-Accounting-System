@@ -12,7 +12,7 @@
                             <div class="row">
                                 <div class="input-field col s12">
                                     <i class="mdi-communication-email prefix"></i>
-                                    <input id="name3" type="email" name="email" name="email">
+                                    <input id="name3" type="email" name="email" name="email" value="{{old('email')}}">
                                     <label for="email" class="">Email</label>
                                 </div>
                             </div>

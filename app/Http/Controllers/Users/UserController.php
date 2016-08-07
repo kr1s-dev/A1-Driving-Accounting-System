@@ -54,7 +54,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $input = $this->removeKeys($request->all(),true);
+        $input = $this->removeKeys($request->all(),true,true);
         $this->insertRecords('users',$input,false);
         return redirect('user');
     }
@@ -100,7 +100,7 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
-        $input = $this->removeKeys($request->all(),false);
+        $input = $this->removeKeys($request->all(),false,true);
         $this->updateRecords('users',array($id),$input);
         return redirect('user');
     }

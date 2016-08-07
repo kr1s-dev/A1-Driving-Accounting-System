@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Branches;
 
 use Illuminate\Http\Request;
 
-use App\BranchModel;
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Utility\UtilityHelper;
 use App\Http\Requests\Branch\BranchRequest;
@@ -48,7 +46,7 @@ class BranchController extends Controller
      */
     public function store(BranchRequest $request)
     {
-    	$input = $this->removeKeys($request->all(),true);
+    	$input = $this->removeKeys($request->all(),true,false);
         $this->insertRecords('branch',$input,false);
     }
 
@@ -89,7 +87,7 @@ class BranchController extends Controller
      */
     public function update(BranchRequest $request, $id)
     {
-        $input = $this->removeKeys($request->all(),false);
+        $input = $this->removeKeys($request->all(),false,false);
         $this->updateRecords('branch',array($id),$input);
     }
 

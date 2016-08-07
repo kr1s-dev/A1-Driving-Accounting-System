@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Utility;
 
 use DB;
+use Auth;
 use App\User;
 use App\BranchModel;
 use App\UserTypeModel;
+use App\StudentModel;
 
 trait UtilityHelper
 {
@@ -23,6 +25,14 @@ trait UtilityHelper
 
     public function putBranch(){
     	return new BranchModel;
+    }
+
+    public function searchStudent($id){
+        return $id!=NULL?StudentModel::findOrFail($id):StudentModel::all();
+    }
+
+    public function putStudent(){
+        return new StudentModel;
     }
 
     //Get List of User Types/ or certain User Type for User
@@ -71,7 +81,7 @@ trait UtilityHelper
 
     
 
-    public function removeKeys($data,$isInsert){
+    public function removeKeys($data,$isInsert,$hasCreatedBy){
     	if(array_key_exists('_token', $data))
     		unset($data['_token']);
     	if(array_key_exists('action', $data))
@@ -85,13 +95,20 @@ trait UtilityHelper
     	if($isInsert)
     		$data['created_at'] = date('Y-m-d h:i:sa');
     	$data['updated_at'] = date('Y-m-d h:i:sa');
+        if($hasCreatedBy){
+            if($isInsert)
+                $data['created_by'] = Auth::user()->id;
+            $data['updated_by'] = Auth::user()->id;
+        }
     	return $data;
     }
 
     public function getLastRecord($modelName,$whereClause){
     	if($modelName==='BranchModel'){
     		return BranchModel::orderBy('id', 'desc')->first();
-    	}
+    	}elseif($modelName==='StudentModel'){
+            return StudentModel::orderBy('id', 'desc')->first();
+        }
     	return null;
     }
 
