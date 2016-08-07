@@ -16,7 +16,7 @@
     </div>
 </div>
 <!--breadcrumbs end-->
-{{Form::open(array('url' => 'register', 'method' => 'POST'))}}
+{!! Form::open(array('url' => 'register', 'method' => 'POST')) !!}
     <!--start container-->
     <div class="container">
         <div class="section">
@@ -102,5 +102,5 @@
         </div>
     </div>
     <!--end container-->
-!! Form::close() !!}
+{!! Form::close() !!}
 @endsection
