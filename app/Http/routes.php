@@ -27,4 +27,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//Students Routes
 	Route::resource('students','Students\StudentController');
+
+	//Invoice Routes
+	Route::resource('invoice','Invoices\InvoiceController');
 });

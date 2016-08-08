@@ -1,7 +1,3 @@
-@foreach ($errors->all() as $error)
-    <p align="center">{{ $error }}</p>
-@endforeach
-
 <div class="row">
   <div class="input-field col s12 m6 l6">
     <input disabled="disabled" id="name" type="text" value="{{sprintf("%'.07d\n", count($errors)>0?$studentNumber:$studentNumber)}}">

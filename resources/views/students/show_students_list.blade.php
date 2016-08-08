@@ -1,17 +1,7 @@
 @extends('master_layout.master_page_layout')
 @section('content')
 
-  <!--breadcrumbs start-->
-  <div id="breadcrumbs-wrapper">
-    <div class="container">
-      <div class="row">
-        <div class="col s12 m12 l12">
-          <h4>{{$title}}</h4>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--breadcrumbs end-->
+  
         
 
   <!--start container-->

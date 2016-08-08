@@ -75,6 +75,22 @@
       <!-- //////////////////////////////////////////////////////////////////////////// -->
       <!-- START CONTENT -->
       <section id="content">
+        <!--breadcrumbs start-->
+        <div id="breadcrumbs-wrapper">
+            <!-- Search for small screen -->
+            <div class="header-search-wrapper grey hide-on-large-only">
+                <i class="mdi-action-search active"></i>
+                <input type="text" name="Search" class="header-search-input z-depth-2" placeholder="Explore Materialize">
+            </div>
+          <div class="container">
+            <div class="row">
+              <div class="col s12 m12 l12">
+                <h5>{{$title}}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--breadcrumbs end-->
         @yield('content')
       </section>
       <!-- END CONTENT -->
@@ -86,50 +102,12 @@
 
 
   <!-- //////////////////////////////////////////////////////////////////////////// -->
-
   <!-- START FOOTER -->
   <footer class="page-footer red darken-1">
     @include('footer.footer')
   </footer>
     <!-- END FOOTER -->
-
-
-
-    <!-- ================================================
-    Scripts
-    ================================================ -->
-    <!-- jQuery Library -->
-    <script type="text/javascript" src="{{ URL::asset('js/plugins/jquery-1.11.2.min.js')}}"></script>
-    <!--materialize js-->
-    <script type="text/javascript" src="{{ URL::asset('js/materialize.js')}}"></script>
-    <!--prism -->
-    <script type="text/javascript" src="{{ URL::asset('js/prism/prism.js')}}"></script>
-    <!--scrollbar-->
-    <script type="text/javascript" src="{{ URL::asset('js/plugins/perfect-scrollbar/perfect-scrollbar.min.js')}}"></script>
-    <!-- data-tables -->
-    <script type="text/javascript" src="{{ URL::asset('js/plugins/data-tables/js/jquery.dataTables.min.js')}}"></script>
-    <script type="text/javascript" src="{{ URL::asset('js/plugins/data-tables/data-tables-script.js')}}"></script>
-    <!-- chartist -->
-    <script type="text/javascript" src="{{ URL::asset('js/plugins/chartist-js/chartist.min.js')}}"></script>
-    
-    <!--plugins.js - Some Specific JS codes for Plugin Settings-->
-    <script type="text/javascript" src="{{ URL::asset('js/plugins.js')}}"></script>
-    <!--custom-script.js - Add your own theme custom JS-->
-    <script type="text/javascript" src="{{ URL::asset('js/custom-script.js')}}"></script>
-    <script type="text/javascript">
-      /*Show entries on click hide*/
-      $(document).ready(function(){
-          $(".dropdown-content.select-dropdown li").on( "click", function() {
-              var that = this;
-              setTimeout(function(){
-              if($(that).parent().hasClass('active')){
-                      $(that).parent().removeClass('active');
-                      $(that).parent().hide();
-              }
-              },100);
-          });
-      });
-    </script>
+   @include('scripts.scripts');
 </body>
 
 </html>

@@ -6,8 +6,13 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'CreateAccountGroupsTable' => $baseDir . '/database/migrations/2016_08_08_083906_create_account_groups_table.php',
+    'CreateAccountTitlesTable' => $baseDir . '/database/migrations/2016_08_08_083916_create_account_titles_table.php',
     'CreateBranchTable' => $baseDir . '/database/migrations/2016_08_04_022803_create_branch_table.php',
+    'CreateInvoiceItemsTable' => $baseDir . '/database/migrations/2016_08_08_083933_create_invoice_items_table.php',
+    'CreateInvoiceTable' => $baseDir . '/database/migrations/2016_08_08_083921_create_invoice_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
+    'CreatePaymentTransactionTable' => $baseDir . '/database/migrations/2016_08_08_084306_create_payment_transaction_table.php',
     'CreateStudentsTable' => $baseDir . '/database/migrations/2016_08_05_202353_create_students_table.php',
     'CreateUserTypeTable' => $baseDir . '/database/migrations/2016_08_04_022516_create_user_type_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2016_08_04_022918_create_users_table.php',
