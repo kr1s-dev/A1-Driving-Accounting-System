@@ -84,8 +84,8 @@
                         <ul>
                             <li><a href="#">View All</a>
                             </li>
-                            <li><a href="{{route('invoice.create')}}">Create New</a>
-                            </li>
+                            <!--li><a href="{{route('invoice.create')}}">Create New</a>
+                            </li-->
                         </ul>
                     </div>
                 </li> 

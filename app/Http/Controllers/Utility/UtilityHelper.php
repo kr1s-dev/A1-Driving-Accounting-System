@@ -8,7 +8,7 @@ use App\User;
 use App\BranchModel;
 use App\UserTypeModel;
 use App\StudentModel;
-
+use App\AccountGroupModel;
 trait UtilityHelper
 {
     public function searchUser($id){
@@ -79,6 +79,38 @@ trait UtilityHelper
         return $ebranchList;
     }
 
+
+    public function populateListOfToInsertItems($data,$groupName,$foreignKeyId,$foreignValue,$type){
+        $count = 0;
+        $toInsertItems = array();
+        $eIncomeAccountTitlesList = array();
+        $eRecord = $this->getLastRecord($type,array('id'=> $foreignValue));
+        $incomeAccountTitlesList = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>$groupName));
+        $tArrayStringList = explode(",",$data);
+        foreach ($incomeAccountTitlesList->accountTitles as $tIncomeAccountTitle) {
+            $eIncomeAccountTitlesList[$tIncomeAccountTitle->account_sub_group_name] = $tIncomeAccountTitle->id;
+        }
+
+        foreach ($tArrayStringList as $tString) {
+            ++$count;
+            if($count==1){
+                $title = $tString;
+            }else if($count==2){
+                $amount = $tString;
+                $count = 0;
+                $toInsertItems[] = array('account_title_id' => $eIncomeAccountTitlesList[trim($title)],
+                                            'remarks' => $desc,
+                                            'amount' => $amount,
+                                            $foreignKeyId => $foreignValue,
+                                            'created_at' => $eRecord->created_at,
+                                            'updated_at'=>  date('Y-m-d'),
+                                            'created_by' => $this->getLogInUserId(),
+                                            'updated_by' => $this->getLogInUserId());
+            }
+        }
+        return $toInsertItems;
+    }
+
     
 
     public function removeKeys($data,$isInsert,$hasCreatedBy){
@@ -105,16 +137,24 @@ trait UtilityHelper
 
     public function getLastRecord($modelName,$whereClause){
     	if($modelName==='BranchModel'){
-    		return BranchModel::orderBy('id', 'desc')->first();
+    		return $whereClause==NULL?BranchModel::orderBy('id', 'desc')->first();
     	}elseif($modelName==='StudentModel'){
             return StudentModel::orderBy('id', 'desc')->first();
+        }elseif($modelName==='AccountGroupModel'){
+            return $AccountGroupModel::where($whereClause)
+                                        ->orderBy('id', 'desc')
+                                        ->first();
+        }elseif($modelName==='InvoiceModel'){
+            return $InvoiceModel::where($whereClause)
+                                        ->orderBy('id', 'desc')
+                                        ->first();
         }
     	return null;
     }
 
     public function insertRecords($tableName,$data,$isBulk){
     	if($isBulk)
-    		return null;
+    		return DB::table($tableName)->insert($data);
     	else
     		return DB::table($tableName)->insertGetId($data);
     }

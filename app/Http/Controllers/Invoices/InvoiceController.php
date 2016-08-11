@@ -6,12 +6,14 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Utility\UtilityHelper;
 
 class InvoiceController extends Controller
 {
+    use UtilityHelper;
     /**
      * Display a listing of the resource.
-     *
+     *data
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -24,13 +26,15 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
         $title = "Invoice";
         $_method = 'POST';
+        $student = $studentList = $this->searchStudent($id);
         return view('invoice.create_invoice',
                         compact('title',
-                                '_method'));
+                                '_method',
+                                'student'));
     }
 
     /**
@@ -41,7 +45,19 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $this->removeKeys($request->all(),true,true);
+        $data = $input['data'];
+        $input['payment_due_date'] = date('Y-m-d',strtotime($input['payment_due_date']));
+        unset($input['data']);
+        //$studInvId = $this->insertRecord('journal_entry',$input,false);
+        // $this->insertRecord('invoice_item_model',
+        //                         $this->populateListOfToInsertItems($data,
+        //                                                             'Revenues',
+        //                                                             'invoice_id',
+        //                                                             $studInvId,
+        //                                                             'InvoiceModel'),
+        //                         true);
+        //return $studInvId;
     }
 
     /**

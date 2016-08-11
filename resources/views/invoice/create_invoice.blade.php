@@ -2,6 +2,9 @@
 @section('content')
 	<!--start container-->
 	<div class="container">
+		<meta name="_method" content="{{ $_method }}">
+		<meta name="_token" content="{{ csrf_token() }}">
+		<meta name="student_id" content="{{ $student->id }}">
 	  	<div id="invoice">
 	    	<div class="invoice-header">
 	      		<div class="row section">
@@ -9,13 +12,12 @@
 	          			<img src="../images/generic-logo.png" alt="company logo">
 	         			<p>To,
 		            		<br/>
-		            		<span class="strong">Jonathan Doe</span>
+
+		            		<span class="strong">{{$student->stud_first_name}}&nbsp;{{$student->stud_last_name}}</span>
 		            		<br/>
-		            		<span>125, ABC Street,</span>
+		            		<span>{{$student->stud_address}}</span>
 		            		<br/>
-		            		<span>New Yourk, USA</span>
-		            		<br/>
-		            		<span>+91-(444)-(333)-(221)</span>
+		            		<span>{{$student->stud_mobile_no}}</span>
 	          			</p>
 	       	 		</div>
 
@@ -64,7 +66,7 @@
 	            			<br>
 	            			<div class="col s12 m3 l3">
 	              				<div class="input-field col s12 m6 l12 due-date">
-	                				<input type="date" class="datepicker">
+	                				<input type="date" class="datepicker" id="paymentDueDate">
 	                				<label for="birthday" class="white-text">Due Date</label>
 	              				</div>
 	            			</div>
@@ -114,11 +116,44 @@
 	      	</div>
 	      	<!-- End Modal Structure 1 -->
 
+	      	<!-- Modal Structure 2-->
+	     	<div id="modal2" class="modal modal-fixed-footer">
+	     		<div class="modal-content">
+	          		<h4>Add a New Item</h4>
+	          			<div class="divider"></div>
+          				<div class="row">
+            				<div class="input-field">
+              					<select name="desc" id="desc">
+					                <option value="1">Course Fee</option>
+					                <option value="1">Student Permit</option>
+					                <option value="2">Driver's Manual</option>
+					                <option value="3">Downpayment</option>
+					                <option value="4">Non-Pro/Pro</option>
+					                <option value="5">Int't License</option>
+					                <option value="6">Certificate</option>
+              					</select>
+              					<label for="email">Description</label>
+            				</div>
+          				</div>
+	          			<div class="row">
+	            			<div class="input-field">
+	              				<input id="amount" min="0" type="number" step="0.01">
+	              				<label for="email">Amount (₱)</label>
+	            			</div>
+	          			</div>
+	        		</div>
+	        		<div class="modal-footer">
+	          			<a href="#!" id="add-item" class="modal-action modal-close waves-effect waves-green btn-flat add-item">Edit</a>
+	        		</div>
+	        	</div>
+	      	</div>
+	      	<!-- End Modal Structure 2 -->
+
 	      	
 	    <div class="">
 	      	<div class="row">
 	        	<div class="col s12 m12 l12">
-	          		<table class="striped">
+	          		<table class="striped" id="itemsTable">
 	            		<thead>
 	              			<tr>
 				                <th data-field="item">Description</th>
@@ -127,10 +162,10 @@
 	              			</tr>
 	            		</thead>
 	            		<tbody class="items">
-	              			<tr>
+	              			<!--tr>
 	                			<td>MacBook Pro</td>
 	                			<td>₱ 1,299.00</td>
-	                			<td>
+	                			<td class="center-align">
 	                  				<a href="#modal2" style="margin-right: 5%;" class="modal-trigger btn-floating waves-effect waves-light grey darken-4">
 	                    				<i class="mdi-content-create"></i>
 	                  				</a>
@@ -138,63 +173,28 @@
 	                    				<i class="mdi-action-delete"></i>
 	                  				</a>
 	                			</td>
-	              			</tr>
+	              			</tr-->
 	            		</tbody>
 	          		</table>
-	         		<table>
+	         		<table class="striped" id="amountCalc">
 	            		<tbody>
 	              			<tr>
-	                			<td colspan="2">Sub Total:</td>
-	                			<td>₱ 5,290.00</td>
+	                			<td width="42%">Sub Total:</td>
+	                			<td >₱ 0</td>
 	               			</tr>
 	              			<tr>
-	                			<td colspan="2">Service Tax (%)</td>
-	                			<td>
-	                				<div class="input-field col l4">
-	                  					<input id="number" type="number">
-	                  					<label for="email">Service Tax</label>
-	                				</div>
-	                			</td>
+		                		<td width="42%">VAT(12%)</td>
+		                		<td >₱ 0</td>
 	              			</tr>
 	              			<tr>
-	                			<td colspan="2" class="cyan white-text">Grand Total</td>
-	                			<td class="cyan strong white-text">₱ 5,871.90</td>
+	                			<td width="42%" class="cyan white-text">Grand Total</td>
+	                			<td class="cyan strong white-text">₱ 0</td>
 	              			</tr>
 	            		</tbody>
 	          		</table>
 	        	</div>
 	      	</div>
-	      	<!-- Modal Structure 2-->
-	     	<div id="modal2" class="modal modal-fixed-footer">
-	        	<div class="modal-content">
-	          		<h4>Edit an Item</h4>
-	          		<div class="divider"></div>
-	          		<div class="row">
-	            		<div class="input-field">
-	              			<select name="desc" id="desc">
-				                <option value="1">Course Fee</option>
-				                <option value="1">Student Permit</option>
-				                <option value="2">Driver's Manual</option>
-				                <option value="3">Downpayment</option>
-				                <option value="4">Non-Pro/Pro</option>
-				                <option value="5">Int't License</option>
-				                <option value="6">Certificate</option>
-	              			</select>
-	              			<label for="email">Description</label>
-	            		</div>
-	          		</div>
-		          	<div class="row">
-		            	<div class="input-field">
-		              		<input id="amount" min="0" type="number" step="0.01">
-		              		<label for="email">Amount (₱)</label>
-		            	</div>
-		          	</div>
-		          	<div class="modal-footer">
-		          		<a href="#!" id="add-item" class="modal-action modal-close waves-effect waves-green btn-flat edit-item">Edit</a>
-		        	</div>
-	        	</div>
-	      	</div>
-	      	<!-- End Modal Structure 2 -->
+	      	
 	    </div>
 	    
 	    <div class="invoice-footer">
@@ -219,7 +219,7 @@
 	      
 	  <!-- Floating Action Button -->
 	  	<div class="fixed-action-btn" style="bottom: 50px; right: 19px;">
-	        <a class="btn-floating btn-large red darken-2">
+	        <a class="btn-floating btn-large red darken-2" id="invBtn">
 	          <i class="mdi-content-send"></i>
 	        </a>
 	    </div>

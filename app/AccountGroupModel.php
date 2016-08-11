@@ -22,4 +22,8 @@ class AccountGroupModel extends Model
                             'description',
                             'created_by',
                             'updated_by'];
+
+    public function accountTitles(){
+        return $this->hasMany('App\AccountTitleModel','account_group_id');
+    }
 }

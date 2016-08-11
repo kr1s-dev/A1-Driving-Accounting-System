@@ -8,9 +8,13 @@ $baseDir = dirname($vendorDir);
 return array(
     'CreateAccountGroupsTable' => $baseDir . '/database/migrations/2016_08_08_083906_create_account_groups_table.php',
     'CreateAccountTitlesTable' => $baseDir . '/database/migrations/2016_08_08_083916_create_account_titles_table.php',
+    'CreateAssetTable' => $baseDir . '/database/migrations/2016_08_11_023501_create_asset_table.php',
     'CreateBranchTable' => $baseDir . '/database/migrations/2016_08_04_022803_create_branch_table.php',
+    'CreateExpenseItemsTable' => $baseDir . '/database/migrations/2016_08_11_023523_create_expense_items_table.php',
+    'CreateExpenseTable' => $baseDir . '/database/migrations/2016_08_11_023517_create_expense_table.php',
     'CreateInvoiceItemsTable' => $baseDir . '/database/migrations/2016_08_08_083933_create_invoice_items_table.php',
     'CreateInvoiceTable' => $baseDir . '/database/migrations/2016_08_08_083921_create_invoice_table.php',
+    'CreateJournalEntryTable' => $baseDir . '/database/migrations/2016_08_11_023533_create_journal_entry_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
     'CreatePaymentTransactionTable' => $baseDir . '/database/migrations/2016_08_08_084306_create_payment_transaction_table.php',
     'CreateStudentsTable' => $baseDir . '/database/migrations/2016_08_05_202353_create_students_table.php',

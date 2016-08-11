@@ -163,7 +163,7 @@
                     <h4 class="header2">Payment Information </h4>
                     <div class="row right-align">
                       <div class="col l12 m12 s12">
-                        <a href="../invoices/create.html" class="btn waves-effect waves-light cyan" type="submit" name="action">Create New Invoice
+                        <a href="{{route('student.invoice',$student->id)}}" class="btn waves-effect waves-light cyan" type="submit" name="action">Create New Invoice
                           <i class="mdi-action-receipt right">
                           </i>
                         </a>
