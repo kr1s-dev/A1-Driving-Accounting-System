@@ -2,7 +2,7 @@
   <nav class="navbar-color red darken-2">
     <div class="nav-wrapper">
       <ul class="left">                      
-        <li><h1 class="logo-wrapper"><a href="../index.html" class="brand-logo darken-1"><img src="../images/materialize-logo.png" alt="materialize logo"></a> <span class="logo-text">Materialize</span></h1></li>
+        <li><h1 class="logo-wrapper"><a href="../index.html" class="brand-logo darken-1"><img src="{{ URL::asset('images/materialize-logo.png')}}" alt="materialize logo"></a> <span class="logo-text">Materialize</span></h1></li>
       </ul>
       <ul class="right hide-on-med-and-down">
           </li>

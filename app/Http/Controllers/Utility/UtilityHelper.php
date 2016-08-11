@@ -9,6 +9,7 @@ use App\BranchModel;
 use App\UserTypeModel;
 use App\StudentModel;
 use App\AccountGroupModel;
+use App\InvoiceModel;
 trait UtilityHelper
 {
     public function searchUser($id){
@@ -137,15 +138,16 @@ trait UtilityHelper
 
     public function getLastRecord($modelName,$whereClause){
     	if($modelName==='BranchModel'){
-    		return $whereClause==NULL?BranchModel::orderBy('id', 'desc')->first();
+    		return BranchModel::orderBy('id', 'desc')->first();
     	}elseif($modelName==='StudentModel'){
             return StudentModel::orderBy('id', 'desc')->first();
         }elseif($modelName==='AccountGroupModel'){
-            return $AccountGroupModel::where($whereClause)
+            return AccountGroupModel::where($whereClause)
                                         ->orderBy('id', 'desc')
                                         ->first();
         }elseif($modelName==='InvoiceModel'){
-            return $InvoiceModel::where($whereClause)
+            return $whereClause==NULL? InvoiceModel::orderBy('id', 'desc')->first():
+                                        InvoiceModel::where($whereClause)
                                         ->orderBy('id', 'desc')
                                         ->first();
         }

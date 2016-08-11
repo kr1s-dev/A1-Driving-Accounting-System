@@ -9,7 +9,7 @@
 	    	<div class="invoice-header">
 	      		<div class="row section">
 	        		<div class="col s12 m6 l6">
-	          			<img src="../images/generic-logo.png" alt="company logo">
+	          			<img src="{{ URL::asset('images/generic-logo.png')}} " alt="company logo">
 	         			<p>To,
 		            		<br/>
 
@@ -57,11 +57,11 @@
 	          			<div class="row">
 	            			<div class="col s12 m3 l3">
 	              				<p class="strong">Total Due</p>
-	              				<h4 class="header">₱ 3,600.00</h4>
+	              				<h4 class="header" id="totDue">₱ 0</h4>
 	            			</div>
 	            			<div class="col s12 m3 l3">
 		              			<p class="strong">Invoice No</p>
-		              			<h4 class="header">#0001</h4>
+		              			<h4 class="header">#{{sprintf("%'.07d\n", $invNumber)}}</h4>
 	            			</div>
 	            			<br>
 	            			<div class="col s12 m3 l3">
@@ -210,7 +210,7 @@
 	        	</div>
 	        	<div class="col s12 m6 l6 center-align">
 	          		<p>Approved By</p>
-          			<img src="../images/signature-scan.png" alt="signature">
+          			<img src="{{ URL::asset('images/signature-scan.png')}}" alt="signature">
           			<p class="header">AMANDA ORTON</p>
          			<p>Managing Director</p>
 	        	</div>

@@ -101,7 +101,7 @@ Scripts
                 success: function(response)
                 {
                   alert(response);
-                  //location.href="/invoice/"+response;
+                  //location.href="../../invoice/"+response;
                 }, error: function(xhr, ajaxOptions, thrownError){
                   alert(xhr.status);
                   alert(thrownError);
@@ -150,6 +150,7 @@ Scripts
         $("#amountCalc tbody tr:eq(0) td:nth-child(2)").text('₱ ' + subTotal);
         $("#amountCalc tbody tr:eq(1) td:nth-child(2)").text('₱ ' + vatTotal);
         $("#amountCalc tbody tr:eq(2) td:nth-child(2)").text('₱ ' + grandtotal.toFixed(2));
+        $("#totDue").text('₱ ' + grandtotal.toFixed(2));
       }
       
   });

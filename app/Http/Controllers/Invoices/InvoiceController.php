@@ -31,10 +31,13 @@ class InvoiceController extends Controller
         $title = "Invoice";
         $_method = 'POST';
         $student = $studentList = $this->searchStudent($id);
+        $lastInsertedInvoice = $this->getLastRecord('InvoiceModel',null);
+        $invNumber = count($lastInsertedInvoice)===0?'1':($lastInsertedInvoice->id)+1;
         return view('invoice.create_invoice',
                         compact('title',
                                 '_method',
-                                'student'));
+                                'student',
+                                'invNumber'));
     }
 
     /**
