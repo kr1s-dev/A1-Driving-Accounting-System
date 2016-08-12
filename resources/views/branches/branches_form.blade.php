@@ -1,6 +1,6 @@
 <div class="row">
   <div class="input-field col s12 m6 l6">
-    <input disabled="disabled" name="branchNumber" id="name" type="text" value="{{sprintf("'%'.07d", count($errors)>0?$branchNumber:$branchNumber)}}">
+    <input disabled="disabled" name="branchNumber" id="name" type="text" value="{{sprintf("%'.07d", count($errors)>0?$branchNumber:$branchNumber)}}">
     <label for="first_name">Branch No.</label>
   </div>
 </div>

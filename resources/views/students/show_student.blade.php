@@ -20,7 +20,14 @@
                         <h6><strong>Branch Enrolled</strong></h6>
                       </div>
                       <div class="col l3 m3 s12">
-                        <h6>{{$student->userCreateInfo->branchInfo->branch_name}}</h6>
+
+                        <h6>
+                          @if($student->userCreateInfo->branch_id != NULL)
+                            {{$student->userCreateInfo->branchInfo->branch_name}}
+                          @else
+                            No Branch
+                          @endif
+                        </h6>
                       </div>
                       <div class="col l3 m3 s12">
                         <h6><strong>Training Station</strong></h6>
@@ -186,30 +193,30 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>07/29/2016</td>
-                            <td>0001</td>
-                            <td>₱3,000</td>
-                            <td>Downpayment</td>
-                            <td>Cash</td>
-                            <td>₱3,000</td>
-                          </tr>
-                          <tr>
-                            <td>06/29/2016</td>
-                            <td>0001</td>
-                            <td>₱3,000</td>
-                            <td>Downpayment</td>
-                            <td>Cash</td>
-                            <td>₱6,000</td>
-                          </tr>
-                          <tr>
-                            <td>05/29/2016</td>
-                            <td>0001</td>
-                            <td>₱3,000</td>
-                            <td>Downpayment</td>
-                            <td>Cash</td>
-                            <td>₱9,000</td>
-                          </tr>
+                          @if(count($student->invoiceInfo)>0)
+                            @foreach($student->invoiceInfo as $invoice)
+                              @if($invoice->is_paid)
+                                @foreach($invoice->invoiceItemsInfo as $invoiceItems)
+                                  @if($invoiceItems->accountTitleInfo->account_title_name == 'Course Fee'
+                                      || strpos($invoiceItems->accountTitleInfo->account_title_name,'Course Fee'))
+                                      <tr>
+                                        <td>{{date('m-d-Y',strtotime($invoiceItems->created_at))}}</td>
+                                        <td>-</td>
+                                        <td>₱ {{$invoiceItems->amount}}</td>
+                                        <td>[Under Construction]</td>
+                                        <td>[Under Construction]</td>
+                                        <td>[Under Construction]</td>
+                                      </tr>
+                                  @endif
+                                @endforeach
+                              @endif
+                            @endforeach
+                          @else
+                            <tr>
+                              <td colspan="6" style="text-align: center;"><em><strong> No Records Found </strong></em></td>
+                            </tr>
+                          @endif
+                          
                         </tbody>
                       </table>
                     </div>
@@ -229,48 +236,33 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>07/29/2016</td>
-                            <td>0001</td>
-                            <td>₱3,000</td>
-                            <td>Student Permit</td>
-                            <td>Cash</td>
-                          </tr>
-                          <tr>
-                            <td>06/29/2016</td>
-                            <td>0001</td>
-                            <td>₱3,000</td>
-                            <td>Driver's Manual</td>
-                            <td>Cash</td>
-                          </tr>
-                          <tr>
-                            <td>05/29/2016</td>
-                            <td>0001</td>
-                            <td>₱3,000</td>
-                            <td>Downpayment</td>
-                            <td>Cash</td>
-                          </tr>
-                          <tr>
-                            <td>05/29/2016</td>
-                            <td>0001</td>
-                            <td>₱3,000</td>
-                            <td>Non-Pro/Pro</td>
-                            <td>Cash</td>
-                          </tr>
-                          <tr>
-                            <td>05/29/2016</td>
-                            <td>0001</td>
-                            <td>₱3,000</td>
-                            <td>Int't License</td>
-                            <td>Cash</td>
-                          </tr>
-                          <tr>
-                            <td>05/29/2016</td>
-                            <td>0001</td>
-                            <td>₱3,000</td>
-                            <td>Certificate</td>
-                            <td>Cash</td>
-                          </tr>
+                          @if(count($student->invoiceInfo)>0)
+                            @foreach($student->invoiceInfo as $invoice)
+                              @if($invoice->is_paid)
+                                @foreach($invoice->invoiceItemsInfo as $invoiceItems)
+                                  @if($invoiceItems->accountTitleInfo->account_title_name != 'Course Fee'
+                                      && !strpos($invoiceItems->accountTitleInfo->account_title_name,'Course Fee'))
+                                      <tr>
+                                        <td>{{date('m-d-Y',strtotime($invoiceItems->created_at))}}</td>
+                                        <td>-</td>
+                                        <td>₱ {{$invoiceItems->amount}}</td>
+                                        <td>[Under Construction]</td>
+                                        <td>[Under Construction]</td>
+                                        <td>[Under Construction]</td>
+                                      </tr>
+                                  @else
+                                    <tr>
+                                      <td colspan="5" style="text-align: center;"><em><strong> No Records Found </strong></em></td>
+                                    </tr>
+                                  @endif
+                                @endforeach
+                              @endif
+                            @endforeach
+                          @else
+                            <tr>
+                              <td colspan="5" style="text-align: center;"><em><strong> No Records Found </strong></em></td>
+                            </tr>
+                          @endif
                         </tbody>
                       </table>
                     </div>

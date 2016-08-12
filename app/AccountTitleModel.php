@@ -25,4 +25,8 @@ class AccountTitleModel extends Model
                             'account_title_id',
                             'created_by',
                             'updated_by'];
+
+    public function accountTitleChildren(){
+        return $this->hasMany('App\AccountTitleModel','account_title_id');
+    }
 }

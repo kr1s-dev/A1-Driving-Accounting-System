@@ -15,8 +15,8 @@ class CreateInvoiceTable extends Migration
         if(!Schema::hasTable('students_invoice')){
             Schema::create('students_invoice', function (Blueprint $table) {
                 $table->increments('id');
-                $table->Integer('students_id')->unsigned();
-                $table->foreign('students_id')->references('id')->on('students');
+                $table->Integer('student_id')->unsigned();
+                $table->foreign('student_id')->references('id')->on('students');
                 $table->Integer('created_by')->unsigned();
                 $table->foreign('created_by')->references('id')->on('users');
                 $table->Integer('updated_by')->unsigned();

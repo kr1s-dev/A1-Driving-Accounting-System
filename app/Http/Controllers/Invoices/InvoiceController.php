@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Invoices;
 
 use Illuminate\Http\Request;
-
+use DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Utility\UtilityHelper;
@@ -18,7 +18,11 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        //
+        $title = "Invoice";
+        $invoiceList = $this->searchInvoice(null);
+        return view('invoice.show_invoice_list',
+                        compact('invoiceList',
+                                'title'));
     }
 
     /**
@@ -31,13 +35,17 @@ class InvoiceController extends Controller
         $title = "Invoice";
         $_method = 'POST';
         $student = $studentList = $this->searchStudent($id);
+        $revenueAccountGroup = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>'Revenues'));
         $lastInsertedInvoice = $this->getLastRecord('InvoiceModel',null);
         $invNumber = count($lastInsertedInvoice)===0?'1':($lastInsertedInvoice->id)+1;
-        return view('invoice.create_invoice',
+        $invoice = $this->putInvoice();
+        return view('invoice.create_update_invoice',
                         compact('title',
                                 '_method',
                                 'student',
-                                'invNumber'));
+                                'invNumber',
+                                'revenueAccountGroup',
+                                'invoice'));
     }
 
     /**
@@ -52,15 +60,36 @@ class InvoiceController extends Controller
         $data = $input['data'];
         $input['payment_due_date'] = date('Y-m-d',strtotime($input['payment_due_date']));
         unset($input['data']);
-        //$studInvId = $this->insertRecord('journal_entry',$input,false);
-        // $this->insertRecord('invoice_item_model',
-        //                         $this->populateListOfToInsertItems($data,
-        //                                                             'Revenues',
-        //                                                             'invoice_id',
-        //                                                             $studInvId,
-        //                                                             'InvoiceModel'),
-        //                         true);
-        //return $studInvId;
+        $student = $this->searchStudent($input['student_id']);
+        try{
+            //Insert Invoice
+            $studInvId = $this->insertRecords('students_invoice',$input,false);
+
+            $dataToInsert = $this->populateListOfToInsertItems($data,
+                                                                'Revenues',
+                                                                'invoice_id',
+                                                                $studInvId,
+                                                                'InvoiceModel');
+            //Insert Invoice Items
+            $this->insertRecords('invoice_items',$dataToInsert,true);
+
+            //Insert Journal Entry for Invoice
+            $this->insertRecords('journal_entry',$this->createJournalEntry($dataToInsert,
+                                                                            'Invoice',
+                                                                            'invoice_id',
+                                                                            $studInvId,
+                                                                            'Created invoice for Student ' .
+                                                                                $student->stud_first_name . ' ' .
+                                                                                $student->stud_last_name,
+                                                                            $input['total_amount']),
+                                true);
+
+            
+            echo $studInvId;
+        }catch(\Exception $ex){
+            echo 'Error ' . $ex->getMessage();
+
+        }
     }
 
     /**
@@ -71,7 +100,11 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
-        //
+        $title = 'Invoice';
+        $invoice = $this->searchInvoice($id);
+        return view('invoice.show_invoice',
+                        compact('invoice',
+                                'title'));
     }
 
     /**
@@ -82,7 +115,19 @@ class InvoiceController extends Controller
      */
     public function edit($id)
     {
-        //
+        $title = "Invoice";
+        $_method = 'PATCH';
+        $invoice = $this->searchInvoice($id);
+        $student = $studentList = $this->searchStudent($invoice->student_id);
+        $revenueAccountGroup = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>'Revenues'));
+        $invNumber = $id;
+        return view('invoice.create_update_invoice',
+                        compact('title',
+                                '_method',
+                                'student',
+                                'invNumber',
+                                'revenueAccountGroup',
+                                'invoice'));
     }
 
     /**
@@ -94,7 +139,47 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $input = $this->removeKeys($request->all(),true,true);
+        $data = $input['data'];
+        $input['payment_due_date'] = date('Y-m-d',strtotime($input['payment_due_date']));
+        unset($input['data']);
+        $student = $this->searchStudent($input['student_id']);
+        try{
+            $dataToInsert = $this->populateListOfToInsertItems($data,
+                                                                'Revenues',
+                                                                'invoice_id',
+                                                                $id,
+                                                                'InvoiceModel');
+
+            //Update Invoice
+            $this->updateRecords('students_invoice',array($id),$input);
+
+            //Delete Journal Entry before inserting to avoid duplication
+            $this->deleteRecords('journal_entry',array('invoice_id'=>$id));
+
+            //Delete Invoice items before inserting to avoid duplication
+            $this->deleteRecords('invoice_items',array('invoice_id'=>$id));
+
+            
+
+            //Insert Invoice Items
+            $this->insertRecords('invoice_items',$dataToInsert,true);
+
+            //Insert Journal Entry for Invoice
+            $this->insertRecords('journal_entry',$this->createJournalEntry($dataToInsert,
+                                                                            'Invoice',
+                                                                            'invoice_id',
+                                                                            $id,
+                                                                            'Created invoice for Student ' .
+                                                                                $student->stud_first_name . ' ' .
+                                                                                $student->stud_last_name,
+                                                                            $input['total_amount']),
+                                true);
+            
+            echo $id;
+        }catch(\Exception $ex){
+            echo 'Error ' . $ex->getMessage();
+        }
     }
 
     /**

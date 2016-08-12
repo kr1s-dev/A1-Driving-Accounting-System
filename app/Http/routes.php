@@ -31,4 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
 	//Invoice Routes
 	Route::resource('invoice','Invoices\InvoiceController');
 	Route::get('student/{id}/invoice', ['as'=>'student.invoice','uses'=>'Invoices\InvoiceController@create']);
+
+	//Account Title Routes
+	Route::resource('accounttitle','AccountTitles\AccountTitleController');
 });

@@ -30,7 +30,7 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/user';
+    protected $redirectPath = '/user';
     protected $redirectAfterLogout = '/';
 
     /**
@@ -134,7 +134,7 @@ class AuthController extends Controller
             );
         }
 
-         $this->create($request->all());
+        $this->create($request->all());
         return redirect('/login');
     }
 

@@ -10,6 +10,7 @@ use App\UserTypeModel;
 use App\StudentModel;
 use App\AccountGroupModel;
 use App\InvoiceModel;
+use App\AccountTitleModel;
 trait UtilityHelper
 {
     public function searchUser($id){
@@ -80,6 +81,48 @@ trait UtilityHelper
         return $ebranchList;
     }
 
+    public function putAccountTitle(){
+        return new AccountTitleModel;
+    }
+
+    public function searchAccountTitle($id){
+        return $id!=NULL?AccountTitleModel::findOrFail($id):AccountTitleModel::all();
+    }
+
+    public function searchAccountGroups($id){
+        return $id!=NULL?AccountGroupModel::findOrFail($id):AccountGroupModel::all();
+    }
+
+    public function searchInvoice($id){
+        return $id!=NULL?InvoiceModel::findOrFail($id):InvoiceModel::all();
+    }
+
+    public function putInvoice(){
+        return new InvoiceModel;
+    }
+
+    public function getAccountsAccountGroups($id){
+        $accountGroupsList = array();
+        if($id==null){
+            $tAccountGroupsList = DB::table('account_groups')
+                                    ->get();
+            foreach($tAccountGroupsList as $tAccountGroup){
+                $accountGroupsList[$tAccountGroup->id] = $tAccountGroup->account_group_name;
+            }
+        }else{
+            $tAccountGroup = AccountGroupModel::findOrFail($id);
+            $accountGroupsList[$tAccountGroup->id] = $tAccountGroup->account_group_name;
+            $tAccountGroupsList = DB::table('account_groups')
+                                    ->where('id','!=',$id)
+                                    ->get();
+            foreach($tAccountGroupsList as $tAccountGroup){
+                $accountGroupsList[$tAccountGroup->id] = $tAccountGroup->account_group_name;
+            }
+        }
+        return $accountGroupsList;
+    }
+
+
 
     public function populateListOfToInsertItems($data,$groupName,$foreignKeyId,$foreignValue,$type){
         $count = 0;
@@ -89,7 +132,7 @@ trait UtilityHelper
         $incomeAccountTitlesList = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>$groupName));
         $tArrayStringList = explode(",",$data);
         foreach ($incomeAccountTitlesList->accountTitles as $tIncomeAccountTitle) {
-            $eIncomeAccountTitlesList[$tIncomeAccountTitle->account_sub_group_name] = $tIncomeAccountTitle->id;
+            $eIncomeAccountTitlesList[$tIncomeAccountTitle->account_title_name] = $tIncomeAccountTitle->id;
         }
 
         foreach ($tArrayStringList as $tString) {
@@ -100,13 +143,12 @@ trait UtilityHelper
                 $amount = $tString;
                 $count = 0;
                 $toInsertItems[] = array('account_title_id' => $eIncomeAccountTitlesList[trim($title)],
-                                            'remarks' => $desc,
                                             'amount' => $amount,
                                             $foreignKeyId => $foreignValue,
                                             'created_at' => $eRecord->created_at,
                                             'updated_at'=>  date('Y-m-d'),
-                                            'created_by' => $this->getLogInUserId(),
-                                            'updated_by' => $this->getLogInUserId());
+                                            'created_by' => Auth::user()->id,
+                                            'updated_by' => Auth::user()->id);
             }
         }
         return $toInsertItems;
@@ -136,10 +178,108 @@ trait UtilityHelper
     	return $data;
     }
 
+    
+
+    /*
+    * @Author:      Kristopher N. Veraces
+    * @Description: Create Journal Entry
+    */
+    public function createJournalEntry($dataList,$typeName,$foreignKey,$foreignValue,$description,$amount){
+        $count = 0;
+        $dataCreated;
+        $journalEntryList = array();
+        $accountReceivableTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Accounts Receivable'));
+        $cashTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Cash'));
+        if($typeName=='Invoice'){
+            foreach ($dataList as $data) {
+                if($count==0){
+                         $journalEntryList[] = array($foreignKey=>$foreignValue,
+                                            'type' => $typeName,
+                                            'debit_title_id'=> $accountReceivableTitle->id,
+                                            'credit_title_id'=> null,
+                                            'debit_amount' => $amount,
+                                            'credit_amount'=> 0.00,
+                                            'description'=> $description,
+                                            'created_at' => $data['created_at'],
+                                            'updated_at' => date('Y-m-d'),
+                                            'created_by' => Auth::user()->id,
+                                            'updated_by' => Auth::user()->id);
+                }
+
+                $journalEntryList[] = array($foreignKey=>$foreignValue,
+                                            'type' => $typeName,
+                                            'debit_title_id'=> null,
+                                            'credit_title_id'=> $data['account_title_id'],
+                                            'debit_amount' => 0.00,
+                                            'credit_amount'=> $data['amount'],
+                                            'description'=> $description,
+                                            'created_at' => $data['created_at'],
+                                            'updated_at' => date('Y-m-d'),
+                                            'created_by' => Auth::user()->id,
+                                            'updated_by' => Auth::user()->id);
+            }
+        }else if($typeName=='Expense'){
+            foreach ($dataList as $data) {
+                $dataCreated = $data['created_at'];
+                //for debit in journal
+                $journalEntryList[] = array($foreignKey=>$foreignValue,
+                                            'type' => $typeName,
+                                            'debit_title_id'=> $data['account_title_id'],
+                                            'credit_title_id'=> null,
+                                            'debit_amount' => $data['amount'],
+                                            'credit_amount'=> 0.00,
+                                            'description'=> $description,
+                                            'created_at' => $data['created_at'],
+                                            'updated_at' => date('Y-m-d'),
+                                            'created_by' => Auth::user()->id,
+                                            'updated_by' => Auth::user()->id);  
+            }
+            $journalEntryList[] = array($foreignKey=>$foreignValue,
+                                        'type' => $typeName,
+                                        'debit_title_id'=> null,
+                                        'credit_title_id'=> $cashTitle->id,
+                                        'debit_amount' => 0.00,
+                                        'credit_amount'=> $amount,
+                                        'description'=> $description,
+                                        'created_at' => $dataCreated,
+                                        'updated_at' => date('Y-m-d'),
+                                        'created_by' => Auth::user()->id,
+                                        'updated_by' => Auth::user()->id);
+        }else{
+            //for debit in journal
+            $journalEntryList[] = array($foreignKey=>$foreignValue,
+                                    'type' => $typeName,
+                                    'debit_title_id'=>$cashTitle->id,
+                                    'credit_title_id'=>null,
+                                    'debit_amount' => $amount,
+                                    'credit_amount'=>0.00,
+                                    'description'=> $description,
+                                    'created_at' => date('Y-m-d'),
+                                    'updated_at' => date('Y-m-d'),
+                                    'created_by' => Auth::user()->id,
+                                    'updated_by' => Auth::user()->id);
+
+            //for credit in journal
+            $journalEntryList[] = array($foreignKey=>$foreignValue,
+                                    'type' => $typeName,
+                                    'debit_title_id'=>null,
+                                    'credit_title_id'=>$accountReceivableTitle->id,
+                                    'debit_amount' => 0.00,
+                                    'credit_amount'=> $amount,
+                                    'description'=> $description,
+                                    'created_at' => date('Y-m-d'),
+                                    'updated_at' => date('Y-m-d'),
+                                    'created_by' => Auth::user()->id,
+                                    'updated_by' => Auth::user()->id);
+        }
+       
+        return $journalEntryList;
+    }
+
     public function getLastRecord($modelName,$whereClause){
-    	if($modelName==='BranchModel'){
-    		return BranchModel::orderBy('id', 'desc')->first();
-    	}elseif($modelName==='StudentModel'){
+        if($modelName==='BranchModel'){
+            return BranchModel::orderBy('id', 'desc')->first();
+        }elseif($modelName==='StudentModel'){
             return StudentModel::orderBy('id', 'desc')->first();
         }elseif($modelName==='AccountGroupModel'){
             return AccountGroupModel::where($whereClause)
@@ -150,8 +290,12 @@ trait UtilityHelper
                                         InvoiceModel::where($whereClause)
                                         ->orderBy('id', 'desc')
                                         ->first();
+        }elseif($modelName==='AccountTitleModel'){
+            return AccountTitleModel::where($whereClause)
+                                        ->orderBy('id', 'desc')
+                                        ->first();
         }
-    	return null;
+        return null;
     }
 
     public function insertRecords($tableName,$data,$isBulk){
@@ -165,5 +309,17 @@ trait UtilityHelper
         return DB::table($tableName)
                     ->where('id', $idList)
                     ->update($data);
+    }
+
+    public function getRecords($tableName,$whereClause){
+        return DB::table($tableName)
+                    ->where($whereClause)
+                    ->get();
+    }
+
+    public function deleteRecords($tableName,$whereClause){
+        return DB::table($tableName)
+                    ->where($whereClause)
+                    ->delete();
     }
 }

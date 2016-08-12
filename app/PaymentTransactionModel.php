@@ -23,4 +23,10 @@ class PaymentTransactionModel extends Model
                             'file_related',
                             'created_by',
                             'updated_by'];
+
+
+
+    public function invoiceInfo(){
+        return $this->belongsTo('App\InvoiceModel','invoice_id');
+    }
 }

@@ -5,6 +5,7 @@
 		<meta name="_method" content="{{ $_method }}">
 		<meta name="_token" content="{{ csrf_token() }}">
 		<meta name="student_id" content="{{ $student->id }}">
+		<meta name="invoice_id" content="{{ $invoice->id }}">
 	  	<div id="invoice">
 	    	<div class="invoice-header">
 	      		<div class="row section">
@@ -57,7 +58,7 @@
 	          			<div class="row">
 	            			<div class="col s12 m3 l3">
 	              				<p class="strong">Total Due</p>
-	              				<h4 class="header" id="totDue">₱ 0</h4>
+	              				<h4 class="header" id="totDue">₱ {{$invoice->total_amount!=NULL?$invoice->total_amount:0}}</h4>
 	            			</div>
 	            			<div class="col s12 m3 l3">
 		              			<p class="strong">Invoice No</p>
@@ -66,7 +67,8 @@
 	            			<br>
 	            			<div class="col s12 m3 l3">
 	              				<div class="input-field col s12 m6 l12 due-date">
-	                				<input type="date" class="datepicker" id="paymentDueDate">
+	                				<input type="date" class="datepicker" id="paymentDueDate"  value="{{$invoice->payment_due_date!=NULL?date('d',strtotime($invoice->payment_due_date)) . ' ' .date('F',mktime(date('m',strtotime($invoice->payment_due_date)))) .', '.
+	                				date('Y',strtotime($invoice->payment_due_date)):''}}">
 	                				<label for="birthday" class="white-text">Due Date</label>
 	              				</div>
 	            			</div>
@@ -91,13 +93,10 @@
           				<div class="row">
             				<div class="input-field">
               					<select name="desc" id="desc">
-					                <option value="1">Course Fee</option>
-					                <option value="1">Student Permit</option>
-					                <option value="2">Driver's Manual</option>
-					                <option value="3">Downpayment</option>
-					                <option value="4">Non-Pro/Pro</option>
-					                <option value="5">Int't License</option>
-					                <option value="6">Certificate</option>
+              						<option value="" disabled selected>Select Particular</option>
+					                @foreach($revenueAccountGroup->accountTitles as $accountTitle)
+              							<option value="{{$accountTitle->id}}">{{$accountTitle->account_title_name}}</option>
+              						@endforeach
               					</select>
               					<label for="email">Description</label>
             				</div>
@@ -119,31 +118,28 @@
 	      	<!-- Modal Structure 2-->
 	     	<div id="modal2" class="modal modal-fixed-footer">
 	     		<div class="modal-content">
-	          		<h4>Add a New Item</h4>
+	          		<h4>Update Item</h4>
 	          			<div class="divider"></div>
-          				<div class="row">
+          				<!--div class="row">
             				<div class="input-field">
               					<select name="desc" id="desc">
-					                <option value="1">Course Fee</option>
-					                <option value="1">Student Permit</option>
-					                <option value="2">Driver's Manual</option>
-					                <option value="3">Downpayment</option>
-					                <option value="4">Non-Pro/Pro</option>
-					                <option value="5">Int't License</option>
-					                <option value="6">Certificate</option>
+              						<option value="" disabled selected>Select Particular</option>
+              						@foreach($revenueAccountGroup->accountTitles as $accountTitle)
+              							<option value="{{$accountTitle->id}}">{{$accountTitle->account_title_name}}</option>
+              						@endforeach
               					</select>
               					<label for="email">Description</label>
             				</div>
-          				</div>
+          				</div-->
 	          			<div class="row">
 	            			<div class="input-field">
-	              				<input id="amount" min="0" type="number" step="0.01">
-	              				<label for="email">Amount (₱)</label>
+	              				<input id="eAmount" min="0" type="number" step="0.01">
+	              				<label id="eAmountLabel" for="email">Amount (₱)</label>
 	            			</div>
 	          			</div>
 	        		</div>
 	        		<div class="modal-footer">
-	          			<a href="#!" id="add-item" class="modal-action modal-close waves-effect waves-green btn-flat add-item">Edit</a>
+	          			<a href="#!" id="edit-item" class="modal-action modal-close waves-effect waves-green btn-flat">Edit</a>
 	        		</div>
 	        	</div>
 	      	</div>
@@ -162,6 +158,20 @@
 	              			</tr>
 	            		</thead>
 	            		<tbody class="items">
+	            			@foreach($invoice->invoiceItemsInfo as $invoiceItem)
+	            				<tr>
+	            					<td width="42%">{{$invoiceItem->accountTitleInfo->account_title_name}}</td>
+	            					<td>₱ {{$invoiceItem->amount}}</td>
+	            					<td class>
+		                  				<a href="#modal2" style="margin-right: 5%;" class="modal-trigger btn-floating waves-effect waves-light grey darken-4 edit-item">
+		                    				<i class="mdi-content-create"></i>
+		                  				</a>
+		                  				<a style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4 delete-item">
+		                    				<i class="mdi-action-delete"></i>
+		                  				</a>
+		                			</td>
+	            				</tr>
+	            			@endforeach
 	              			<!--tr>
 	                			<td>MacBook Pro</td>
 	                			<td>₱ 1,299.00</td>

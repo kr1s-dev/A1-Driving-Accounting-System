@@ -24,4 +24,12 @@ class InvoiceItemModel extends Model
                             'remarks',
                             'created_by',
                             'updated_by'];
+
+    public function invoiceInfo(){
+        return $this->belongsTo('App\InvoiceModel','invoice_id');
+    }
+
+    public function accountTitleInfo(){
+        return $this->belongsTo('App\AccountTitleModel','account_title_id');
+    }
 }

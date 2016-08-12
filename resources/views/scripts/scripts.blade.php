@@ -22,6 +22,9 @@ Scripts
 <script type="text/javascript">
   /*Show entries on click hide*/
   $(document).ready(function(){
+
+      var arrayTd;
+      calculateAmount();
       $(".dropdown-content.select-dropdown li").on( "click", function() {
           var that = this;
           setTimeout(function(){
@@ -33,11 +36,12 @@ Scripts
       });
 
       $('.add-item').click(function(){
-
+        console.log(desc);
         var desc = $('#desc option:selected').text();
         var amount = $('#amount').val();
-        if((desc != '') && (amount != '')) {
-          $('.items').append('<tr><td>'+desc+'</td><td>₱ '+ parseFloat(amount).toFixed(2) +'</td>' +
+
+        if((desc != '') && (amount != '') && (desc != 'Select Particular')) {
+          $('.items').append('<tr><td width="42%">'+desc+'</td><td>₱ '+ parseFloat(amount).toFixed(2) +'</td>' +
             '<td class>' +
               '<a href="#modal2" style="margin-right: 5%;" class="modal-trigger btn-floating waves-effect waves-light grey darken-4 edit-item">' +
                   '<i class="mdi-content-create"></i>'+
@@ -50,8 +54,11 @@ Scripts
         calculateAmount();
       });
 
+      
+
       $(document).on("click", ".delete-item", function(){
         $(this).parent().parent().remove();
+        calculateAmount();
       });
 
       $(document).on("click", ".center-align .modal-trigger", function(){
@@ -61,11 +68,27 @@ Scripts
 
       $(document).on('click', '.edit-item', function(e){
         e.preventDefault();
+        var tr = $(this).closest('tr'); //get the parent tr
+        arrayTd = $(tr).find('td'); //get data in a row
+        $("#eAmount").val((arrayTd[1].textContent).trim().replace('₱ ',''));
+        $("#eAmountLabel").prop('class','active');
         $('#modal2').openModal();
+        
       });
 
       $('.delete-item').click(function(){
           $(this).parent().parent().remove();
+          calculateAmount();
+      });
+
+      $('#edit-item').click(function(){
+        $('.lean-overlay').hide();
+        val = $('#eAmount').val();
+        console.log(arrayTd[1].textContent);
+        if($('#eAmount').val()){
+          arrayTd[1].textContent = ('₱ ' + parseFloat($('#eAmount').val()).toFixed(2));
+        }
+        calculateAmount();
       });
 
       $(document).on("click", "#invBtn", function(e){
@@ -74,11 +97,12 @@ Scripts
           var _token = $('meta[name="_token"]').attr('content');
           var _method = $('meta[name="_method"]').attr('content');
           var studentId = $('meta[name="student_id"]').attr('content');
+          var invoiceId = $('meta[name="invoice_id"]').attr('content');
           var dueDate = $('#paymentDueDate').val();
           var table = $('#itemsTable tbody');
           var totalAmount = $("#amountCalc tbody tr:eq(2) td:nth-child(2)").text().replace('₱ ','');
 
-          console.log(totalAmount);
+          console.log('../../invoice' + (_method==='POST'?'':(invoiceId+'/edit')));
           if(dueDate >=  getTodaysDate()){
             table.find('tr').each(function(rowIndex, r){
               $(this).find('td').each(function (colIndex, c) {
@@ -92,7 +116,7 @@ Scripts
                 headers: {
                     'X-CSRF-TOKEN': _token
                 },
-                url: '../../invoice' + (_method==='POST'?'':'1/edit'),
+                url: '../../invoice' + (_method==='POST'?'':('/'+invoiceId)),
                 type: _method,
                 data: { 'data':data,
                         'student_id': studentId,
@@ -100,8 +124,8 @@ Scripts
                         'payment_due_date': dueDate},
                 success: function(response)
                 {
-                  alert(response);
-                  //location.href="../../invoice/"+response;
+                  //alert(response);
+                  location.href="../../invoice/"+response;
                 }, error: function(xhr, ajaxOptions, thrownError){
                   alert(xhr.status);
                   alert(thrownError);

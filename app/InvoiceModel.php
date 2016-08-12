@@ -18,9 +18,19 @@ class InvoiceModel extends Model
      *
      * @var array
      */
-    protected $fillable = ['students_id',
+    protected $fillable = ['student_id',
                             'total_amount',
                             'is_paid',
                             'created_by',
-                            'updated_by'];
+                            'updated_by',];
+
+    public function studentInfo(){
+        return $this->belongsTo('App\StudentModel','student_id');
+    }
+
+    public function invoiceItemsInfo(){
+        return $this->hasMany('App\InvoiceItemModel','invoice_id');
+    }
+
+    
 }

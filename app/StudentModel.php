@@ -39,6 +39,7 @@ class StudentModel extends Model
                             'stud_occupation',
                             'training_station_id',
                             'updated_by',];
+                            
 
     public function userCreateInfo(){
         return $this->belongsTo('App\User','created_by');
@@ -46,5 +47,9 @@ class StudentModel extends Model
 
     public function branchInfo(){
         return $this->belongsTo('App\BranchModel','training_station_id');
+    }
+
+    public function invoiceInfo(){
+        return $this->hasMany('App\InvoiceModel','student_id');
     }
 }

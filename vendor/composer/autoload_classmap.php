@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AccountGroupSeeder' => $baseDir . '/database/seeds/AccountGroupSeeder.php',
     'CreateAccountGroupsTable' => $baseDir . '/database/migrations/2016_08_08_083906_create_account_groups_table.php',
     'CreateAccountTitlesTable' => $baseDir . '/database/migrations/2016_08_08_083916_create_account_titles_table.php',
     'CreateAssetTable' => $baseDir . '/database/migrations/2016_08_11_023501_create_asset_table.php',
