@@ -11,7 +11,7 @@ class PaymentTransactionModel extends Model
      *
      * @var string
      */
-    protected $table = 'invoice_items';
+    protected $table = 'payment_transaction';
 
     /**
      * The attributes that are mass assignable.
@@ -20,13 +20,13 @@ class PaymentTransactionModel extends Model
      */
     protected $fillable = ['payment_id',
                             'amount_paid',
-                            'file_related',
                             'created_by',
-                            'updated_by'];
+                            'updated_by',
+                            'outstanding_balance'];
 
 
 
     public function invoiceInfo(){
-        return $this->belongsTo('App\InvoiceModel','invoice_id');
+        return $this->belongsTo('App\InvoiceModel','payment_id');
     }
 }

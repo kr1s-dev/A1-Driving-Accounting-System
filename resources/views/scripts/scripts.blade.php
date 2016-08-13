@@ -35,6 +35,14 @@ Scripts
           },100);
       });
 
+      if ($("#otherFeeList tbody").children().length == 0) {
+          $("#otherFeeList tbody").html("<tr><td colspan='4' style='text-align: center;'><em><strong> No Records Found </strong></em></td></tr>");
+      }
+
+      if ($("#courseFeeList tbody").children().length == 0) {
+          $("#courseFeeList tbody").html("<tr><td colspan='5' style='text-align: center;'><em><strong> No Records Found </strong></em></td></tr>");
+      }
+
       $('.add-item').click(function(){
         console.log(desc);
         var desc = $('#desc option:selected').text();
@@ -176,7 +184,6 @@ Scripts
         $("#amountCalc tbody tr:eq(2) td:nth-child(2)").text('₱ ' + grandtotal.toFixed(2));
         $("#totDue").text('₱ ' + grandtotal.toFixed(2));
       }
-      
   });
 
 

@@ -178,90 +178,70 @@
                     </div>
                     <br>
                     <div class="row">
-                      <table class="striped">
+                      <table class="striped" id="courseFeeList">
                         <thead>
                           <tr>
-                            <td colspan="6" class="grey darken-3 white-text center-align">Course Fee</td>
+                            <td colspan="5" class="grey darken-3 white-text center-align">Course Fee</td>
                           </tr>
                           <tr>
-                             <th>Date</th>
-                             <th>OR#</th>
-                             <th>Amount in PHP</th>
-                             <th>Payment Type</th>
-                             <th>Mode of Payment</th>
-                             <th>Outstanding Balance</th>
+                             <th width="20%">Date</th>
+                             <th width="20%">Receipt #</th>
+                             <th width="20%">Invoice #</th>
+                             <th width="20%">Amount in PHP</th>
+                             <th width="20%">Outstanding Balance</th>
                           </tr>
                         </thead>
                         <tbody>
-                          @if(count($student->invoiceInfo)>0)
-                            @foreach($student->invoiceInfo as $invoice)
-                              @if($invoice->is_paid)
-                                @foreach($invoice->invoiceItemsInfo as $invoiceItems)
-                                  @if($invoiceItems->accountTitleInfo->account_title_name == 'Course Fee'
-                                      || strpos($invoiceItems->accountTitleInfo->account_title_name,'Course Fee'))
-                                      <tr>
-                                        <td>{{date('m-d-Y',strtotime($invoiceItems->created_at))}}</td>
-                                        <td>-</td>
-                                        <td>₱ {{$invoiceItems->amount}}</td>
-                                        <td>[Under Construction]</td>
-                                        <td>[Under Construction]</td>
-                                        <td>[Under Construction]</td>
-                                      </tr>
-                                  @endif
-                                @endforeach
-                              @endif
+
+                          @if(count($receiptList)>0)
+                            @foreach($receiptList as $receipt)
+                              @foreach($receipt->invoiceInfo->invoiceItemsInfo as $invoiceItems)
+                                @if($invoiceItems->accountTitleInfo->account_title_name == 'Course Fee'
+                                    || strpos($invoiceItems->accountTitleInfo->account_title_name,'Course Fee'))
+                                    <tr>
+                                      <td>{{date('m-d-Y',strtotime($receipt->created_at))}}</td>
+                                      <td><a href="{{route('receipt.show',$receipt->id)}}">{{sprintf("%'.07d\n",$receipt->id)}}</a></td>
+                                      <td><a href="{{route('invoice.show',$receipt->invoiceInfo->id)}}">{{sprintf("%'.07d\n",$receipt->invoiceInfo->id)}}</a></td>
+                                      <td>₱ {{$receipt->amount_paid}}</td>
+                                      <td>{{$receipt->outstanding_balance}}</td>
+                                    </tr>
+                                  @else
+                                @endif
+                              @endforeach
                             @endforeach
-                          @else
-                            <tr>
-                              <td colspan="6" style="text-align: center;"><em><strong> No Records Found </strong></em></td>
-                            </tr>
                           @endif
-                          
                         </tbody>
                       </table>
                     </div>
                     <br>
                     <div class="row">
-                      <table class="striped bordered">
+                      <table class="striped bordered" id="otherFeeList">
                         <thead>
                           <tr>
-                            <td colspan="5" class="grey darken-3 white-text center-align">Other Fees</td>
+                            <td colspan="4" class="grey darken-3 white-text center-align">Other Fees</td>
                           </tr>
                           <tr>
-                             <th>Date</th>
-                             <th>OR#</th>
-                             <th>Amount in PHP</th>
-                             <th>Payment Type</th>
-                             <th>Mode of Payment</th> 
+                             <th width="25%">Date</th>
+                             <th width="25%">Receipt #</th>
+                             <th width="25%">Invoice #</th>
+                             <th width="25%">Amount in PHP</th>
                           </tr>
                         </thead>
                         <tbody>
-                          @if(count($student->invoiceInfo)>0)
-                            @foreach($student->invoiceInfo as $invoice)
-                              @if($invoice->is_paid)
-                                @foreach($invoice->invoiceItemsInfo as $invoiceItems)
-                                  @if($invoiceItems->accountTitleInfo->account_title_name != 'Course Fee'
-                                      && !strpos($invoiceItems->accountTitleInfo->account_title_name,'Course Fee'))
-                                      <tr>
-                                        <td>{{date('m-d-Y',strtotime($invoiceItems->created_at))}}</td>
-                                        <td>-</td>
-                                        <td>₱ {{$invoiceItems->amount}}</td>
-                                        <td>[Under Construction]</td>
-                                        <td>[Under Construction]</td>
-                                        <td>[Under Construction]</td>
-                                      </tr>
-                                  @else
+                          @if(count($receiptList)>0)
+                            @foreach($receiptList as $receipt)
+                              @foreach($receipt->invoiceInfo->invoiceItemsInfo as $invoiceItems)
+                                @if($invoiceItems->accountTitleInfo->account_title_name != 'Course Fee'
+                                    && strpos($invoiceItems->accountTitleInfo->account_title_name,'Course Fee'))
                                     <tr>
-                                      <td colspan="5" style="text-align: center;"><em><strong> No Records Found </strong></em></td>
+                                      <td>{{date('m-d-Y',strtotime($receipt->created_at))}}</td>
+                                      <td><a href="{{route('receipt.show',$receipt->id)}}">{{sprintf("%'.07d\n",$receipt->id)}}</a></td>
+                                      <td><a href="{{route('invoice.show',$receipt->invoiceInfo->id)}}">{{sprintf("%'.07d\n",$receipt->invoiceInfo->id)}}</a></td>
+                                      <td>₱ {{$receipt->amount_paid}}</td>
                                     </tr>
-                                  @endif
-                                @endforeach
-                              @endif
+                                @endif
+                              @endforeach
                             @endforeach
-                          @else
-                            <tr>
-                              <td colspan="5" style="text-align: center;"><em><strong> No Records Found </strong></em></td>
-                            </tr>
                           @endif
                         </tbody>
                       </table>

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Students;
 
+use App\PaymentTransactionModel;
 use Illuminate\Http\Request;
-use App\StudentModel;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Utility\UtilityHelper;
 use App\Http\Requests\Students\StudentRequest;
+use App\Http\Controllers\Utility\UtilityHelper;
+
 
 class StudentController extends Controller
 {
@@ -67,9 +68,18 @@ class StudentController extends Controller
     {
         $title = 'Students';
         $student = $this->searchStudent($id);
+        $invoiceIds = array();
+        $studInvoiceList = $this->getRecords('InvoiceModel',array('student_id'=>$id));
+        if(count($studInvoiceList)>0){
+            foreach ($studInvoiceList as $key) {
+                $invoiceIds[] = $key->id;
+            }
+        }
+        $receiptList = PaymentTransactionModel::whereIn('payment_id',$invoiceIds)->get();
         return view('students.show_student',
                         compact('title',
-                                'student'));
+                                'student',
+                                'receiptList'));
     }
 
     /**

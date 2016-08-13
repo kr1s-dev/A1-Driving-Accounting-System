@@ -11,6 +11,7 @@ use App\StudentModel;
 use App\AccountGroupModel;
 use App\InvoiceModel;
 use App\AccountTitleModel;
+use App\PaymentTransactionModel;
 trait UtilityHelper
 {
     public function searchUser($id){
@@ -99,6 +100,10 @@ trait UtilityHelper
 
     public function putInvoice(){
         return new InvoiceModel;
+    }
+
+    public function searchReceipt($id){
+        return $id!=NULL?PaymentTransactionModel::findOrFail($id):PaymentTransactionModel::all();
     }
 
     public function getAccountsAccountGroups($id){
@@ -294,6 +299,38 @@ trait UtilityHelper
             return AccountTitleModel::where($whereClause)
                                         ->orderBy('id', 'desc')
                                         ->first();
+        }elseif($modelName==='ReceiptModel'){
+            return $whereClause==NULL? PaymentTransactionModel::orderBy('id', 'desc')->first():
+                                        PaymentTransactionModel::where($whereClause)
+                                        ->orderBy('id', 'desc')
+                                        ->first();
+        }
+        return null;
+    }
+
+    public function getRecords($modelName,$whereClause){
+        if($modelName==='BranchModel'){
+            return BranchModel::orderBy('id', 'desc')->get();
+        }elseif($modelName==='StudentModel'){
+            return StudentModel::orderBy('id', 'desc')->get();
+        }elseif($modelName==='AccountGroupModel'){
+            return AccountGroupModel::where($whereClause)
+                                        ->orderBy('id', 'desc')
+                                        ->first();
+        }elseif($modelName==='InvoiceModel'){
+            return $whereClause==NULL? InvoiceModel::orderBy('id', 'desc')->first():
+                                        InvoiceModel::where($whereClause)
+                                        ->orderBy('id', 'asc')
+                                        ->get();
+        }elseif($modelName==='AccountTitleModel'){
+            return AccountTitleModel::where($whereClause)
+                                        ->orderBy('id', 'desc')
+                                        ->get();
+        }elseif($modelName==='ReceiptModel'){
+            return $whereClause==NULL? PaymentTransactionModel::orderBy('id', 'desc')->first():
+                                        PaymentTransactionModel::where($whereClause)
+                                        ->orderBy('id', 'asc')
+                                        ->get();
         }
         return null;
     }
@@ -309,12 +346,6 @@ trait UtilityHelper
         return DB::table($tableName)
                     ->where('id', $idList)
                     ->update($data);
-    }
-
-    public function getRecords($tableName,$whereClause){
-        return DB::table($tableName)
-                    ->where($whereClause)
-                    ->get();
     }
 
     public function deleteRecords($tableName,$whereClause){
