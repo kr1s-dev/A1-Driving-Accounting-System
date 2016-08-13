@@ -96,6 +96,24 @@
             <ul class="collapsible collapsible-accordion">
                 <li class="bold">
                 <a class="collapsible-header waves-effect waves-cyan">
+                <i class="mdi-social-school"></i> Receipts
+                </a>
+                    <div class="collapsible-body">
+                        <ul>
+                            <li><a href="{{route('receipt.index')}}">View All</a>
+                            </li>
+                            <!--li><a href="{{route('invoice.create')}}">Create New</a>
+                            </li-->
+                        </ul>
+                    </div>
+                </li> 
+            </ul>
+        </li>
+        <li class="li-hover"><div class="divider"></div></li>
+        <li class="no-padding">
+            <ul class="collapsible collapsible-accordion">
+                <li class="bold">
+                <a class="collapsible-header waves-effect waves-cyan">
                 <i class="mdi-social-school"></i> Accounts
                 </a>
                     <div class="collapsible-body">
@@ -109,6 +127,7 @@
                 </li> 
             </ul>
         </li>
+
     </ul>
     <a href="#" data-activates="slide-out" class="sidebar-collapse btn-floating btn-medium waves-effect waves-light hide-on-large-only cyan"><i class="mdi-navigation-menu"></i></a>
 </aside>

@@ -15,7 +15,7 @@
 		                            <th>Invoice No.</th>
 		                            <th>Date Paid</th>
 		                            <th>Charged to</th>
-		                            <th>Grand Total</th>
+		                            <th>Amount Paid</th>
                         		</tr>
                     		</thead>
                  
@@ -25,18 +25,20 @@
 		                            <th>Invoice No.</th>
 		                            <th>Date Paid</th>
 		                            <th>Charged to</th>
-		                            <th>Grand Total</th>
+		                            <th>Amount Paid</th>
                         		</tr>
                     		</tfoot>
                  
                     		<tbody>
-                        		<tr>
-		                            <td><a href="./details.html">00001</a></td>
-		                            <td><a href="../invoice/details.html">00001</a></td>
-		                            <td>08/03/2016 </td>
-		                            <td>Tiger Nixon</td>
-		                            <td>₱ 3,600</td>
-                        		</tr>
+                                @foreach($receiptList as $receipt)
+                                <tr>
+                                    <td><a href="{{route('receipt.show',$receipt->id)}}">{{sprintf("%'.07d\n",$receipt->id)}}</a></td>
+                                    <td><a href="{{route('invoice.show',$receipt->invoiceInfo->id)}}">{{sprintf("%'.07d\n",$receipt->invoiceInfo->id)}}</a></td>
+                                    <td>{{date('m-d-Y',strtotime($receipt->created_at))}}</td>
+                                    <td>{{$receipt->invoiceInfo->studentInfo->stud_first_name}}&nbsp;{{$receipt->invoiceInfo->studentInfo->stud_last_name}}</td>
+                                    <td>₱ {{number_format($receipt->amount_paid,2)}}</td>
+                                </tr>
+                                @endforeach
                     		</tbody>
                   		</table>
                 	</div>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Receipt\ReceiptRequest;
 use App\Http\Controllers\Utility\UtilityHelper;
 
 class ReceiptController extends Controller
@@ -18,7 +19,12 @@ class ReceiptController extends Controller
      */
     public function index()
     {
-        //
+        $title = 'Receipt';
+        $receiptList = $this->searchReceipt(null);
+        return view('receipt.show_receipt_list',
+                        compact('title',
+                                'receiptList'));
+
     }
 
     /**
@@ -46,7 +52,7 @@ class ReceiptController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ReceiptRequest $request)
     {
         $input = $this->removeKeys($request->all(),true,true);
         $balance = str_replace(',','', $input['outstanding_balance']) - $input['amount_paid'];
@@ -100,9 +106,6 @@ class ReceiptController extends Controller
                 $change = $receipt->amount_paid - $receipt->invoiceInfo->total_amount;
             }
         }
-        
-        
-        //echo $lastInvReceipt->outstanding_balance;
         return view('receipt.show_receipt',
                         compact('receipt',
                                 'title',

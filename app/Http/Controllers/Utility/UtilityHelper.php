@@ -12,6 +12,7 @@ use App\AccountGroupModel;
 use App\InvoiceModel;
 use App\AccountTitleModel;
 use App\PaymentTransactionModel;
+use App\AccountInformationModel;
 trait UtilityHelper
 {
     public function searchUser($id){
@@ -309,20 +310,7 @@ trait UtilityHelper
     }
 
     public function getRecords($modelName,$whereClause){
-        if($modelName==='BranchModel'){
-            return BranchModel::orderBy('id', 'desc')->get();
-        }elseif($modelName==='StudentModel'){
-            return StudentModel::orderBy('id', 'desc')->get();
-        }elseif($modelName==='AccountGroupModel'){
-            return AccountGroupModel::where($whereClause)
-                                        ->orderBy('id', 'desc')
-                                        ->first();
-        }elseif($modelName==='InvoiceModel'){
-            return $whereClause==NULL? InvoiceModel::orderBy('id', 'desc')->first():
-                                        InvoiceModel::where($whereClause)
-                                        ->orderBy('id', 'asc')
-                                        ->get();
-        }elseif($modelName==='AccountTitleModel'){
+        if($modelName==='AccountTitleModel'){
             return AccountTitleModel::where($whereClause)
                                         ->orderBy('id', 'desc')
                                         ->get();
@@ -331,6 +319,10 @@ trait UtilityHelper
                                         PaymentTransactionModel::where($whereClause)
                                         ->orderBy('id', 'asc')
                                         ->get();
+        }elseif($modelName ==='AccountInformationModel'){
+            $query = AccountInformationModel::whereYear('created_at','=',date('Y'));
+            return $whereClause==NULL?$query->get():
+                                        $query->where($whereClause)->get();
         }
         return null;
     }
