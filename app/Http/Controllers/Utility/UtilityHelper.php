@@ -310,7 +310,12 @@ trait UtilityHelper
     }
 
     public function getRecords($modelName,$whereClause){
-        if($modelName==='AccountTitleModel'){
+        if($modelName==='InvoiceModel'){
+            return $whereClause==NULL? InvoiceModel::orderBy('id', 'desc')->get():
+                                        InvoiceModel::where($whereClause)
+                                        ->orderBy('id', 'asc')
+                                        ->get();
+        }elseif($modelName==='AccountTitleModel'){
             return AccountTitleModel::where($whereClause)
                                         ->orderBy('id', 'desc')
                                         ->get();

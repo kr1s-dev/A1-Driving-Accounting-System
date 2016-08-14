@@ -46,7 +46,7 @@
                 </a>
                     <div class="collapsible-body">
                         <ul>
-                            <li><a href="#">View All</a>
+                            <li><a href="{{route('branches.index')}}">View All</a>
                             </li>
                             <li><a href="{{route('branches.create')}}">Create New</a>
                             </li>

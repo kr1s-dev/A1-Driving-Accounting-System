@@ -17,6 +17,12 @@
   </div>
 </div>
 <div class="row">
+  <div class="input-field col s12 m12 l12">
+    <input id="number" type="text" name="branch_tel_number" value="{{count($errors)>0?old('branch_tel_number'):$branch->branch_tel_number}}">
+    <label for="email">Branch Telephone Number</label>
+  </div>
+</div>
+<div class="row">
   <div class=" col s12 m12 l12">
     <p>
       @if($branch->main_office)

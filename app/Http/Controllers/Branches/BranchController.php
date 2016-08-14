@@ -18,7 +18,12 @@ class BranchController extends Controller
      */
     public function index()
     {
-        
+        $title = 'Branches';
+        $branchList = $this->searchBranch(null);
+        return view('branches.show_branch_list',
+                        compact('branchList',
+                                'title'));
+
     }
 
     /**
@@ -47,7 +52,8 @@ class BranchController extends Controller
     public function store(BranchRequest $request)
     {
     	$input = $this->removeKeys($request->all(),true,false);
-        $this->insertRecords('branch',$input,false);
+        $branchId = $this->insertRecords('branch',$input,false);
+        return redirect('branches/' . $branchId);
     }
 
     /**
@@ -58,7 +64,11 @@ class BranchController extends Controller
      */
     public function show($id)
     {
-        //
+        $title = 'Branches';
+        $branch = $this->searchBranch($id);
+        return view('branches.show_branch_info',
+                        compact('branch',
+                                'title'));
     }
 
     /**
@@ -89,6 +99,7 @@ class BranchController extends Controller
     {
         $input = $this->removeKeys($request->all(),false,false);
         $this->updateRecords('branch',array($id),$input);
+        return redirect('branches/' . $id);
     }
 
     /**

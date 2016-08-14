@@ -18,6 +18,7 @@ class CreateBranchTable extends Migration
                 $table->increments('id');
                 $table->string('branch_name',255)->unique();
                 $table->string('branch_address',255);
+                $table->string('branch_tel_number',255);
                 $table->boolean('main_office')->default(0);
                 $table->timestamps();
             });

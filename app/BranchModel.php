@@ -21,5 +21,6 @@ class BranchModel extends Model
      */
     protected $fillable = ['branch_name',
                             'branch_address',
-                            'main_office'];
+                            'main_office',
+                            'branch_tel_number'];
 }

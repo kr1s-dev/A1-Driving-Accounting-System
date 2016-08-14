@@ -43,9 +43,13 @@
 		                           <td>{{date('m-d-Y',strtotime($journalEntry->created_at))}}</td>
 		                           <td>#
 		                        		@if($journalEntry->invoice_id != NULL)
-		                        			{{sprintf("%'.07d",$journalEntry->invoice_id)}}
+		                        			<a href="{{route('invoice.show',$journalEntry->invoice_id)}}">
+		                        				{{sprintf("%'.07d",$journalEntry->invoice_id)}}
+		                        			</a>
 		                        		@elseif($journalEntry->receipt_id != NULL)
-		                        			{{sprintf("%'.07d",$journalEntry->receipt_id)}}
+		                        			<a href="{{route('receipt.show',$journalEntry->receipt_id)}}">
+		                        				{{sprintf("%'.07d",$journalEntry->receipt_id)}}
+		                        			</a>
 		                        		@elseif($journalEntry->expense_id != NULL)
 		                        			{{sprintf("%'.07d",$journalEntry->expense_id)}}
 		                        		@elseif($journalEntry->asset_id != NULL)
