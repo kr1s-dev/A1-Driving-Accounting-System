@@ -26,6 +26,10 @@ class AccountTitleModel extends Model
                             'created_by',
                             'updated_by'];
 
+    public function group(){
+        return $this->belongsTo('App\AccountGroupModel','account_group_id');
+    }
+    
     public function accountTitleChildren(){
         return $this->hasMany('App\AccountTitleModel','account_title_id');
     }

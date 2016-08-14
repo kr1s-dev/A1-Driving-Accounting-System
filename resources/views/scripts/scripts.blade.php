@@ -184,6 +184,191 @@ Scripts
         $("#amountCalc tbody tr:eq(2) td:nth-child(2)").text('₱ ' + grandtotal.toFixed(2));
         $("#totDue").text('₱ ' + grandtotal.toFixed(2));
       }
+
+      $(document).on('click', '.add-entry', function(){
+        var selectOptionVal = $('meta[name="account-list"]').attr('content');
+        var jsonParse = JSON.parse(selectOptionVal);
+        var isDuplicate = checkIfDuplicate();
+        if(isDuplicate){
+          alert(isDuplicate)
+        }else{
+          $('.journal-entries tbody').append(
+            '<tr>' +
+               '<td>' +
+                  '<select name="drcr" id="">' +
+                     '<option value="1">Debit</option>' +
+                     '<option value="2">Credit</option>' +
+                  '</select>' +
+               '</td> ' +
+               '<td>' +
+                  '<select class="select-dropdown" name="account_title" id="">' +
+                  '</select>' +
+               '</td>' +
+               '<td style="width: 20%;">' +
+                  '<div class="input-field" id="textarea-input-field">' +
+                     '<textarea class="materialize-textarea" name="" id="desc" cols="30" rows="10"></textarea>' +
+                     '<label for="">Description</label>' +
+                  '</div>' +
+               '</td>' +
+               '<td>' +
+                  '<div class="input-field">' +
+                     '<input type="number" min="0" step="0.01" id="dr-amt" value="0.00">' +
+                     '<label for="" class="active">Amount</label>' +
+                  '</div>' +
+               '</td>' +
+               '<td>' +
+                  '<div class="input-field">' +
+                     '<input type="number" id="cr-amt" value="0.00" disabled="disabled">' +
+                     '<label for="cr-amt" class="active">Amount</label>' +
+                  '</div>' +
+               '</td>' +
+               '<td>' +
+                  '<a class="waves-effect waves-light btn red add-entry">Add</a>' +
+                  '<a class="waves-effect waves-light btn red delete-entry">Delete</a>'+
+               '</td>' +
+            '</tr>'
+          );
+          
+
+          $('.journal-entries tr:last td').each(function(){
+            console.log('last table');
+            var selectTitle = $(this).find('select');
+            if(selectTitle.attr('name')){
+              if(selectTitle.attr('name') == 'account_title'){
+                for(var i = 0; i < jsonParse.length; i++) {
+                  selectTitle.append($('<option>',{
+                    value: jsonParse[i]['id'],
+                    text: jsonParse[i]['account_title_name']
+                  }));
+                }
+              }
+            }
+          });
+
+          $("select[name='drcr']").on('change',function(){
+            var drInput = $(this).closest('tr').find("td #dr-amt");
+            var crInput = $(this).closest('tr').find("td #cr-amt");
+            if($(this).val() == '1'){
+              drInput.attr('disabled',false);
+              crInput.attr('disabled',true);
+            }else{
+              drInput.attr('disabled',true);
+              crInput.attr('disabled',false);
+            }
+            drInput.val('0.00');
+            crInput.val('0.00');
+          });
+
+          $('select').material_select();
+        }
+
+        $('.delete-entry').click(function(){
+          $(this).parent().parent().remove();
+        });
+        
+      });
+
+      $("select[name='drcr']").on('change',function(){
+        var drInput = $(this).closest('tr').find("td #dr-amt");
+        var crInput = $(this).closest('tr').find("td #cr-amt");
+        if($(this).val() == '1'){
+          drInput.attr('disabled',false);
+          crInput.attr('disabled',true);
+        }else{
+          drInput.attr('disabled',true);
+          crInput.attr('disabled',false);
+        }
+        drInput.val('0.00');
+        crInput.val('0.00');
+      });
+
+      /*
+       * @author:        Kristopher Veraces
+       * @description:   Validation in Journal 
+                            -Checks if duplicated account title is inputted
+                            -Checks if credit or debit amount in not zero
+       */
+      function checkIfDuplicate(){
+        var accountTitles =  [];
+        var tAccountTitle = NaN;
+        var is_duplicate = NaN;
+        var amount = 0;
+        $('.journal-entries tbody').find('tr').each(function(rowIndex, r){
+           amount = 0;
+           $(this).find('td ').each(function (colIndex, c) {
+              var selectAccountTitle = $(this).find("select");
+              var input = $(this).find("input:enabled");
+              if(input.attr('type')==='number' && amount==0){
+                 amount = input.val() == ''?0:input.val();
+              }
+              // console.log(amount);
+              if(selectAccountTitle.attr('name')=='account_title'){
+                 tAccountTitle = selectAccountTitle.val();
+              }
+              
+           });
+           
+           if(amount <= 0){
+              is_duplicate = 'CR/DR amount must be greater than zero';
+              return true;
+           }
+
+           if(tAccountTitle){
+              if($.inArray(tAccountTitle,accountTitles) != -1){
+                 is_duplicate = 'Duplicate Account Title Detected';
+                 return true;
+              }else{
+                 accountTitles.push(tAccountTitle);
+              } 
+           }
+        });
+        return is_duplicate;
+      }
+
+      $("#sbmt_jour_entry").click(function(e){
+        e.preventDefault;
+        var data= '';
+        var isDup = checkIfDuplicate();
+        var _token = $('meta[name="csrf-token"]').attr('content');
+        if(isDup){
+          alert(isDup);
+        }else{
+          $(".journal-entries tbody tr td").each(function() {
+            var input = $(this).find("input:enabled");
+            var select = $(this).find('select');
+            var textArea = $(this).find('textarea');
+
+            if(select.attr('name')){
+              data += (select.val() + ',');
+            }
+
+            if(textArea.attr('id')){
+              data += (textArea.val() + ',');
+            }
+
+            if(input.attr('type')=='number'){
+              data += (input.val() + ',');
+            }
+          });
+          data = data.slice(0,-1);
+          $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': _token
+            },
+            url: '/journal/create',
+            type: 'POST',
+            data: {'data':data},
+            success: function(response)
+            {
+                alert(response);
+                //location.href="/account";
+            }, error: function(xhr, ajaxOptions, thrownError){
+              alert(xhr.status);
+              alert(thrownError);
+            }
+          });
+        }
+      });
   });
 
 

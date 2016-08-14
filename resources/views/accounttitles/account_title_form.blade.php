@@ -1,15 +1,33 @@
 
-<div class="row">
-   <div class="input-field col s12 m12 l12">
-      <select name="account_group_id">
-         <option value="" disabled selected>Parent Group</option>
-         @foreach($accountGroupsList as $key=>$value)
-            <option value="{{$key}}">{{$value}}</option>
-         @endforeach
-      </select>
-      <label>Account Group</label>
+@if(!is_null($eAccountTitle->id))
+   <div class="row">
+      <div class="input-field col s12 m12 l12">
+         <input type="hidden" name = "account_title_id" value="{{$eAccountTitle->id}}">
+         <input type="hidden" name="account_group_id" value="{{$eAccountTitle->group->id}}">
+         <input name="parent_account_title_name" value="{{ count($errors) > 0? old('parent_account_title_name'):($eAccountTitle->account_title_name) }}" type="text" class="active" readonly>
+         <label for="first-name">Parent Account Title</label>
+      </div>
+  </div>
+@else
+   <div class="row">
+      <div class="input-field col s12 m12 l12">
+         @if(count($accountGroupsList)==1)
+            <input type="hidden" name = "account_group_id" value="{{$accountGroupsList->id}}">
+            <input id="name" type="text" name="account_group_name" value="{{count($errors)>0?old('account_group_name'):$accountGroupsList->account_group_name}}" disabled>
+            <label for="account_title_name" class="active">Account Title</label>
+         @else
+            <select name="account_group_id">
+               <option value="" disabled selected>Parent Group</option>
+               @foreach($accountGroupsList as $key=>$value)
+                  <option value="{{$key}}">{{$value}}</option>
+               @endforeach
+            </select>
+            <label>Account Group</label>
+         @endif
+      </div>
    </div>
-</div>
+@endif
+
 <div class="row">
 	<div class="input-field col s12 m12 l12">
       <input id="name" type="text" name="account_title_name" value="{{count($errors)>0?old('account_title_name'):$accountTitle->account_title_name}}">

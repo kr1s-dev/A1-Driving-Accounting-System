@@ -6,13 +6,13 @@ use DB;
 use Auth;
 use App\User;
 use App\BranchModel;
-use App\UserTypeModel;
 use App\StudentModel;
-use App\AccountGroupModel;
 use App\InvoiceModel;
+use App\JournalModel;
+use App\UserTypeModel;
+use App\AccountGroupModel;
 use App\AccountTitleModel;
 use App\PaymentTransactionModel;
-use App\AccountInformationModel;
 trait UtilityHelper
 {
     public function searchUser($id){
@@ -319,12 +319,53 @@ trait UtilityHelper
                                         PaymentTransactionModel::where($whereClause)
                                         ->orderBy('id', 'asc')
                                         ->get();
-        }elseif($modelName ==='AccountInformationModel'){
-            $query = AccountInformationModel::whereYear('created_at','=',date('Y'));
-            return $whereClause==NULL?$query->get():
-                                        $query->where($whereClause)->get();
+        }elseif($modelName==='JournalModel'){
+            $value = Auth::user()->branch_id;
+            $query = JournalModel::whereYear('created_at','=',date('Y'));
+            if(!(is_null($value))){
+                $query->whereHas('created_by',function($q) use ($value){
+                            $q->where('branch_id','=',$value);
+                        });
+            }
+            return $query->get();
         }
         return null;
+    }
+
+    public function getItemsAmountList($arrayToProcessList,$typeOfData){
+        $data = array();
+        // if($typeOfData == 'Equity'){
+        //     $accountGroup =  AccountGroupModel::where('account_group_name', 'like', '%'.$typeOfData.'%')
+        //                                         ->get();
+        //     foreach ($accountGroup as $accountGrp) {
+        //         foreach ($accountGrp->accountTitles as $accountTitle) {
+        //             $data[$accountTitle->account_title_name] = $accountTitle->opening_balance;
+        //         }
+        //     }
+        // }else if(is_null($typeOfData)){
+        //     $accountGroup =  $this->getAccountGroups(null);
+        //     foreach ($accountGroup as $accountGrp) {
+        //         foreach ($accountGrp->accountTitles as $accountTitle) {
+        //             $data[$accountTitle->account_title_name] = $accountTitle->opening_balance;
+        //         }
+        //     }
+        // }
+
+        if(!empty($arrayToProcessList)){
+            foreach ($arrayToProcessList as $arrayToProcess) {
+                $typeOfData = $arrayToProcess->credit_title_id == NULL ? $arrayToProcess->debit->group->account_group_name : $arrayToProcess->credit->group->account_group_name;
+                $amount = ($arrayToProcess->debit_amount - $arrayToProcess->credit_amount);
+                $accountTitle = $arrayToProcess->credit_title_id == NULL ? $arrayToProcess->debit->account_title_name : $arrayToProcess->credit->account_title_name;
+
+                if(array_key_exists($accountTitle,$data)){
+                    $data[$accountTitle] += (strpos($typeOfData, 'Revenues') !== false || strpos($typeOfData, 'Equity') | strpos($typeOfData, 'Liabilities') ? 
+                                                ($amount * -1)  : $amount);
+                }else{
+                    $data[$accountTitle] = $typeOfData == 'Revenues' ? ($amount * -1)  : $amount;
+                }
+            }
+        }
+        return $data;
     }
 
     public function insertRecords($tableName,$data,$isBulk){
@@ -344,5 +385,9 @@ trait UtilityHelper
         return DB::table($tableName)
                     ->where($whereClause)
                     ->delete();
+    }
+
+    public function getTotalSum($arrayData){
+        return count($arrayData)>0?array_sum($arrayData):0;
     }
 }

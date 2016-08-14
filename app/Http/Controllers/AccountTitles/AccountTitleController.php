@@ -4,6 +4,7 @@ namespace App\Http\Controllers\AccountTitles;
 
 use Illuminate\Http\Request;
 
+use App\AccountGroupModel;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AccountTitles\AccountTitleRequest;
@@ -36,13 +37,47 @@ class AccountTitleController extends Controller
         $title = 'Account Title';
         $accountTitle = $this->putAccountTitle();
         $accountTitle->opening_balance=0;
+        $eAccountTitle = $this->putAccountTitle();
         $accountGroupsList = $this->getAccountsAccountGroups(null);
         return view('accounttitles.create_account_title',
                         compact('accountTitle',
+                                'eAccountTitle',
                                 'accountGroupsList',
                                 'title'));
 
 
+    }
+
+    public function createWithParent($id)
+    {
+        //
+        $title = 'Account Title';
+        $accountGroupsList = $this->getAccountsAccountGroups($id);
+        $eAccountTitle = $this->putAccountTitle($id);
+        $accountTitle = $this->putAccountTitle();
+        
+        return view('accountTitles.create_account_title',
+                        compact('accountGroupsList',
+                                'eAccountTitle',
+                                'accountTitle',
+                                'title'));
+    }
+
+    /**
+     * Show the form for creating a new resource with Account Group Id.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createWithGroupParent($id){
+        $title = 'Account Title';
+        $accountGroupsList = AccountGroupModel::findOrFail($id);
+        $eAccountTitle = $this->putAccountTitle();
+        $accountTitle = $this->putAccountTitle();
+        return view('accountTitles.create_account_title',
+                        compact('accountGroupsList',
+                                'eAccountTitle',
+                                'accountTitle',
+                                'title'));
     }
 
     /**
@@ -54,9 +89,18 @@ class AccountTitleController extends Controller
     public function store(AccountTitleRequest $request)
     {
         $input = $this->removeKeys($request->all(),true,true);
+        if(array_key_exists('parent_account_title_name', $input)){
+            unset($input['parent_account_title_name']);
+        }
+
+        if(array_key_exists('account_group_name', $input)){
+            unset($input['account_group_name']);
+        }
         $this->insertRecords('account_titles',$input,false);
         return redirect('accounttitle');
     }
+
+
 
     /**
      * Display the specified resource.

@@ -38,4 +38,14 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//Account Title Routes
 	Route::resource('accounttitle','AccountTitles\AccountTitleController');
+	Route::get('accounttitle/{id}/create',['as'=>'accounttitle.with.parent.accounttitle','uses'=>'AccountTitles\AccountTitleController@createWithParent']);
+	Route::get('accounttitle/{id}/group/create',['as'=>'accounttitle.with.parent.accountgroup','uses'=>'AccountTitles\AccountTitleController@createWithGroupParent']);
+
+	//Journal Entry Routes
+    Route::get('journal/create' ,['as'=>'journal.create','uses'=>'Journal\JournalEntryController@create']);
+    Route::post('journal/create' ,'Journal\JournalEntryController@store');
+    Route::get('journal' ,['as'=>'journal.index','uses'=>'Journal\JournalEntryController@index']);
+
+    //Acount Information Route
+    Route::get('account/details' ,['as'=>'account.details','uses'=>'AccountInformation\AccountInformationController@index']);
 });

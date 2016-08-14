@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AccountInformationModel extends Model
+class JournalModel extends Model
 {
     /**
      * The database table used by the model.
@@ -25,25 +25,20 @@ class AccountInformationModel extends Model
                             'expense_id',
                             'invoice_id',
                             'receipt_id',
-                            'asset_id',
                             'type'];
 
 
-    // public function expense(){
-    //     return $this->belongsTo('App\ExpenseModel');
-    // }
+    public function expense(){
+        return $this->belongsTo('App\ExpenseModel');
+    }
 
     public function receipt(){
-        return $this->belongsTo('App\ReceiptModel','receipt_id');
+        return $this->belongsTo('App\ReceiptModel');
     }
 
     public function invoice(){
-        return $this->belongsTo('App\InvoiceModel','invoice_id');
+        return $this->belongsTo('App\InvoiceModel');
     }
-
-    // public function asset(){
-    //     return $this->belongsTo('App\InvoiceModel');
-    // }
 
     public function credit(){
         return $this->belongsTo('App\AccountTitleModel','credit_title_id');
@@ -51,4 +46,5 @@ class AccountInformationModel extends Model
 
     public function debit(){
         return $this->belongsTo('App\AccountTitleModel','debit_title_id');
+    }
 }

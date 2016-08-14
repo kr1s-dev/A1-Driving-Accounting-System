@@ -56,7 +56,7 @@
                               @endforeach
                               <tr>
                                  <td colspan="3" style="text-indent: 50px;">
-                                    <a href="accounttitle/create/group/{{$accountGroup->id}}"><strong><u><em>Add {{$accountGroup->account_group_name}}</em></u></strong></a>
+                                    <a href="{{route('accounttitle.with.parent.accountgroup',$accountGroup->id)}}"><strong><u><em>Add {{$accountGroup->account_group_name}}</em></u></strong></a>
                                  </td>
                               </tr>
                            @endif
@@ -97,7 +97,7 @@
                               @endforeach
                               <tr>
                                  <td colspan="3" style="text-indent: 50px;">
-                                    <a href="accounttitle/create/group/{{$accountGroup->id}}"><strong><u><em>Add {{$accountGroup->account_group_name}}</em></u></strong></a>
+                                    <a href="{{route('accounttitle.with.parent.accountgroup',$accountGroup->id)}}"><strong><u><em>Add {{$accountGroup->account_group_name}}</em></u></strong></a>
                                  </td>
                               </tr>
                            @endif
@@ -138,7 +138,7 @@
                               @endforeach
                               <tr>
                                  <td colspan="3" style="text-indent: 50px;">
-                                    <a href="accounttitle/create/group/{{$accountGroup->id}}"><strong><u><em>Add {{$accountGroup->account_group_name}}</em></u></strong></a>
+                                    <a href="{{route('accounttitle.with.parent.accountgroup',$accountGroup->id)}}"><strong><u><em>Add {{$accountGroup->account_group_name}}</em></u></strong></a>
                                  </td>
                               </tr>
                            @endif
@@ -176,7 +176,7 @@
                               @endforeach
                               <tr>
                                  <td colspan="3" style="text-indent: 50px;">
-                                    <a href="accounttitle/create/group/{{$accountGroup->id}}"><strong><u><em>Add {{$accountGroup->account_group_name}}</em></u></strong></a>
+                                    <a href="{{route('accounttitle.with.parent.accountgroup',$accountGroup->id)}}"><strong><u><em>Add {{$accountGroup->account_group_name}}</em></u></strong></a>
                                  </td>
                               </tr>
                            @endif
@@ -214,7 +214,7 @@
                               @endforeach
                               <tr>
                                  <td colspan="3" style="text-indent: 50px;">
-                                    <a href="accounttitle/create/group/{{$accountGroup->id}}"><strong><u><em>Add {{$accountGroup->account_group_name}}</em></u></strong></a>
+                                    <a href="{{route('accounttitle.with.parent.accountgroup',$accountGroup->id)}}"><strong><u><em>Add {{$accountGroup->account_group_name}}</em></u></strong></a>
                                  </td>
                               </tr>
                            @endif

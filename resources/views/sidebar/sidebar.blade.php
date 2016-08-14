@@ -114,7 +114,25 @@
             <ul class="collapsible collapsible-accordion">
                 <li class="bold">
                 <a class="collapsible-header waves-effect waves-cyan">
-                <i class="mdi-social-school"></i> Accounts
+                <i class="mdi-social-school"></i> Account Information
+                </a>
+                    <div class="collapsible-body">
+                        <ul>
+                            <li><a href="{{route('account.details')}}">View Details</a>
+                            </li>
+                            <!--li><a href="{{route('invoice.create')}}">Create New</a>
+                            </li-->
+                        </ul>
+                    </div>
+                </li> 
+            </ul>
+        </li>
+        <li class="li-hover"><div class="divider"></div></li>
+        <li class="no-padding">
+            <ul class="collapsible collapsible-accordion">
+                <li class="bold">
+                <a class="collapsible-header waves-effect waves-cyan">
+                <i class="mdi-social-school"></i> Account Titles
                 </a>
                     <div class="collapsible-body">
                         <ul>
@@ -122,6 +140,25 @@
                             </li>
                             <!--li><a href="{{route('invoice.create')}}">Create New</a>
                             </li-->
+                        </ul>
+                    </div>
+                </li> 
+            </ul>
+        </li>
+        <li class="li-hover"><div class="divider"></div></li>
+        <li class="no-padding">
+            <ul class="collapsible collapsible-accordion">
+                <li class="bold">
+                <a class="collapsible-header waves-effect waves-cyan">
+                <i class="mdi-social-school"></i> Journal Entry
+                </a>
+                    <div class="collapsible-body">
+                        <ul>
+                            <li><a href="{{route('journal.index')}}">View All</a>
+                            </li>
+                            <li><a href="{{route('journal.create')}}">Create New Entry</a>
+                            </li>
+                            
                         </ul>
                     </div>
                 </li> 
