@@ -32,9 +32,12 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('invoice','Invoices\InvoiceController');
 	Route::get('student/{id}/invoice', ['as'=>'student.invoice','uses'=>'Invoices\InvoiceController@create']);
 
-	//Invoice Routes
+	//Receipt Routes
 	Route::resource('receipt','Receipt\ReceiptController');
 	Route::get('receipt/{id}/create', ['as'=>'invoice.receipt.create','uses'=>'Receipt\ReceiptController@create']);
+
+	//Asset Routes
+	Route::resource('asset','Assets\AssetController');
 
 	//Account Title Routes
 	Route::resource('accounttitle','AccountTitles\AccountTitleController');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Utility;
 use DB;
 use Auth;
 use App\User;
+use App\AssetsModel;
 use App\BranchModel;
 use App\StudentModel;
 use App\InvoiceModel;
@@ -16,7 +17,7 @@ use App\PaymentTransactionModel;
 trait UtilityHelper
 {
     public function searchUser($id){
-    	return $id!=NULL?User::findOrFail($id):User::all();
+        return $id!=NULL?User::findOrFail($id):User::all();
     }
 
     public function putUser(){
@@ -28,7 +29,7 @@ trait UtilityHelper
     }
 
     public function putBranch(){
-    	return new BranchModel;
+        return new BranchModel;
     }
 
     public function searchStudent($id){
@@ -107,6 +108,14 @@ trait UtilityHelper
         return $id!=NULL?PaymentTransactionModel::findOrFail($id):PaymentTransactionModel::all();
     }
 
+    public function putAsset(){
+        return new AssetsModel;
+    }
+
+    public function searchAsset($id){
+        return $id!=NULL?AssetsModel::findOrFail($id):AssetsModel::all();
+    }
+
     public function getAccountsAccountGroups($id){
         $accountGroupsList = array();
         if($id==null){
@@ -163,25 +172,25 @@ trait UtilityHelper
     
 
     public function removeKeys($data,$isInsert,$hasCreatedBy){
-    	if(array_key_exists('_token', $data))
-    		unset($data['_token']);
-    	if(array_key_exists('action', $data))
-    		unset($data['action']);
+        if(array_key_exists('_token', $data))
+            unset($data['_token']);
+        if(array_key_exists('action', $data))
+            unset($data['action']);
         if(array_key_exists('_method', $data))
             unset($data['_method']);
-    	if(array_key_exists('branchNumber', $data))
-    		unset($data['branchNumber']);
-    	if(array_key_exists('main_office', $data))
-    		$data['main_office'] = $data['main_office'] === 'on'?1:0;
-    	if($isInsert)
-    		$data['created_at'] = date('Y-m-d h:i:sa');
-    	$data['updated_at'] = date('Y-m-d h:i:sa');
+        if(array_key_exists('branchNumber', $data))
+            unset($data['branchNumber']);
+        if(array_key_exists('main_office', $data))
+            $data['main_office'] = $data['main_office'] === 'on'?1:0;
+        if($isInsert)
+            $data['created_at'] = date('Y-m-d h:i:sa');
+        $data['updated_at'] = date('Y-m-d h:i:sa');
         if($hasCreatedBy){
             if($isInsert)
                 $data['created_by'] = Auth::user()->id;
             $data['updated_by'] = Auth::user()->id;
         }
-    	return $data;
+        return $data;
     }
 
     
@@ -374,10 +383,10 @@ trait UtilityHelper
     }
 
     public function insertRecords($tableName,$data,$isBulk){
-    	if($isBulk)
-    		return DB::table($tableName)->insert($data);
-    	else
-    		return DB::table($tableName)->insertGetId($data);
+        if($isBulk)
+            return DB::table($tableName)->insert($data);
+        else
+            return DB::table($tableName)->insertGetId($data);
     }
 
     public function updateRecords($tableName,$idList,$data){

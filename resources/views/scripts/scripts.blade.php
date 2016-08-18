@@ -369,6 +369,18 @@ Scripts
           });
         }
       });
+
+      $("select[name='asset_mode_of_acq']").on('change',function(){
+        var val = $(this).val();
+        $('#labelDownP').attr('class','active');
+        $("input[name='asset_down_payment']").val(0.00);
+        if(val === 'Both'){
+          $('#downPayment').show();
+        }
+        else{
+          $('#downPayment').hide();
+        }
+      });
   });
 
 

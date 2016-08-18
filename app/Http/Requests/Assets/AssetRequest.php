@@ -13,7 +13,7 @@ class AssetRequest extends Request
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,32 @@ class AssetRequest extends Request
      */
     public function rules()
     {
-        return [
-            //
-        ];
+        switch($this->method())
+        {
+            case 'GET': break;
+            case 'DELETE': break;
+            //for insert
+            case 'POST':{
+                return ['asset_name' => 'required|min:3|max:255',
+                        'asset_vendor' => 'required|min:0|max:255',
+                        'asset_date_acquired'=>'required',
+                        'asset_original_cost'=>'required',
+                        'asset_salvage_value'=>'required',
+                        'asset_lifespan'=>'required',
+                        'asset_mode_of_acq'=>'required',];
+            }
+            //for update
+            case 'PATCH':{  
+                return ['asset_name' => 'required|min:3|max:255',
+                        'asset_vendor' => 'required|min:0|max:255',
+                        'asset_date_acquired'=>'required',
+                        'asset_original_cost'=>'required',
+                        'asset_salvage_value'=>'required',
+                        'asset_lifespan'=>'required',
+                        'asset_mode_of_acq'=>'required',];
+            }
+            //default
+            default: break;
+        }
     }
 }
