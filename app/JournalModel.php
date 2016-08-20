@@ -27,7 +27,10 @@ class JournalModel extends Model
                             'receipt_id',
                             'type'];
 
-
+    public function userCreateInfo(){
+        return $this->belongsTo('App\User','created_by');
+    }
+    
     public function expense(){
         return $this->belongsTo('App\ExpenseModel');
     }

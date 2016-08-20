@@ -73,10 +73,20 @@ class AssetController extends Controller
     public function show($id)
     {
         $title = 'Assets';
-        $asset = $this->searchAsset($id);
-        return view('assets.show_asset',
-                    compact('title',
-                            'asset'));
+        try{
+            $asset = $this->searchAsset($id);
+            if($asset != NULL){
+                return view('assets.show_asset',
+                        compact('title',
+                                'asset'));
+            }else{
+                return view('errors.503');
+            }
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
+        
     }
 
     /**
@@ -89,12 +99,17 @@ class AssetController extends Controller
     {
         $title = 'Assets';
         $asset = $this->searchAsset($id);
-        $asset->asset_date_acquired = date('d F, Y',strtotime($asset->asset_date_acquired));
-        $accountGroupList = $this->getAssetAccountTitles($asset->account_title_id);
-        return view('assets.edit_asset',
-                    compact('title',
-                            'asset',
-                            'accountGroupList'));
+        if($asset != NULL){
+            $asset->asset_date_acquired = date('d F, Y',strtotime($asset->asset_date_acquired));
+            $accountGroupList = $this->getAssetAccountTitles($asset->account_title_id);
+            return view('assets.edit_asset',
+                        compact('title',
+                                'asset',
+                                'accountGroupList'));
+        }else{
+            return view('errors.503');
+        }
+        
     }
 
     /**

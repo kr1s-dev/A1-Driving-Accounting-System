@@ -42,7 +42,7 @@ class User extends Authenticatable
 
 
     public function userType(){
-        return $this->belongsTo('App\UserTypeModel');
+        return $this->belongsTo('App\UserTypeModel','user_type_id');
     }
 
     public function branchInfo(){

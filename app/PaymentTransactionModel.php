@@ -25,7 +25,10 @@ class PaymentTransactionModel extends Model
                             'outstanding_balance'];
 
 
-
+    public function userCreateInfo(){
+        return $this->belongsTo('App\User','created_by');
+    }
+    
     public function invoiceInfo(){
         return $this->belongsTo('App\InvoiceModel','payment_id');
     }

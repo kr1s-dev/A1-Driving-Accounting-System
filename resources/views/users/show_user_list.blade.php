@@ -34,23 +34,25 @@
               </tfoot>
                  
               <tbody>
-                  @foreach($userList as $user)
-                    <tr>
-                        <td>{{$user->first_name}}</td>
-                        <td>{{$user->last_name}}</td>
-                        <td>{{$user->email}}</td>
-                        <td>{{$user->mobile_number}}</td>
-                        <td>{{$user->userType->type}}</td>
-                        <td class="center-align">
-                          <a href="{{route('user.edit',$user->id)}}"style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4">
-                            <i class="mdi-content-create"></i>
-                          </a>
-                          <a class="btn-floating waves-effect waves-light grey darken-4">
-                            <i class="mdi-action-lock"></i>
-                          </a>
-                        </td>
-                    </tr>
-                  @endforeach
+                  @if($userList != NULL)
+                    @foreach($userList as $user)
+                      <tr>
+                          <td>{{$user->first_name}}</td>
+                          <td>{{$user->last_name}}</td>
+                          <td>{{$user->email}}</td>
+                          <td>{{$user->mobile_number}}</td>
+                          <td>{{$user->userType->type}}</td>
+                          <td class="center-align">
+                            <a href="{{route('user.edit',$user->id)}}"style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4">
+                              <i class="mdi-content-create"></i>
+                            </a>
+                            <a class="btn-floating waves-effect waves-light grey darken-4">
+                              <i class="mdi-action-lock"></i>
+                            </a>
+                          </td>
+                      </tr>
+                    @endforeach
+                  @endif
               </tbody>
             </table>
           </div>

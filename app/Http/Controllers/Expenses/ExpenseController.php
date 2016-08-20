@@ -95,11 +95,16 @@ class ExpenseController extends Controller
     public function show($id)
     {
         $title = 'Expense';
-        $expense = $this->searchExpense($id);
-        return view('expense.show_expense',
-                        compact('expense.show_expense',
-                                'title',
-                                'expense'));
+        try{
+            $expense = $this->searchExpense($id);
+            return view('expense.show_expense',
+                            compact('expense.show_expense',
+                                    'title',
+                                    'expense'));
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
     }
 
     /**
@@ -114,13 +119,18 @@ class ExpenseController extends Controller
         $_method = 'PATCH';
         $expenseAccountGroup = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>'Expenses'));
         $expNumber = $id;
-        $expense = $this->searchExpense($id);
-        return view('expense.create_update_expense',
-                        compact('title',
-                                '_method',
-                                'expenseAccountGroup',
-                                'expNumber',
-                                'expense'));
+        try{
+            $expense = $this->searchExpense($id);
+            return view('expense.create_update_expense',
+                            compact('title',
+                                    '_method',
+                                    'expenseAccountGroup',
+                                    'expNumber',
+                                    'expense'));
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
     }
 
     /**

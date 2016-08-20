@@ -35,26 +35,29 @@
 			                    </tr>
                  			</tfoot>
                  		<tbody>
-                 			@foreach($assetList as $asset)
-                 				<tr>
-			                       	<td><a href="{{route('asset.show',$asset->id)}}">#{{sprintf("%'.07d\n",$asset->id)}}</a></td>
-			                       	<td>{{$asset->asset_name}}</td>
-			                       	<td>{{date('F d, Y',strtotime($asset->asset_date_acquired))}}</td>
-			                       	<td>{{$asset->asset_vendor_name}}</td>
-			                       	<td>₱ {{number_format($asset->asset_original_cost,2)}}</td>
-			                       	<td>{{$asset->asset_lifespan,2}}</td>
-			                       	<td>₱ {{number_format($asset->monthly_depreciation,2)}}</td>
-			                       	<td>₱ {{number_format($asset->net_value,2)}}</td>
-			                       	<td class="center-align">
-			                          	<a href="{{route('asset.edit',$asset->id)}}" style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4">
-			                          		<i class="mdi-content-create"></i>
-			                          	</a>
-			                          	<a class="btn-floating waves-effect waves-light grey darken-4">
-			                          		<i class="mdi-action-lock"></i>
-			                          	</a>
-			                       </td>
-			                    </tr>
-                 			@endforeach
+                 			@if($assetList != NULL)
+	                 			@foreach($assetList as $asset)
+	                 				<tr>
+				                       	<td><a href="{{route('asset.show',$asset->id)}}">#{{sprintf("%'.07d\n",$asset->id)}}</a></td>
+				                       	<td>{{$asset->asset_name}}</td>
+				                       	<td>{{date('F d, Y',strtotime($asset->asset_date_acquired))}}</td>
+				                       	<td>{{$asset->asset_vendor}}</td>
+				                       	<td>₱ {{number_format($asset->asset_original_cost,2)}}</td>
+				                       	<td>{{$asset->asset_lifespan,2}}</td>
+				                       	<td>₱ {{number_format($asset->monthly_depreciation,2)}}</td>
+				                       	<td>₱ {{number_format($asset->net_value,2)}}</td>
+				                       	<td class="center-align">
+				                          	<a href="{{route('asset.edit',$asset->id)}}" style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4">
+				                          		<i class="mdi-content-create"></i>
+				                          	</a>
+				                          	<a class="btn-floating waves-effect waves-light grey darken-4">
+				                          		<i class="mdi-action-lock"></i>
+				                          	</a>
+				                       </td>
+				                    </tr>
+	                 			@endforeach
+	                 		@endif
+                 			
                  		</tbody>
               		</table>
            		</div>

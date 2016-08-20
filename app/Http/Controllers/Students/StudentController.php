@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Students;
 
-use App\PaymentTransactionModel;
 use Illuminate\Http\Request;
+use App\PaymentTransactionModel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Students\StudentRequest;
 use App\Http\Controllers\Utility\UtilityHelper;
@@ -35,9 +35,10 @@ class StudentController extends Controller
     {
         $title = 'Students';
         $student = $this->putStudent();
-        $lastInsertedBranch = $this->getLastRecord('StudentModel',null);
+        $student->stud_date_of_birth = date('d F, Y');
+        $lastInsertedBranch = $this->getControlNo('students');
         $branchList = $this->getUsersBranch(null);
-        $studentNumber = count($lastInsertedBranch)===0?'1':($lastInsertedBranch->id)+1;
+        $studentNumber = $lastInsertedBranch->AUTO_INCREMENT;
         return view('students.create_student',
                         compact('title',
                                 'student',
@@ -54,6 +55,7 @@ class StudentController extends Controller
     public function store(StudentRequest $request)
     {
         $input = $this->removeKeys($request->all(),true,true);
+        $input['stud_date_of_birth'] = date('Y-d-m',strtotime($input['stud_date_of_birth']));
         $studentId = $this->insertRecords('students',$input,false);
         return redirect('students/'.$studentId);
     }
@@ -67,19 +69,29 @@ class StudentController extends Controller
     public function show($id)
     {
         $title = 'Students';
-        $student = $this->searchStudent($id);
-        $invoiceIds = array();
-        $studInvoiceList = $this->getRecords('InvoiceModel',array('student_id'=>$id));
-        if(count($studInvoiceList)>0){
-            foreach ($studInvoiceList as $key) {
-                $invoiceIds[] = $key->id;
+        try{
+            $student = $this->searchStudent($id);
+            if($student != NULL){
+                $invoiceIds = array();
+                $studInvoiceList = $this->getRecords('InvoiceModel',array('student_id'=>$id));
+                if(count($studInvoiceList)>0){
+                    foreach ($studInvoiceList as $key) {
+                        $invoiceIds[] = $key->id;
+                    }
+                }
+                $receiptList = PaymentTransactionModel::whereIn('payment_id',$invoiceIds)->get();
+                return view('students.show_student',
+                                compact('title',
+                                        'student',
+                                        'receiptList'));
+            }else{
+                return view('errors.503');
             }
+        }catch(\Exception $ex){
+            return view('errors.503');
         }
-        $receiptList = PaymentTransactionModel::whereIn('payment_id',$invoiceIds)->get();
-        return view('students.show_student',
-                        compact('title',
-                                'student',
-                                'receiptList'));
+        
+        
     }
 
     /**
@@ -91,14 +103,24 @@ class StudentController extends Controller
     public function edit($id)
     {
         $title = 'Students';
-        $student = $this->searchStudent($id);
-        $branchList = $this->getUsersBranch($student->training_station_id);
-        $studentNumber = $id;
-        return view('students.edit_student',
-                        compact('title',
-                                'student',
-                                'studentNumber',
-                                'branchList'));
+        try{
+            $student = $this->searchStudent($id);
+            if($student != NULL){
+                $branchList = $this->getUsersBranch($student->training_station_id);
+                $studentNumber = $id;
+                return view('students.edit_student',
+                                compact('title',
+                                        'student',
+                                        'studentNumber',
+                                        'branchList'));
+            }else{
+                return view('errors.503');
+            }
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
+        
     }
 
     /**
@@ -111,6 +133,7 @@ class StudentController extends Controller
     public function update(StudentRequest $request, $id)
     {
         $input = $this->removeKeys($request->all(),false,true);
+        $input['stud_date_of_birth'] = date('Y-m-d',strtotime($input['stud_date_of_birth']));
         $this->updateRecords('students',array($id),$input);
         return redirect('students/'.$id);
     }

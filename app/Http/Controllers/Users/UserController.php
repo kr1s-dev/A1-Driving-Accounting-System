@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Users;
 
 use Illuminate\Http\Request;
 
+use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\UserRequest;
@@ -12,6 +13,15 @@ use App\Http\Controllers\Utility\UtilityHelper;
 class UserController extends Controller
 {
     use UtilityHelper;
+
+    /**
+     * Check if user is logged in
+     * Check the usertype of logged in user
+     *
+    */
+    public function __construct(){
+        $this->middleware('user.type:users');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -54,9 +64,22 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
+        $confirmation_code = array('confirmation_code'=>str_random(30));
         $input = $this->removeKeys($request->all(),true,true);
+        $input['confirmation_code'] = $confirmation_code['confirmation_code'];
         $this->insertRecords('users',$input,false);
-        return redirect('user');
+        //Pending Email Verification for the user
+        // try{
+            
+        //    $this->sendEmailVerification($input['email'],
+        //                                 $input['first_name'] . ' ' . $input['last_name'],
+        //                                 $confirmation_code);
+        //     return redirect('user'); 
+        // }catch(\Exception $ex){
+        //     echo $ex->getMessage();
+        // }
+        
+        
     }
 
     /**

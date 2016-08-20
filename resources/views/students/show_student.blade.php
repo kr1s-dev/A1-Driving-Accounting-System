@@ -78,7 +78,7 @@
                         <h6><strong>Date of Birth</strong></h6>
                       </div>
                       <div class="col l3 m3 s12">
-                        <h6>{{date('m-d-Y',strtotime($student->stud_date_of_birth))}}</h6>
+                        <h6>{{date('F d, Y',strtotime($student->stud_date_of_birth))}}</h6>
                       </div>
                     </div>
                     <div class="divider"></div>

@@ -34,6 +34,10 @@ class AssetsModel extends Model
                             'accumulated_depreciation',
                             'net_value',];
 
+    public function userCreateInfo(){
+        return $this->belongsTo('App\User','created_by');
+    }
+
     public function accountTitleInfo(){
         return $this->belongsTo('App\AccountTitleModel','account_title_id');
     }

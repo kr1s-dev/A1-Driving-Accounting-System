@@ -29,29 +29,32 @@
 	                        	</tr>
 	                     	</tfoot>
 	                     	<tbody>
-	                     		@foreach($branchList as $branch)
-	                     			<tr>
-			                           <td><a href="{{route('branches.show',$branch->id)}}"><em><strong>{{sprintf("%'.07d\n",$branch->id)}}</strong></em></a></td>
-			                           <td>{{$branch->branch_name}}</td>
-			                           <td>{{$branch->branch_address}}</td>
-			                           <td>{{$branch->branch_tel_number}}</td>
-			                           <td>
-			                           		@if($branch->main_office)
-			                           			Yes
-			                           		@else
-			                           			No
-			                           		@endif
-			                           </td>
-			                           <td class="center-align">
-			                              <a href="{{route('branches.edit',$branch->id)}}" style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4">
-			                              <i class="mdi-content-create"></i>
-			                              </a>
-			                              <a class="btn-floating waves-effect waves-light grey darken-4">
-			                              <i class="mdi-action-lock"></i>
-			                              </a>
-			                           </td>
-		                        	</tr>
-	                     		@endforeach
+	                     		@if($branchList != NULL)
+		                     		@foreach($branchList as $branch)
+		                     			<tr>
+				                           <td><a href="{{route('branches.show',$branch->id)}}"><em><strong>{{sprintf("%'.07d\n",$branch->id)}}</strong></em></a></td>
+				                           <td>{{$branch->branch_name}}</td>
+				                           <td>{{$branch->branch_address}}</td>
+				                           <td>{{$branch->branch_tel_number}}</td>
+				                           <td>
+				                           		@if($branch->main_office)
+				                           			Yes
+				                           		@else
+				                           			No
+				                           		@endif
+				                           </td>
+				                           <td class="center-align">
+				                              <a href="{{route('branches.edit',$branch->id)}}" style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4">
+				                              <i class="mdi-content-create"></i>
+				                              </a>
+				                              <a class="btn-floating waves-effect waves-light grey darken-4">
+				                              <i class="mdi-action-lock"></i>
+				                              </a>
+				                           </td>
+			                        	</tr>
+		                     		@endforeach
+	                     		@endif
+	                     		
 	                     	</tbody>
                   		</table>
                		</div>

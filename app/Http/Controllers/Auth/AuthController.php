@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Auth;
 use App\User;
 use Validator;
 use Illuminate\Http\Request;
@@ -30,7 +31,7 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectPath = '/user';
+    protected static $redirectPath = '/user';
     protected $redirectAfterLogout = '/';
 
     /**
@@ -84,6 +85,16 @@ class AuthController extends Controller
         ]);
     }
 
+    public static function setRedirect(){
+        if(Auth::check()){
+            if(Auth::user()->userType->type==='Accountant')
+                return redirect('/students');
+            elseif(Auth::user()->userType->type==='Adminstrator')
+                return redirect('/users');
+
+        }
+    }
+
     /*
     *   Override Vendor Functions 
     *   List of Overriden Functions:
@@ -98,9 +109,24 @@ class AuthController extends Controller
      */
     public function showLoginForm()
     {
-        $user = $this->searchUser(null);
+        $user = $this->searchUserNotLogin(null);
         return view('auth.login',
                         compact('user'));
+    }
+
+    
+
+    protected function handleUserWasAuthenticated(Request $request, $throttles)
+    {
+        if ($throttles) {
+            $this->clearLoginAttempts($request);
+        }
+
+        if (method_exists($this, 'authenticated')) {
+            return $this->authenticated($request, Auth::guard($this->getGuard())->user());
+        }
+
+        return $this->setRedirect();
     }
 
     /**
@@ -110,7 +136,7 @@ class AuthController extends Controller
      */
     public function showRegistrationForm()
     {
-        $user = $this->searchUser(null);
+        $user = $this->searchUserNotLogin(null);
         if(count($user)===0)
             return view('auth.register');
         else

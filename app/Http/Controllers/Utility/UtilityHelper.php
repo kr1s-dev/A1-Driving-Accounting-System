@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Utility;
 
 use DB;
 use Auth;
+use Mail;
 use App\User;
 use App\AssetsModel;
 use App\BranchModel;
@@ -18,6 +19,16 @@ use App\PaymentTransactionModel;
 trait UtilityHelper
 {
     public function searchUser($id){
+        if(Auth::check()){
+            if(Auth::user()->userType->type === 'Adminstrator' ||
+                (Auth::user()->branch_id!=NULL && Auth::user()->branchInfo->main_office)){
+                return $id!=NULL?User::findOrFail($id):User::all();
+            }
+        }
+        return null;
+    }
+
+    public function searchUserNotLogin($id){
         return $id!=NULL?User::findOrFail($id):User::all();
     }
 
@@ -34,7 +45,18 @@ trait UtilityHelper
     }
 
     public function searchStudent($id){
-        return $id!=NULL?StudentModel::findOrFail($id):StudentModel::all();
+        if(Auth::user()->userType->type === 'Adminstrator' ||
+                (Auth::user()->branch_id!=NULL && Auth::user()->branchInfo->main_office)){
+            return $id!=NULL?StudentModel::findOrFail($id):StudentModel::all();
+        }elseif(Auth::user()->branch_id!=NULL){
+            $value = Auth::user()->branch_id;
+            $query=StudentModel::whereHas('userCreateInfo',function($q) use ($value){
+                                            $q->where('branch_id','=',$value);
+                                        });
+            return $id!=NULL?
+                        $query->where('id','=',$id)->first():$query->get();
+        }
+        return null;
     }
 
     public function putStudent(){
@@ -98,7 +120,16 @@ trait UtilityHelper
     }
 
     public function searchInvoice($id){
-        return $id!=NULL?InvoiceModel::findOrFail($id):InvoiceModel::all();
+        if(Auth::user()->userType->type === 'Adminstrator' ||
+                (Auth::user()->branch_id!=NULL && Auth::user()->branchInfo->main_office)){
+            return $id!=NULL?InvoiceModel::findOrFail($id):InvoiceModel::all();
+        }elseif(Auth::user()->branch_id!=NULL){
+            $query=InvoiceModel::whereHas('userCreateInfo',function($q){
+                                            $q->where('branch_id','=',Auth::user()->branch_id);
+                                            });
+            return $id!=NULL?$query->findOrFail($id):$query->get();
+        }
+        return null;
     }
 
     public function putInvoice(){
@@ -106,7 +137,16 @@ trait UtilityHelper
     }
 
     public function searchExpense($id){
-        return $id!=NULL?ExpenseModel::findOrFail($id):ExpenseModel::all();
+        if(Auth::user()->userType->type === 'Adminstrator' ||
+                (Auth::user()->branch_id!=NULL && Auth::user()->branchInfo->main_office)){
+            return $id!=NULL?ExpenseModel::findOrFail($id):ExpenseModel::all();
+        }elseif(Auth::user()->branch_id!=NULL){
+            $query=ExpenseModel::whereHas('userCreateInfo',function($q){
+                                                $q->where('branch_id','=',Auth::user()->branch_id);
+                                            });
+            return $id!=NULL?$query->findOrFail($id):$query->get();
+        }
+        return null;
     }
 
     public function putExpense(){
@@ -114,7 +154,16 @@ trait UtilityHelper
     }
 
     public function searchReceipt($id){
-        return $id!=NULL?PaymentTransactionModel::findOrFail($id):PaymentTransactionModel::all();
+        if(Auth::user()->userType->type === 'Adminstrator' ||
+                (Auth::user()->branch_id!=NULL && Auth::user()->branchInfo->main_office)){
+            return $id!=NULL?PaymentTransactionModel::findOrFail($id):PaymentTransactionModel::all();
+        }elseif(Auth::user()->branch_id!=NULL){
+            $query=PaymentTransactionModel::whereHas('userCreateInfo',function($q){
+                                                $q->where('branch_id','=',Auth::user()->branch_id);
+                                            });
+            return $id!=NULL?$query->findOrFail($id):$query->get();
+        }
+        return null;
     }
 
     public function putAsset(){
@@ -122,7 +171,16 @@ trait UtilityHelper
     }
 
     public function searchAsset($id){
-        return $id!=NULL?AssetsModel::findOrFail($id):AssetsModel::all();
+        if(Auth::user()->userType->type === 'Adminstrator' ||
+                (Auth::user()->branch_id!=NULL && Auth::user()->branchInfo->main_office)){
+            return $id!=NULL?AssetsModel::findOrFail($id):AssetsModel::all();
+        }elseif(Auth::user()->branch_id!=NULL){
+            $query=AssetsModel::whereHas('userCreateInfo',function($q){
+                                            $q->where('branch_id','=',Auth::user()->branch_id);
+                                            });
+            return $id!=NULL?$query->findOrFail($id):$query->get();
+        }
+        return null;
     }
 
     public function getAccountsAccountGroups($id){
@@ -328,7 +386,7 @@ trait UtilityHelper
             $value = Auth::user()->branch_id;
             $query = JournalModel::whereYear('created_at','=',date('Y'));
             if(!(is_null($value))){
-                $query->whereHas('created_by',function($q) use ($value){
+                $query->whereHas('userCreateInfo',function($q) use ($value){
                             $q->where('branch_id','=',$value);
                         });
             }
@@ -401,5 +459,15 @@ trait UtilityHelper
                         ->where('TABLE_SCHEMA','=','a1_accounting_system')
                         ->where('TABLE_NAME','=',$tableName)
                         ->first();
+    }
+
+
+    public function sendEmailVerification($toAddress,$name,$confirmation_code){
+        Mail::send('emails.user_verifier',$confirmation_code, function($message) use ($toAddress, $name){
+            $message->from('do_not_reply@a1driving.com','User Verification');
+            $message->to($toAddress, $name)
+                        ->subject('Verify your Account');
+        });
+
     }
 }

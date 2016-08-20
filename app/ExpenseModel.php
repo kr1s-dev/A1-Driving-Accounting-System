@@ -25,6 +25,9 @@ class ExpenseModel extends Model
                             'created_by',
                             'updated_by',];
 
+    public function userCreateInfo(){
+        return $this->belongsTo('App\User','created_by');
+    }
 
     public function expenseItemsInfo(){
         return $this->hasMany('App\ExpenseItemModel','expense_cash_voucher_id');

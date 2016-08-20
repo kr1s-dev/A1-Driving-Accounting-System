@@ -67,7 +67,7 @@
 </div>
 <div class="row">
   <div class="input-field col s12 m6 l6">
-    <input type="date" class="datepicker" name="stud_date_of_birth" value="{{count($errors)>0?old('stud_date_of_birth'):$student->stud_date_of_birth}}">
+    <input type="date" class="datepicker" name="stud_date_of_birth" value="{{count($errors)>0?old('stud_date_of_birth'):date('d F, Y',strtotime($student->stud_date_of_birth))}}">
     <label for="birthday">Date of Birth</label>
   </div>
 

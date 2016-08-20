@@ -35,15 +35,25 @@ class ReceiptController extends Controller
     public function create($id)
     {
         $title = 'Receipt';
-        $invoice = $this->searchInvoice($id);
-        $lastInsertedReceipt = $this->getLastRecord('ReceiptModel',null);
-        $recNumber = count($lastInsertedReceipt)===0?'1':($lastInsertedReceipt->id)+1;
-        $lastInvReceipt = $this->getLastRecord('ReceiptModel',array('payment_id'=>$id));
-        return view('receipt.create_receipt',
-                        compact('title',
-                                'invoice',
-                                'recNumber',
-                                'lastInvReceipt'));
+        try{
+            $invoice = $this->searchInvoice($id);
+            if($invoice != NULL){
+                $lastInsertedReceipt = $this->getControlNo('payment_transaction');
+                $recNumber = $lastInsertedReceipt->AUTO_INCREMENT;
+                $lastInvReceipt = $this->getLastRecord('ReceiptModel',array('payment_id'=>$id));
+                return view('receipt.create_receipt',
+                                compact('title',
+                                        'invoice',
+                                        'recNumber',
+                                        'lastInvReceipt'));
+            }else{
+                return view('errors.503');
+            }
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
+        
     }
 
     /**
@@ -93,23 +103,33 @@ class ReceiptController extends Controller
      */
     public function show($id)
     {
-        $lastInvReceipt;
         $change = 0;
         $title = 'Receipt';
-        $receipt = $this->searchReceipt($id);
-        $receiptList = $this->getRecords('ReceiptModel',array('payment_id'=>$receipt->payment_id));
-        
-        if($receipt->outstanding_balance==0){
-            if(count($receiptList)>=2){
-                $change = $receipt->amount_paid-$receiptList[count($receiptList)-2]->outstanding_balance;
+        try{
+            $receipt = $this->searchReceipt($id);
+            if($receipt != NULL){
+                $receiptList = $this->getRecords('ReceiptModel',array('payment_id'=>$receipt->payment_id));
+                if($receipt->outstanding_balance==0){
+                if(count($receiptList)>=2){
+                        $change = $receipt->amount_paid-$receiptList[count($receiptList)-2]->outstanding_balance;
+                    }else{
+                        $change = $receipt->amount_paid - $receipt->invoiceInfo->total_amount;
+                    }
+                }
+                return view('receipt.show_receipt',
+                                compact('receipt',
+                                        'title',
+                                        'change'));
             }else{
-                $change = $receipt->amount_paid - $receipt->invoiceInfo->total_amount;
+                return view('errors.503');
             }
+        }catch(\Exception $ex){
+            return view('errors.503');
         }
-        return view('receipt.show_receipt',
-                        compact('receipt',
-                                'title',
-                                'change'));
+        
+        
+        
+        
 
     }
 

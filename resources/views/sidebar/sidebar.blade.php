@@ -12,49 +12,54 @@
               <li><a href="../#"><i class="mdi-action-settings"></i> Settings</a>
               </li>
               <li class="divider"></li>
-              <li><a href="../#"><i class="mdi-hardware-keyboard-tab"></i> Logout</a>
+              <li><a href="/logout"><i class="mdi-hardware-keyboard-tab"></i> Logout</a>
               </li>
             </ul>
-            <a class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn" href="../#" data-activates="profile-dropdown">John Doe<i class="mdi-navigation-arrow-drop-down right"></i></a>
-            <p class="user-roal">Administrator</p>
+            <a class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn" href="../#" data-activates="profile-dropdown">{{Auth::user()->first_name}}&nbsp;{{Auth::user()->last_name}}<i class="mdi-navigation-arrow-drop-down right"></i></a>
+            <p class="user-roal">{{Auth::user()->userType->type}}</p>
           </div>
         </div>
         </li>
         <li class="bold"><a href="../index.html" class="waves-effect waves-cyan"><i class="mdi-action-dashboard"></i> Dashboard</a>
         </li>
-        <li class="li-hover"><div class="divider"></div></li>
-        <li class="no-padding">
-            <ul class="collapsible collapsible-accordion">
-                <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-action-account-circle"></i> Users</a>
-                    <div class="collapsible-body">
-                        <ul>
-                            <li><a href="{{route('user.index')}}">View All</a>
-                            </li>
-                            <li><a href="{{route('user.create')}}">Create New</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li> 
-            </ul>
-        </li>
-        <li class="li-hover"><div class="divider"></div></li>
-        <li class="no-padding">
-            <ul class="collapsible collapsible-accordion">
-                <li class="bold">
-                <a class="collapsible-header waves-effect waves-cyan">
-                <i class="mdi-social-school"></i> Branches
-                </a>
-                    <div class="collapsible-body">
-                        <ul>
-                            <li><a href="{{route('branches.index')}}">View All</a>
-                            </li>
-                            <li><a href="{{route('branches.create')}}">Create New</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li> 
-            </ul>
-        </li>
+        
+        @if(Auth::user()->userType->type === 'Adminstrator' ||
+                (Auth::user()->branch_id!=NULL && Auth::user()->branchInfo->main_office))
+            <li class="li-hover"><div class="divider"></div></li>
+            <li class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-action-account-circle"></i> Users</a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li><a href="{{route('user.index')}}">View All</a>
+                                </li>
+                                <li><a href="{{route('user.create')}}">Create New</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li> 
+                </ul>
+            </li>
+            <li class="li-hover"><div class="divider"></div></li>
+            <li class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    <li class="bold">
+                    <a class="collapsible-header waves-effect waves-cyan">
+                    <i class="mdi-social-school"></i> Branches
+                    </a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li><a href="{{route('branches.index')}}">View All</a>
+                                </li>
+                                <li><a href="{{route('branches.create')}}">Create New</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li> 
+                </ul>
+            </li>
+        @endif
+        
         <li class="li-hover"><div class="divider"></div></li>
         <li class="no-padding">
             <ul class="collapsible collapsible-accordion">

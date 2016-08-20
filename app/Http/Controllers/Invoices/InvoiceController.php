@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Invoices;
 
-use Illuminate\Http\Request;
+
 use DB;
 use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Utility\UtilityHelper;
 
@@ -34,18 +35,23 @@ class InvoiceController extends Controller
     {
         $title = "Invoice";
         $_method = 'POST';
-        $student = $studentList = $this->searchStudent($id);
-        $revenueAccountGroup = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>'Revenues'));
-        $lastInsertedInvoice = $this->getControlNo('students_invoice');
-        $invNumber = $lastInsertedInvoice->AUTO_INCREMENT;
-        $invoice = $this->putInvoice();
-        return view('invoice.create_update_invoice',
-                        compact('title',
-                                '_method',
-                                'student',
-                                'invNumber',
-                                'revenueAccountGroup',
-                                'invoice'));
+        try{
+            $student = $studentList = $this->searchStudent($id);
+            $revenueAccountGroup = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>'Revenues'));
+            $lastInsertedInvoice = $this->getControlNo('students_invoice');
+            $invNumber = $lastInsertedInvoice->AUTO_INCREMENT;
+            $invoice = $this->putInvoice();
+            return view('invoice.create_update_invoice',
+                            compact('title',
+                                    '_method',
+                                    'student',
+                                    'invNumber',
+                                    'revenueAccountGroup',
+                                    'invoice'));
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
     }
 
     /**
@@ -101,10 +107,20 @@ class InvoiceController extends Controller
     public function show($id)
     {
         $title = 'Invoice';
-        $invoice = $this->searchInvoice($id);
-        return view('invoice.show_invoice',
-                        compact('invoice',
-                                'title'));
+        try{
+            $invoice = $this->searchInvoice($id);
+            if($invoice != NULL){
+                return view('invoice.show_invoice',
+                            compact('invoice',
+                                    'title'));
+            }else{
+                return view('errors.503');
+            }
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
+        
     }
 
     /**
@@ -117,17 +133,27 @@ class InvoiceController extends Controller
     {
         $title = "Invoice";
         $_method = 'PATCH';
-        $invoice = $this->searchInvoice($id);
-        $student = $studentList = $this->searchStudent($invoice->student_id);
-        $revenueAccountGroup = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>'Revenues'));
-        $invNumber = $id;
-        return view('invoice.create_update_invoice',
-                        compact('title',
-                                '_method',
-                                'student',
-                                'invNumber',
-                                'revenueAccountGroup',
-                                'invoice'));
+        try{
+            $invoice = $this->searchInvoice($id);
+            if($invoice != NULL && !($invoice->is_paid)){
+                $student = $studentList = $this->searchStudent($invoice->student_id);
+                $revenueAccountGroup = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>'Revenues'));
+                $invNumber = $id;
+                return view('invoice.create_update_invoice',
+                                compact('title',
+                                        '_method',
+                                        'student',
+                                        'invNumber',
+                                        'revenueAccountGroup',
+                                        'invoice'));
+            }else{
+                return view('errors.503');
+            }
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
+        
     }
 
     /**

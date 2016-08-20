@@ -24,6 +24,10 @@ class InvoiceModel extends Model
                             'created_by',
                             'updated_by',];
 
+    public function userCreateInfo(){
+        return $this->belongsTo('App\User','created_by');
+    }
+
     public function studentInfo(){
         return $this->belongsTo('App\StudentModel','student_id');
     }
