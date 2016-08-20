@@ -114,6 +114,24 @@
             <ul class="collapsible collapsible-accordion">
                 <li class="bold">
                 <a class="collapsible-header waves-effect waves-cyan">
+                <i class="mdi-social-school"></i> Expenses
+                </a>
+                    <div class="collapsible-body">
+                        <ul>
+                            <li><a href="{{route('expense.index')}}">View All</a>
+                            </li>
+                            <li><a href="{{route('expense.create')}}">Create New</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li> 
+            </ul>
+        </li>
+        <li class="li-hover"><div class="divider"></div></li>
+        <li class="no-padding">
+            <ul class="collapsible collapsible-accordion">
+                <li class="bold">
+                <a class="collapsible-header waves-effect waves-cyan">
                 <i class="mdi-social-school"></i> Assets
                 </a>
                     <div class="collapsible-body">

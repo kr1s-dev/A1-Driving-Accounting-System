@@ -19,7 +19,9 @@ class CreateExpenseTable extends Migration
                 $table->foreign('created_by')->references('id')->on('users');
                 $table->Integer('updated_by')->unsigned();
                 $table->foreign('updated_by')->references('id')->on('users');
-                $table->string('paid_to',255);
+                $table->string('vendor_name',255);
+                $table->string('vendor_address',255);
+                $table->string('vendor_number',255);
                 $table->decimal('total_amount',10,2)->default(0.00);
                 $table->timestamps();
             });

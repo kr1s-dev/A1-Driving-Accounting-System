@@ -59,7 +59,7 @@
                      		</div>
                      		<div class="col s12 m3 l3">
                         		<p class="strong">Due Date</p>
-                        		<h4 class="header">{{date('Y-m-d',strtotime($invoice->payment_due_date))}}</h4>
+                        		<h4 class="header">{{date('d F,Y',strtotime($invoice->payment_due_date))}}</h4>
                      		</div>
                   		</div>
                		</div>

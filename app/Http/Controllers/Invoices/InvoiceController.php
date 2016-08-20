@@ -36,8 +36,8 @@ class InvoiceController extends Controller
         $_method = 'POST';
         $student = $studentList = $this->searchStudent($id);
         $revenueAccountGroup = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>'Revenues'));
-        $lastInsertedInvoice = $this->getLastRecord('InvoiceModel',null);
-        $invNumber = count($lastInsertedInvoice)===0?'1':($lastInsertedInvoice->id)+1;
+        $lastInsertedInvoice = $this->getControlNo('students_invoice');
+        $invNumber = $lastInsertedInvoice->AUTO_INCREMENT;
         $invoice = $this->putInvoice();
         return view('invoice.create_update_invoice',
                         compact('title',
@@ -139,7 +139,7 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $input = $this->removeKeys($request->all(),true,true);
+        $input = $this->removeKeys($request->all(),false,true);
         $data = $input['data'];
         $input['payment_due_date'] = date('Y-m-d',strtotime($input['payment_due_date']));
         unset($input['data']);

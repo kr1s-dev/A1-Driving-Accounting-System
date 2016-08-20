@@ -381,6 +381,55 @@ Scripts
           $('#downPayment').hide();
         }
       });
+
+      $(document).on("click", "#expBtn", function(e){
+          e.preventDefault();
+          var data='';
+          var _token = $('meta[name="_token"]').attr('content');
+          var _method = $('meta[name="_method"]').attr('content');
+          var expenseId = $('meta[name="expense_id"]').attr('content');
+          var table = $('#itemsTable tbody');
+          var vendor_name = $('#vendor_name').val();
+          var vendor_address = $('#vendor_address').val();
+          var vendor_number = $('#vendor_number').val();
+          var totalAmount = $("#amountCalc tbody tr:eq(2) td:nth-child(2)").text().replace('₱ ','');
+          table.find('tr').each(function(rowIndex, r){
+            $(this).find('td').each(function (colIndex, c) {
+              if(c.textContent.trim())
+                data+=( (c.textContent.replace('₱ ',''))+',');
+              });
+          });
+          if(vendor_name && vendor_address && vendor_address){
+            if(data){
+              data = data.substring(0,data.length - 1);
+              $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': _token
+                },
+                url: '../../expense' + (_method==='POST'?'':('/'+expenseId)),
+                type: _method,
+                data: { 'data':data,
+                        'total_amount': totalAmount,
+                        'vendor_name':vendor_name,
+                        'vendor_address':vendor_address,
+                        'vendor_number':vendor_number},
+                success: function(response)
+                {
+                  //alert(response);
+                  location.href="../../expense/"+response;
+                }, error: function(xhr, ajaxOptions, thrownError){
+                  alert(xhr.status);
+                  alert(thrownError);
+                }
+              });
+            }else{
+              alert('Please Input data into table.');
+            }
+          }else{
+            alert('Please Input Recepients Information.');
+          }
+          
+      });
   });
 
 

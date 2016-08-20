@@ -15,11 +15,11 @@ class AssetController extends Controller
     use UtilityHelper;
     public function index()
     {
-    	$title = 'Assets';
+        $title = 'Assets';
         $assetList = $this->searchAsset(null);
         return view('assets.show_asset_list',
-        				compact('title',
-        						'assetList'));
+                        compact('title',
+                                'assetList'));
     }
 
     /**
@@ -33,9 +33,9 @@ class AssetController extends Controller
         $asset = $this->putAsset();
         $accountGroupList = $this->getAssetAccountTitles(null);
         return view('assets.create_asset',
-        				compact('title',
-        						'asset',
-        						'accountGroupList'));
+                        compact('title',
+                                'asset',
+                                'accountGroupList'));
 
 
     }
@@ -51,7 +51,14 @@ class AssetController extends Controller
         $input = $this->removeKeys($request->all(),true,true);
         $input['net_value'] =  $input['asset_original_cost'];
         $input['monthly_depreciation'] = ($input['net_value']-$input['asset_salvage_value']) / $input['asset_lifespan'];  
+        $input['asset_date_acquired'] = date('Y-m-d',strtotime($input['asset_date_acquired']));
         $assetId = $this->insertRecords('asset_items',$input,false);
+
+
+        $this->insertRecords('journal_entry',
+                                $this->toInsertJournalEntry($input,$assetId,true),
+                                true);
+
         return redirect('asset/'.$assetId);
     }
 
@@ -65,11 +72,11 @@ class AssetController extends Controller
      */
     public function show($id)
     {
-    	$title = 'Assets';
+        $title = 'Assets';
         $asset = $this->searchAsset($id);
         return view('assets.show_asset',
-        			compact('title',
-        					'asset'));
+                    compact('title',
+                            'asset'));
     }
 
     /**
@@ -85,9 +92,9 @@ class AssetController extends Controller
         $asset->asset_date_acquired = date('d F, Y',strtotime($asset->asset_date_acquired));
         $accountGroupList = $this->getAssetAccountTitles($asset->account_title_id);
         return view('assets.edit_asset',
-        			compact('title',
-        					'asset',
-        					'accountGroupList'));
+                    compact('title',
+                            'asset',
+                            'accountGroupList'));
     }
 
     /**
@@ -99,11 +106,19 @@ class AssetController extends Controller
      */
     public function update(AssetRequest $request, $id)
     {
-    	$input = $this->removeKeys($request->all(),false,true);
-    	$input['net_value'] =  $input['asset_original_cost'];
+        $input = $this->removeKeys($request->all(),false,true);
+        $input['net_value'] =  $input['asset_original_cost'];
         $input['monthly_depreciation'] = ($input['net_value']-$input['asset_salvage_value']) / $input['asset_lifespan'];
         $input['asset_date_acquired'] = date('Y-m-d',strtotime($input['asset_date_acquired']));
         $this->updateRecords('asset_items',array($id),$input);
+
+        //Delete Journal Entry Records
+        $this->deleteRecords('journal_entry',array('asset_id'=>$id));
+
+        //Insert again
+        $this->insertRecords('journal_entry',
+                                $this->toInsertJournalEntry($input,$id,true),
+                                true);
         return redirect('asset/'.$id);
     }
 
@@ -121,13 +136,13 @@ class AssetController extends Controller
 
 
     public function getAssetAccountTitles($id){
-    	$value = '%fixed asset%';
-    	$accountTitles = array();
+        $value = '%fixed asset%';
+        $accountTitles = array();
         if($id==null){
-        	$tAccountTitles = AccountTitleModel::whereHas('group',function($q) use ($value){
-        											$q->where('account_group_name','like',$value);
-        											})
-        										->get();
+            $tAccountTitles = AccountTitleModel::whereHas('group',function($q) use ($value){
+                                                    $q->where('account_group_name','like',$value);
+                                                    })
+                                                ->get();
             foreach($tAccountTitles as $tAccountTitle){
                 $accountTitles[$tAccountTitle->id] = $tAccountTitle->account_title_name;
             }
@@ -135,14 +150,51 @@ class AssetController extends Controller
             $tAccountTitle = $this->searchAccountTitle($id);
             $accountTitles[$tAccountTitle->id] = $tAccountTitle->account_title_name;
             $tAccountTitles = AccountTitleModel::whereHas('group',function($q) use ($value){
-        											$q->where('account_group_name','like',$value);
-        											})
-            									->where('id','!=',$id)
-        										->get();
+                                                    $q->where('account_group_name','like',$value);
+                                                    })
+                                                ->where('id','!=',$id)
+                                                ->get();
             foreach($tAccountTitles as $tAccountTitle){
                 $accountTitles[$tAccountTitle->id] = $tAccountTitle->account_title_name;
             }
         }
         return $accountTitles;
+    }
+
+    public function toInsertJournalEntry($data,$assetId,$isInsert){
+        $journalEntryList = array();
+        $eAsset = $this->searchAsset($assetId);
+        $description = 'Bought item ' . $data['asset_name']  . ' from ' . $data['asset_vendor'];
+        $cashAccountTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Cash'));
+
+        $journalEntryList[] = $this->populateJournalEntry('asset_id',$assetId,'Asset',
+                                                            $data['account_title_id'],null,$data['asset_original_cost'],
+                                                            0.00,$description,$isInsert?date('Y-m-d'):$asset->created_at,
+                                                            date('Y-m-d'));
+        if($data['asset_mode_of_acq']==='Cash'){
+            $journalEntryList[] = $this->populateJournalEntry('asset_id',$assetId,'Asset',
+                                                                null,$cashAccountTitle->id,0.00,
+                                                                $data['asset_original_cost'],$description,$isInsert?date('Y-m-d'):$asset->created_at,
+                                                                date('Y-m-d'));
+        }else{
+            $accountsPayableAccounTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Accounts Payable'));
+            if($data['asset_mode_of_acq']==='Both'){
+                $journalEntryList[] = $this->populateJournalEntry('asset_id',$assetId,'Asset',
+                                                                null,$cashAccountTitle->id,0.00,
+                                                                $data['asset_down_payment'],$description,$isInsert?date('Y-m-d'):$asset->created_at,
+                                                                date('Y-m-d'));
+
+                $journalEntryList[] = $this->populateJournalEntry('asset_id',$assetId,'Asset',
+                                                                null,$accountsPayableAccounTitle->id,0.00,
+                                                                $data['asset_original_cost'] - $data['asset_down_payment'],$description,$isInsert?date('Y-m-d'):$asset->created_at,
+                                                                date('Y-m-d'));
+            }else{
+                $journalEntryList[] = $this->populateJournalEntry('asset_id',$assetId,'Asset',
+                                                                null,$accountsPayableAccounTitle->id,0.00,
+                                                                $data['asset_original_cost'],$description,$isInsert?date('Y-m-d'):$asset->created_at,
+                                                                date('Y-m-d'));
+            }
+        }
+        return $journalEntryList;
     }
 }

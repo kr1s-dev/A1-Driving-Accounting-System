@@ -33,7 +33,7 @@
                           						</div>
                           						<div class="col s12 m6 l6">
                             						<label for=""><h6>Date Acquired</h6></label>
-                            						<h5>{{date('m-d-Y',strtotime($asset->asset_date_acquired))}}</h5>
+                            						<h5>{{date('F d, Y',strtotime($asset->asset_date_acquired))}}</h5>
                           						</div>
                         					</div>
                         					<div class="row">
@@ -52,8 +52,8 @@
                             						<h5>{{number_format($asset->asset_salvage_value,2)}}</h5>
                           						</div>
                           						<div class="col s12 m6 l6">
-                            						<label for=""><h6>Lifespan (mos)</h6></label>
-                            						<h5>₱ {{$asset->asset_lifespan,2}}</h5>
+                            						<label for=""><h6>Lifespan (mo/s)</h6></label>
+                            						<h5>{{$asset->asset_lifespan,2}} mo/s</h5>
                           						</div>
                         					</div>
                         					<div class="row">

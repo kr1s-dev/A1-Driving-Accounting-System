@@ -203,7 +203,7 @@
                                       <td><a href="{{route('receipt.show',$receipt->id)}}">{{sprintf("%'.07d\n",$receipt->id)}}</a></td>
                                       <td><a href="{{route('invoice.show',$receipt->invoiceInfo->id)}}">{{sprintf("%'.07d\n",$receipt->invoiceInfo->id)}}</a></td>
                                       <td>₱ {{$receipt->amount_paid}}</td>
-                                      <td>{{$receipt->outstanding_balance}}</td>
+                                      <td>₱ {{$receipt->outstanding_balance}}</td>
                                     </tr>
                                   @else
                                 @endif

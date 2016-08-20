@@ -9,6 +9,7 @@ use App\AssetsModel;
 use App\BranchModel;
 use App\StudentModel;
 use App\InvoiceModel;
+use App\ExpenseModel;
 use App\JournalModel;
 use App\UserTypeModel;
 use App\AccountGroupModel;
@@ -102,6 +103,14 @@ trait UtilityHelper
 
     public function putInvoice(){
         return new InvoiceModel;
+    }
+
+    public function searchExpense($id){
+        return $id!=NULL?ExpenseModel::findOrFail($id):ExpenseModel::all();
+    }
+
+    public function putExpense(){
+        return new ExpenseModel;
     }
 
     public function searchReceipt($id){
@@ -208,87 +217,64 @@ trait UtilityHelper
         if($typeName=='Invoice'){
             foreach ($dataList as $data) {
                 if($count==0){
-                         $journalEntryList[] = array($foreignKey=>$foreignValue,
-                                            'type' => $typeName,
-                                            'debit_title_id'=> $accountReceivableTitle->id,
-                                            'credit_title_id'=> null,
-                                            'debit_amount' => $amount,
-                                            'credit_amount'=> 0.00,
-                                            'description'=> $description,
-                                            'created_at' => $data['created_at'],
-                                            'updated_at' => date('Y-m-d'),
-                                            'created_by' => Auth::user()->id,
-                                            'updated_by' => Auth::user()->id);
+                        $journalEntryList[] = $this->populateJournalEntry($foreignKey,$foreignValue,$typeName,
+                                                    $accountReceivableTitle->id,null,$amount,
+                                                    0.00,$description,$data['created_at'],
+                                                    date('Y-m-d'));
                 }
 
-                $journalEntryList[] = array($foreignKey=>$foreignValue,
-                                            'type' => $typeName,
-                                            'debit_title_id'=> null,
-                                            'credit_title_id'=> $data['account_title_id'],
-                                            'debit_amount' => 0.00,
-                                            'credit_amount'=> $data['amount'],
-                                            'description'=> $description,
-                                            'created_at' => $data['created_at'],
-                                            'updated_at' => date('Y-m-d'),
-                                            'created_by' => Auth::user()->id,
-                                            'updated_by' => Auth::user()->id);
+                $journalEntryList[] = $this->populateJournalEntry($foreignKey,$foreignValue,$typeName,
+                                                    null,$data['account_title_id'],0.00,
+                                                    $data['amount'],$description,$data['created_at'],
+                                                    date('Y-m-d'));
             }
         }else if($typeName=='Expense'){
             foreach ($dataList as $data) {
                 $dataCreated = $data['created_at'];
                 //for debit in journal
-                $journalEntryList[] = array($foreignKey=>$foreignValue,
-                                            'type' => $typeName,
-                                            'debit_title_id'=> $data['account_title_id'],
-                                            'credit_title_id'=> null,
-                                            'debit_amount' => $data['amount'],
-                                            'credit_amount'=> 0.00,
-                                            'description'=> $description,
-                                            'created_at' => $data['created_at'],
-                                            'updated_at' => date('Y-m-d'),
-                                            'created_by' => Auth::user()->id,
-                                            'updated_by' => Auth::user()->id);  
+                $journalEntryList[] = $this->populateJournalEntry($foreignKey,$foreignValue,$typeName,
+                                                    $data['account_title_id'],null,$data['amount'],
+                                                    0.00,$description,$data['created_at'],
+                                                    date('Y-m-d'));
             }
-            $journalEntryList[] = array($foreignKey=>$foreignValue,
-                                        'type' => $typeName,
-                                        'debit_title_id'=> null,
-                                        'credit_title_id'=> $cashTitle->id,
-                                        'debit_amount' => 0.00,
-                                        'credit_amount'=> $amount,
-                                        'description'=> $description,
-                                        'created_at' => $dataCreated,
-                                        'updated_at' => date('Y-m-d'),
-                                        'created_by' => Auth::user()->id,
-                                        'updated_by' => Auth::user()->id);
+
+            $journalEntryList[] = $this->populateJournalEntry($foreignKey,$foreignValue,$typeName,
+                                                    null,$cashTitle->id,0.00,
+                                                    $amount,$description,$dataCreated,
+                                                    date('Y-m-d'));
         }else{
             //for debit in journal
-            $journalEntryList[] = array($foreignKey=>$foreignValue,
-                                    'type' => $typeName,
-                                    'debit_title_id'=>$cashTitle->id,
-                                    'credit_title_id'=>null,
-                                    'debit_amount' => $amount,
-                                    'credit_amount'=>0.00,
-                                    'description'=> $description,
-                                    'created_at' => date('Y-m-d'),
-                                    'updated_at' => date('Y-m-d'),
-                                    'created_by' => Auth::user()->id,
-                                    'updated_by' => Auth::user()->id);
+            $journalEntryList[] = $this->populateJournalEntry($foreignKey,$foreignValue,$typeName,
+                                                                $cashTitle->id,null,$amount,
+                                                                0.00,$description,date('Y-m-d'),
+                                                                date('Y-m-d'));
 
             //for credit in journal
-            $journalEntryList[] = array($foreignKey=>$foreignValue,
-                                    'type' => $typeName,
-                                    'debit_title_id'=>null,
-                                    'credit_title_id'=>$accountReceivableTitle->id,
-                                    'debit_amount' => 0.00,
-                                    'credit_amount'=> $amount,
-                                    'description'=> $description,
-                                    'created_at' => date('Y-m-d'),
-                                    'updated_at' => date('Y-m-d'),
-                                    'created_by' => Auth::user()->id,
-                                    'updated_by' => Auth::user()->id);
+
+            $journalEntryList[] = $this->populateJournalEntry($foreignKey,$foreignValue,$typeName,
+                                                                null,$accountReceivableTitle->id,0.00,
+                                                                $amount,$description,date('Y-m-d'),
+                                                                date('Y-m-d'));
         }
        
         return $journalEntryList;
+    }
+
+    public function populateJournalEntry($foreignKey,$foreignVal,$typeValue,
+                                            $debitTitleIdValue,$creditTitleIdValue,$debitAmountValue,
+                                            $creditAmountValue,$descriptionValue,$createdAtValue,
+                                            $updatedAtValue){
+        return array($foreignKey=>$foreignVal,
+                        'type' => $typeValue,
+                        'debit_title_id'=>$debitTitleIdValue,
+                        'credit_title_id'=>$creditTitleIdValue,
+                        'debit_amount' => $debitAmountValue,
+                        'credit_amount'=> $creditAmountValue,
+                        'description'=> $descriptionValue,
+                        'created_at' => $createdAtValue,
+                        'updated_at' => $updatedAtValue,
+                        'created_by' => Auth::user()->id,
+                        'updated_by' => Auth::user()->id);
     }
 
     public function getLastRecord($modelName,$whereClause){
@@ -312,6 +298,11 @@ trait UtilityHelper
         }elseif($modelName==='ReceiptModel'){
             return $whereClause==NULL? PaymentTransactionModel::orderBy('id', 'desc')->first():
                                         PaymentTransactionModel::where($whereClause)
+                                        ->orderBy('id', 'desc')
+                                        ->first();
+        }elseif($modelName==='ExpenseModel'){
+            return $whereClause==NULL? ExpenseModel::orderBy('id', 'desc')->first():
+                                        ExpenseModel::where($whereClause)
                                         ->orderBy('id', 'desc')
                                         ->first();
         }
@@ -403,5 +394,12 @@ trait UtilityHelper
 
     public function getTotalSum($arrayData){
         return count($arrayData)>0?array_sum($arrayData):0;
+    }
+
+    public function getControlNo($tableName){
+        return DB::table('INFORMATION_SCHEMA.TABLES')  
+                        ->where('TABLE_SCHEMA','=','a1_accounting_system')
+                        ->where('TABLE_NAME','=',$tableName)
+                        ->first();
     }
 }

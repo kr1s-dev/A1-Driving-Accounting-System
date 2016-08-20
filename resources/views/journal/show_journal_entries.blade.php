@@ -41,19 +41,23 @@
                      		@foreach($journalEntryList as $journalEntry)
 	                     		<tr>
 		                           <td>{{date('m-d-Y',strtotime($journalEntry->created_at))}}</td>
-		                           <td>#
+		                           <td>
 		                        		@if($journalEntry->invoice_id != NULL)
 		                        			<a href="{{route('invoice.show',$journalEntry->invoice_id)}}">
-		                        				{{sprintf("%'.07d",$journalEntry->invoice_id)}}
+		                        				#INV-{{sprintf("%'.07d",$journalEntry->invoice_id)}}
 		                        			</a>
 		                        		@elseif($journalEntry->receipt_id != NULL)
 		                        			<a href="{{route('receipt.show',$journalEntry->receipt_id)}}">
-		                        				{{sprintf("%'.07d",$journalEntry->receipt_id)}}
+		                        				#REC-{{sprintf("%'.07d",$journalEntry->receipt_id)}}
 		                        			</a>
 		                        		@elseif($journalEntry->expense_id != NULL)
-		                        			{{sprintf("%'.07d",$journalEntry->expense_id)}}
+		                        			<a href="{{route('expense.show',$journalEntry->expense_id)}}">
+		                        				#EXP-{{sprintf("%'.07d",$journalEntry->expense_id)}}
+		                        			</a>
 		                        		@elseif($journalEntry->asset_id != NULL)
-		                        			{{sprintf("%'.07d",$journalEntry->asset_id)}}
+		                        			<a href="{{route('asset.show',$journalEntry->asset_id)}}">
+		                        				#AST-{{sprintf("%'.07d",$journalEntry->asset_id)}}
+		                        			</a>
 		                        		@endif
 		                           </td>
 		                           <td>{{$journalEntry->description}}</td>

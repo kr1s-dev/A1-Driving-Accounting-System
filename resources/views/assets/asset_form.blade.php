@@ -60,7 +60,7 @@
     <label for="acquired">Mode of Acquisition</label>
   </div>
   <div class="input-field col s12 m6 l6" style="display: none;" id="downPayment">
-    <input id="acquired" type="number" min="1" name="asset_down_payment" value="{{count($errors)>0?old('asset_down_payment'):$asset->asset_down_payment}}">
+    <input id="acquired" type="number" min="0" name="asset_down_payment" value="{{count($errors)>0?old('asset_down_payment'):$asset->asset_down_payment}}">
     <label for="acquired" class="active" id="labelDownP">Downpayment</label>
   </div>
 </div>

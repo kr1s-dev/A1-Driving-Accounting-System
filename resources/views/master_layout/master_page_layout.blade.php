@@ -75,6 +75,11 @@
       <!-- //////////////////////////////////////////////////////////////////////////// -->
       <!-- START CONTENT -->
       <section id="content">
+        @if (count($errors) > 0)
+          @foreach ($errors->all() as $error)
+            <div>{{ $error }}</div>
+          @endforeach
+        @endif
         @include('sidebar.breadcrumbs')
         @yield('content')
       </section>
