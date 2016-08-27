@@ -440,22 +440,22 @@ trait UtilityHelper
 
     public function getItemsAmountList($arrayToProcessList,$typeOfData){
         $data = array();
-        // if($typeOfData == 'Equity'){
-        //     $accountGroup =  AccountGroupModel::where('account_group_name', 'like', '%'.$typeOfData.'%')
-        //                                         ->get();
-        //     foreach ($accountGroup as $accountGrp) {
-        //         foreach ($accountGrp->accountTitles as $accountTitle) {
-        //             $data[$accountTitle->account_title_name] = $accountTitle->opening_balance;
-        //         }
-        //     }
-        // }else if(is_null($typeOfData)){
-        //     $accountGroup =  $this->getAccountGroups(null);
-        //     foreach ($accountGroup as $accountGrp) {
-        //         foreach ($accountGrp->accountTitles as $accountTitle) {
-        //             $data[$accountTitle->account_title_name] = $accountTitle->opening_balance;
-        //         }
-        //     }
-        // }
+        if($typeOfData == 'Equity'){
+            $accountGroup =  AccountGroupModel::where('account_group_name', 'like', '%'.$typeOfData.'%')
+                                                ->get();
+            foreach ($accountGroup as $accountGrp) {
+                foreach ($accountGrp->accountTitles as $accountTitle) {
+                    $data[$accountTitle->account_title_name] = $accountTitle->opening_balance;
+                }
+            }
+        }else if(is_null($typeOfData)){
+            $accountGroup =  $this->searchAccountGroups(null);
+            foreach ($accountGroup as $accountGrp) {
+                foreach ($accountGrp->accountTitles as $accountTitle) {
+                    $data[$accountTitle->account_title_name] = $accountTitle->opening_balance;
+                }
+            }
+        }
 
         if(!empty($arrayToProcessList)){
             foreach ($arrayToProcessList as $arrayToProcess) {
@@ -512,5 +512,32 @@ trait UtilityHelper
                         ->subject('Verify your Account');
         });
 
+    }
+
+    public function getJournalEntryRecordsWithFilter($accountGroupId,$monthFilter,$yearFilter){
+        $yearFilter = $yearFilter==NULL?date('Y'):date($yearFilter);
+        $query = null;
+        if(!is_null($accountGroupId)){
+            $query = JournalModel::orWhere(function($query) use ($accountGroupId){
+                                                    $query->whereHas('credit',function($q) use ($accountGroupId){
+                                                        $q->where('account_group_id', '=', $accountGroupId);
+                                                    })
+                                                    ->orWhereHas('debit',function($q) use ($accountGroupId){
+                                                        $q->where('account_group_id', '=', $accountGroupId);
+                                                    });
+                                                });
+        }
+
+        if(empty($monthFilter)){
+            $query  = $query==NULL? JournalModel::whereYear('created_at','=',$yearFilter) : 
+                            $query->whereYear('created_at','=',$yearFilter);
+        }else{
+            $monthFilter = $monthFilter==NULL?date('m'):date($monthFilter); 
+            $query  = $query==NULL? JournalModel::whereYear('created_at','=',$yearFilter)
+                                                        ->whereMonth('created_at','=',$monthFilter) : 
+                                                            $query->whereYear('created_at','=',$yearFilter)
+                                                                    ->whereMonth('created_at','=',$monthFilter);
+        }
+        return $query->get();
     }
 }

@@ -59,4 +59,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Acount Information Route
     Route::get('account/details' ,['as'=>'account.details','uses'=>'AccountInformation\AccountInformationController@index']);
+
+    //Report viewing
+    Route::get('reports/incomestatement',['as'=>'incomestatement','uses'=>'Reports\ReportController@getGenerateIncomeStatement']);
+    Route::post('reports/incomestatement','Reports\ReportController@postGenerateIncomeStatement');
+    Route::get('reports/ownersequitystatement',['as'=>'ownersequity','uses'=>'Reports\ReportController@getGenerateOwnersEquityStatement']);
+    Route::post('reports/ownersequitystatement','Reports\ReportController@postGenerateOwnersEquityStatement');
+    Route::get('reports/balancesheet',['as'=>'balancesheet','uses'=>'reports\ReportController@getGenerateBalanceSheet']);
+    Route::post('reports/balancesheet','reports\ReportController@postGenerateBalanceSheet');
+    Route::get('reports/assets',['as'=>'asset.registry','uses'=>'reports\ReportController@getGenerateAssetRegistry']);
 });

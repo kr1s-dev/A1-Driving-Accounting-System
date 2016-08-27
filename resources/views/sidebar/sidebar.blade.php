@@ -207,6 +207,29 @@
                 </li> 
             </ul>
         </li>
+        <li class="li-hover"><div class="divider"></div></li>
+        <li class="no-padding">
+            <ul class="collapsible collapsible-accordion">
+                <li class="bold">
+                <a class="collapsible-header waves-effect waves-cyan">
+                <i class="mdi-social-school"></i> Reports
+                </a>
+                    <div class="collapsible-body">
+                        <ul>
+                            <li><a href="{{route('incomestatement')}}">Income Statement</a>
+                            </li>
+                            <li><a href="{{route('ownersequity')}}">Statement of Owners Equity</a>
+                            </li>
+                            <li><a href="{{route('balancesheet')}}">Balance Sheet</a>
+                            </li>
+                            <li><a href="{{route('asset.registry')}}">Asset Registry</a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </li> 
+            </ul>
+        </li>
 
     </ul>
     <a href="#" data-activates="slide-out" class="sidebar-collapse btn-floating btn-medium waves-effect waves-light hide-on-large-only cyan"><i class="mdi-navigation-menu"></i></a>
