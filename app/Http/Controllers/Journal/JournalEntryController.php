@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Journal;
 use Illuminate\Http\Request;
 
 use Auth;
+use App\JournalModel;
 use App\Http\Requests;
+use App\AccountTitleModel;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Utility\UtilityHelper;
 
@@ -21,27 +23,50 @@ class JournalEntryController extends Controller
                                 'journalEntryList'));
     }
 
-    public function create(){
+    public function getJournalEntry(){
     	$title = 'Journal';
+        $type = 'Journal Entry';
     	$accountTitlesList = $this->searchAccountTitle(null);
         return view('journal.create_journal_entry',
                         compact('accountTitlesList',
+                                'type',
                         		'title'));
+    }
+
+    public function getAdjustmenstEntry(){
+        try{
+            $title = 'Adjustment';
+            $type = 'Adjustment Entry';
+            $accountTitleId = array();
+            $journalEntryList = JournalModel::whereYear('created_at','=',date('Y'))->get();
+            foreach ($journalEntryList as $journalEntry) {
+                $id = $journalEntry->credit_title_id!=NULL?$journalEntry->credit_title_id:$journalEntry->debit_title_id;
+                if(!(in_array($id, $accountTitleId)))
+                    $accountTitleId[] = $id;
+            }
+            $accountTitlesList = AccountTitleModel::whereIn('id',$accountTitleId)->get();
+            return view('journal.create_journal_entry',
+                            compact('accountTitlesList',
+                                    'title',
+                                    'type'));    
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
+
     }
 
     public function store(Request $request){
     	try{
-            //print_r($this->createJouralEntry($request->input('data')));
             $this->insertRecords('journal_entry',
-                                    $this->createJouralEntry($request->input('data')),
+                                    $this->createJouralEntry($request->input('data'),$request->input('type')),
                                     true);
-            echo 'done';
         }catch(\Exception $ex){
             echo $ex.getMessage();
         }
     }
 
-    public function createJouralEntry($data){
+    public function createJouralEntry($data,$journalType){
         $count = 0;
         $dataToInsertList = explode(',',$data);
         $toInsertItems = array();
@@ -65,7 +90,8 @@ class JournalEntryController extends Controller
                                                 'credit_amount'=>0.00,
                                                 'debit_title_id'=>$accountTitleId,
                                                 'debit_amount'=>$amount,
-                                                'description'=>$description);
+                                                'description'=>$description,
+                                                'type'=>$journalType);
                 }else if($type=='2'){
                     $toInsertItems[] = array('created_by' => Auth::user()->id,
                                                 'updated_by' => Auth::user()->id,
@@ -75,7 +101,8 @@ class JournalEntryController extends Controller
                                                 'debit_amount'=>0.00,
                                                 'credit_title_id'=>$accountTitleId,
                                                 'credit_amount'=>$amount,
-                                                'description'=>$description);
+                                                'description'=>$description,
+                                                'type'=>$journalType);
                 }
             }
         }

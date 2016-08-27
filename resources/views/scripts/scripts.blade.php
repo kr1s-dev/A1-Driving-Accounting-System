@@ -44,20 +44,39 @@ Scripts
       }
 
       $('.add-item').click(function(){
-        console.log(desc);
         var desc = $('#desc option:selected').text();
         var amount = $('#amount').val();
+        var hasDuplicate = false;
 
         if((desc != '') && (amount != '') && (desc != 'Select Particular')) {
-          $('.items').append('<tr><td width="42%">'+desc+'</td><td>₱ '+ parseFloat(amount).toFixed(2) +'</td>' +
-            '<td class>' +
-              '<a href="#modal2" style="margin-right: 5%;" class="modal-trigger btn-floating waves-effect waves-light grey darken-4 edit-item">' +
-                  '<i class="mdi-content-create"></i>'+
-              '</a>' +
-              '<a style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4 delete-item">' +
-                  '<i class="mdi-action-delete"></i>' +
-              '</a>'+
-            '</td></tr>');
+          var table = $('#itemsTable tbody');
+          table.find('tr').each(function(rowIndex, r){
+            $(this).find('td').each(function (colIndex, c) {
+              console.log('Enter 2nd loop' + c.textContent);
+              if(c.textContent==desc.trim()){
+                hasDuplicate = true;
+                tdTableData = $(this).closest('tr');
+                return false;
+              }
+
+            });
+              //data+= (tData.substring(0,tData.length - 1) + '|');
+          });
+          if(!hasDuplicate){
+            $('.items').append('<tr><td width="42%">'+desc+'</td><td>₱ '+ parseFloat(amount).toFixed(2) +'</td>' +
+              '<td class>' +
+                '<a href="#modal2" style="margin-right: 5%;" class="modal-trigger btn-floating waves-effect waves-light grey darken-4 edit-item">' +
+                    '<i class="mdi-content-create"></i>'+
+                '</a>' +
+                '<a style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4 delete-item">' +
+                    '<i class="mdi-action-delete"></i>' +
+                '</a>'+
+              '</td></tr>');
+          }else{
+            tdTableData = tdTableData.find('td');
+            tdTableData[1].textContent = '₱ ' + (parseFloat(tdTableData[1].textContent.replace('₱ ','').trim()) + parseFloat(amount)).toFixed(2);
+          }
+          
         }
         calculateAmount();
       });
@@ -330,6 +349,7 @@ Scripts
         var data= '';
         var isDup = checkIfDuplicate();
         var _token = $('meta[name="csrf-token"]').attr('content');
+        var type = $('meta[name="type"]').attr('content');
         if(isDup){
           alert(isDup);
         }else{
@@ -357,11 +377,11 @@ Scripts
             },
             url: '/journal/create',
             type: 'POST',
-            data: {'data':data},
+            data: {'data':data,'type':type},
             success: function(response)
             {
-                alert(response);
-                //location.href="/account";
+                //alert(response);
+                location.href="/journal";
             }, error: function(xhr, ajaxOptions, thrownError){
               alert(xhr.status);
               alert(thrownError);

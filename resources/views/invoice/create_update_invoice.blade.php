@@ -93,8 +93,8 @@
             				<div class="input-field">
               					<select name="desc" id="desc">
               						<option value="" disabled selected>Select Particular</option>
-					                @foreach($revenueAccountGroup->accountTitles as $accountTitle)
-              							<option value="{{$accountTitle->id}}">{{$accountTitle->account_title_name}}</option>
+					                @foreach($incomeAccountItems as $items)
+              							<option value="{{$items->id}}">{{$items->item_name}}</option>
               						@endforeach
               					</select>
               					<label for="email">Description</label>
@@ -119,17 +119,6 @@
 	     		<div class="modal-content">
 	          		<h4>Update Item</h4>
 	          			<div class="divider"></div>
-          				<!--div class="row">
-            				<div class="input-field">
-              					<select name="desc" id="desc">
-              						<option value="" disabled selected>Select Particular</option>
-              						@foreach($revenueAccountGroup->accountTitles as $accountTitle)
-              							<option value="{{$accountTitle->id}}">{{$accountTitle->account_title_name}}</option>
-              						@endforeach
-              					</select>
-              					<label for="email">Description</label>
-            				</div>
-          				</div-->
 	          			<div class="row">
 	            			<div class="input-field">
 	              				<input id="eAmount" min="0" type="number" step="0.01">
@@ -159,7 +148,7 @@
 	            		<tbody class="items">
 	            			@foreach($invoice->invoiceItemsInfo as $invoiceItem)
 	            				<tr>
-	            					<td width="42%">{{$invoiceItem->accountTitleInfo->account_title_name}}</td>
+	            					<td width="42%">{{$invoiceItem->item->item_name}}</td>
 	            					<td>₱ {{$invoiceItem->amount}}</td>
 	            					<td class>
 		                  				<a href="#modal2" style="margin-right: 5%;" class="modal-trigger btn-floating waves-effect waves-light grey darken-4 edit-item">
@@ -206,7 +195,7 @@
 	      	
 	    </div>
 	    
-	    <div class="invoice-footer">
+	    <!--div class="invoice-footer">
 	      	<div class="row">
 	        	<div class="col s12 m6 l6">
 	          		<p class="strong">Payment Method</p>
@@ -224,7 +213,7 @@
          			<p>Managing Director</p>
 	        	</div>
 	      	</div>
-	    </div>
+	    </div-->
 	      
 	  <!-- Floating Action Button -->
 	  	<div class="fixed-action-btn" style="bottom: 50px; right: 19px;">

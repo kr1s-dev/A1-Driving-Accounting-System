@@ -12,7 +12,7 @@ class UserTypeSeeder extends Seeder
      */
     public function run()
     {
-        $userTypeName = array('Adminstrator','Accountant');
+        $userTypeName = array('Administrator','Accountant');
         $userTypeList = array();
     	for ($i=0; $i < count($userTypeName); $i++) { 
     	    $userTypeList[] = array('type' => $userTypeName[$i]);

@@ -1,5 +1,4 @@
-
-@if(!is_null($eAccountTitle->id))
+@if(!(is_null($eAccountTitle->id)))
    <div class="row">
       <div class="input-field col s12 m12 l12">
          <input type="hidden" name = "account_title_id" value="{{$eAccountTitle->id}}">
@@ -34,16 +33,21 @@
       <label for="account_title_name">Account Title</label>
    </div>
 </div>
+
 <div class="row">
-   <div class="input-field col s12 m12 l12">
-      <input id="opening_balance" type="number" step="0.01" min="0" name="opening_balance" value="{{count($errors)>0?old('opening_balance'):$accountTitle->opening_balance}}">
-      <label for="opening_balance">Opening Balance</label>
-   </div>
+   @if(count($accountGroupsList)==1  && ($accountGroupsList->account_group_name!='Revenues' && $accountGroupsList->account_group_name!='Expenses'))
+      <div class="input-field col s12 m12 l12">
+         <input id="opening_balance" type="number" step="0.01" min="0" name="opening_balance" value="{{count($errors)>0?old('opening_balance'):$accountTitle->opening_balance}}">
+         <label for="opening_balance">Opening Balance</label>
+      </div>
+   @endif
    <div class="input-field col s12 m12 l12">
       <textarea class="materialize-textarea" name="description" id="desc" cols="30" rows="10">{{count($errors)>0?old('description'):$accountTitle->description}}</textarea>
       <label for="desc">Description</label>
    </div>
 </div>
+
+
 <div class="row right-align">
  <div class="col l12 m12 s12">
    <button class="btn cyan waves-effect waves-light right" type="submit" name="action">{{$submitButton}}

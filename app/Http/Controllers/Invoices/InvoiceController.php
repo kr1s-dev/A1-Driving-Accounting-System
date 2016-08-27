@@ -36,8 +36,14 @@ class InvoiceController extends Controller
         $title = "Invoice";
         $_method = 'POST';
         try{
+            $incomeAccountItems = array();
             $student = $studentList = $this->searchStudent($id);
             $revenueAccountGroup = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>'Revenues'));
+            foreach ($revenueAccountGroup->accountTitles as $accountTitle) {
+                foreach ($accountTitle->items as $item) {
+                    $incomeAccountItems[] = $item;
+                }
+            }
             $lastInsertedInvoice = $this->getControlNo('students_invoice');
             $invNumber = $lastInsertedInvoice->AUTO_INCREMENT;
             $invoice = $this->putInvoice();
@@ -46,7 +52,7 @@ class InvoiceController extends Controller
                                     '_method',
                                     'student',
                                     'invNumber',
-                                    'revenueAccountGroup',
+                                    'incomeAccountItems',
                                     'invoice'));
         }catch(\Exception $ex){
             return view('errors.503');
@@ -69,7 +75,12 @@ class InvoiceController extends Controller
         $student = $this->searchStudent($input['student_id']);
         try{
             //Insert Invoice
-            $studInvId = $this->insertRecords('students_invoice',$input,false);
+            $studInvId = $this->insertRecords('students_invoice',$input,false); 
+            $this->populateListOfToInsertItems($data,
+                                                'Revenues',
+                                                'invoice_id',
+                                                $studInvId,
+                                                'InvoiceModel');
 
             $dataToInsert = $this->populateListOfToInsertItems($data,
                                                                 'Revenues',
@@ -93,7 +104,7 @@ class InvoiceController extends Controller
             
             echo $studInvId;
         }catch(\Exception $ex){
-            echo 'Error ' . $ex->getMessage();
+            echo 'Error ' . $ex->getMessage() . ' ' . $ex->getLine();
 
         }
     }
@@ -136,15 +147,21 @@ class InvoiceController extends Controller
         try{
             $invoice = $this->searchInvoice($id);
             if($invoice != NULL && !($invoice->is_paid)){
+                $incomeAccountItems = array();
                 $student = $studentList = $this->searchStudent($invoice->student_id);
                 $revenueAccountGroup = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>'Revenues'));
+                foreach ($revenueAccountGroup->accountTitles as $accountTitle) {
+                    foreach ($accountTitle->items as $item) {
+                        $incomeAccountItems[] = $item;
+                    }
+                }
                 $invNumber = $id;
                 return view('invoice.create_update_invoice',
                                 compact('title',
                                         '_method',
                                         'student',
                                         'invNumber',
-                                        'revenueAccountGroup',
+                                        'incomeAccountItems',
                                         'invoice'));
             }else{
                 return view('errors.503');

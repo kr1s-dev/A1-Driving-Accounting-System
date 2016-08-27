@@ -80,7 +80,7 @@
 		            	<tbody class="items">
 		              		@foreach($expense->expenseItemsInfo as $expenseItem)
                         		<tr>
-                           			<td width="42%">{{$expenseItem->accountTitleInfo->account_title_name}}</td>
+                           			<td width="42%">{{$expenseItem->item->item_name}}</td>
                            			<td>₱ {{$expenseItem->amount}}</td>
                         		</tr>
                         	@endforeach
@@ -107,7 +107,7 @@
 	      	</div>
 	    </div>
 	    
-	    <div class="invoice-footer">
+	    <!--div class="invoice-footer">
 	      	<div class="row">
 	        	<div class="col s12 m6 l6">
 	          		<p class="strong">Payment Method</p>
@@ -125,6 +125,6 @@
 		          	<p>Managing Director</p>
 	        	</div>
 	      	</div>
-	    </div>
+	    </div-->
 	</div>
 @endsection

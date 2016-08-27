@@ -196,8 +196,8 @@
                           @if(count($receiptList)>0)
                             @foreach($receiptList as $receipt)
                               @foreach($receipt->invoiceInfo->invoiceItemsInfo as $invoiceItems)
-                                @if($invoiceItems->accountTitleInfo->account_title_name == 'Course Fee'
-                                    || strpos($invoiceItems->accountTitleInfo->account_title_name,'Course Fee'))
+                                @if($invoiceItems->item->item_name == 'Course Fee'
+                                    || strpos($invoiceItems->item->item_name,'Course Fee'))
                                     <tr>
                                       <td>{{date('m-d-Y',strtotime($receipt->created_at))}}</td>
                                       <td><a href="{{route('receipt.show',$receipt->id)}}">{{sprintf("%'.07d\n",$receipt->id)}}</a></td>
@@ -231,8 +231,8 @@
                           @if(count($receiptList)>0)
                             @foreach($receiptList as $receipt)
                               @foreach($receipt->invoiceInfo->invoiceItemsInfo as $invoiceItems)
-                                @if($invoiceItems->accountTitleInfo->account_title_name != 'Course Fee'
-                                    && strpos($invoiceItems->accountTitleInfo->account_title_name,'Course Fee'))
+                                @if($invoiceItems->item->item_name != 'Course Fee'
+                                    && strpos($invoiceItems->item->item_name,'Course Fee'))
                                     <tr>
                                       <td>{{date('m-d-Y',strtotime($receipt->created_at))}}</td>
                                       <td><a href="{{route('receipt.show',$receipt->id)}}">{{sprintf("%'.07d\n",$receipt->id)}}</a></td>

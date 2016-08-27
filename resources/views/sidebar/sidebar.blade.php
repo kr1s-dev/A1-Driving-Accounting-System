@@ -23,7 +23,7 @@
         <li class="bold"><a href="../index.html" class="waves-effect waves-cyan"><i class="mdi-action-dashboard"></i> Dashboard</a>
         </li>
         
-        @if(Auth::user()->userType->type === 'Adminstrator' ||
+        @if(Auth::user()->userType->type === 'Administrator' ||
                 (Auth::user()->branch_id!=NULL && Auth::user()->branchInfo->main_office))
             <li class="li-hover"><div class="divider"></div></li>
             <li class="no-padding">
@@ -198,6 +198,8 @@
                             <li><a href="{{route('journal.index')}}">View All</a>
                             </li>
                             <li><a href="{{route('journal.create')}}">Create New Entry</a>
+                            </li>
+                            <li><a href="{{route('adjustment.create')}}">Create Adjusting Entry</a>
                             </li>
                             
                         </ul>

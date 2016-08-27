@@ -115,7 +115,7 @@
                     		<tbody class="items">
                     			@foreach($receipt->invoiceInfo->invoiceItemsInfo as $invoiceItem)
                     				<tr>
-				                        <td>{{$invoiceItem->accountTitleInfo->account_title_name}}</td>
+				                        <td>{{$invoiceItem->item->item_name}}</td>
 				                        <td>₱ {{$invoiceItem->amount}}</td>
 				                    </tr>
                     			@endforeach

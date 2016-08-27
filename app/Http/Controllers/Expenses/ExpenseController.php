@@ -31,18 +31,29 @@ class ExpenseController extends Controller
      */
     public function create()
     {
-        $title = 'Expense';
-        $_method = 'POST';
-        $expenseAccountGroup = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>'Expenses'));
-        $lastInsertedExpense = $this->getControlNo('expense_cash_voucher');
-        $expNumber = ($lastInsertedExpense->AUTO_INCREMENT);
-        $expense = $this->putExpense();
-        return view('expense.create_update_expense',
-                        compact('title',
-                                '_method',
-                                'expenseAccountGroup',
-                                'expNumber',
-                                'expense'));
+        try{
+            $expenseAccountItems = array();
+            $title = 'Expense';
+            $_method = 'POST';
+            $expenseAccountGroup = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>'Expenses'));
+            foreach ($expenseAccountGroup->accountTitles as $accountTitle) {
+                foreach ($accountTitle->items as $item) {
+                    $expenseAccountItems[] = $item;
+                }
+            }
+            $lastInsertedExpense = $this->getControlNo('expense_cash_voucher');
+            $expNumber = ($lastInsertedExpense->AUTO_INCREMENT);
+            $expense = $this->putExpense();
+            return view('expense.create_update_expense',
+                            compact('title',
+                                    '_method',
+                                    'expenseAccountItems',
+                                    'expNumber',
+                                    'expense'));
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
     }
 
     /**
@@ -115,16 +126,22 @@ class ExpenseController extends Controller
      */
     public function edit($id)
     {
+        $expenseAccountItems = array();
         $title = 'Expense';
         $_method = 'PATCH';
         $expenseAccountGroup = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>'Expenses'));
+        foreach ($expenseAccountGroup->accountTitles as $accountTitle) {
+            foreach ($accountTitle->items as $item) {
+                $expenseAccountItems[] = $item;
+            }
+        }
         $expNumber = $id;
         try{
             $expense = $this->searchExpense($id);
             return view('expense.create_update_expense',
                             compact('title',
                                     '_method',
-                                    'expenseAccountGroup',
+                                    'expenseAccountItems',
                                     'expNumber',
                                     'expense'));
         }catch(\Exception $ex){

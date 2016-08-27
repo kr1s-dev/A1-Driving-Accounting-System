@@ -19,7 +19,7 @@ class InvoiceItemModel extends Model
      * @var array
      */
     protected $fillable = ['invoice_id',
-                            'account_title_id',
+                            'item_id',
                             'amount',
                             'remarks',
                             'created_by',
@@ -29,7 +29,7 @@ class InvoiceItemModel extends Model
         return $this->belongsTo('App\InvoiceModel','invoice_id');
     }
 
-    public function accountTitleInfo(){
-        return $this->belongsTo('App\AccountTitleModel','account_title_id');
+    public function item(){
+        return $this->belongsTo('App\InvExpItemModel','item_id');
     }
 }

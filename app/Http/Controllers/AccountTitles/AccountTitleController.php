@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use App\AccountGroupModel;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AccountTitles\AccountTitleRequest;
 use App\Http\Controllers\Utility\UtilityHelper;
+use App\Http\Requests\AccountTitles\AccountTitleRequest;
+
 
 class AccountTitleController extends Controller
 {
@@ -52,10 +53,9 @@ class AccountTitleController extends Controller
     {
         //
         $title = 'Account Title';
-        $accountGroupsList = $this->getAccountsAccountGroups($id);
-        $eAccountTitle = $this->putAccountTitle($id);
+        $eAccountTitle = $this->searchAccountTitle($id);
+        $accountGroupsList = $this->getAccountsAccountGroups(null);
         $accountTitle = $this->putAccountTitle();
-        
         return view('accountTitles.create_account_title',
                         compact('accountGroupsList',
                                 'eAccountTitle',
@@ -110,7 +110,18 @@ class AccountTitleController extends Controller
      */
     public function show($id)
     {
-        //
+        try{
+            $title = 'Account Title';
+            $eAccountTitle = $this->searchAccountTitle($id);
+            $itemList = $this->getRecords('InvExpItemModel',array('account_title_id'=>$id));
+            return view('accounttitles.show_account_title',
+                            compact('title',
+                                    'eAccountTitle',
+                                    'itemList'));
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
     }
 
     /**

@@ -29,7 +29,7 @@ class ExpenseItemModel extends Model
         return $this->belongsTo('App\ExpenseModel','expense_cash_voucher_id');
     }
 
-    public function accountTitleInfo(){
-        return $this->belongsTo('App\AccountTitleModel','account_title_id');
+    public function item(){
+        return $this->belongsTo('App\InvExpItemModel','item_id');
     }
 }

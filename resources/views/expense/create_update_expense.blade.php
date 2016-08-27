@@ -97,8 +97,8 @@
             				<div class="input-field">
               					<select name="desc" id="desc">
               						<option value="" disabled selected>Select Particular</option>
-					                @foreach($expenseAccountGroup->accountTitles as $accountTitle)
-              							<option value="{{$accountTitle->id}}">{{$accountTitle->account_title_name}}</option>
+					                @foreach($expenseAccountItems as $item)
+              							<option value="{{$item->id}}">{{$item->item_name}}</option>
               						@endforeach
               					</select>
               					<label for="email">Description</label>
@@ -150,7 +150,7 @@
 	            			<tbody class="items">
               					@foreach($expense->expenseItemsInfo as $expenseItem)
 		            				<tr>
-		            					<td width="42%">{{$expenseItem->accountTitleInfo->account_title_name}}</td>
+		            					<td width="42%">{{$expenseItem->item->item_name}}</td>
 		            					<td>₱ {{$expenseItem->amount}}</td>
 		            					<td class>
 			                  				<a href="#modal2" style="margin-right: 5%;" class="modal-trigger btn-floating waves-effect waves-light grey darken-4 edit-item">
@@ -184,7 +184,7 @@
       			</div>
     		</div>
     
-		    <div class="invoice-footer">
+		    <!--div class="invoice-footer">
 		      	<div class="row">
 		        	<div class="col s12 m6 l6">
 		          		<p class="strong">Payment Method</p>
@@ -202,7 +202,7 @@
 		          		<p>Managing Director</p>
 		        	</div>
 		      	</div>
-		    </div>
+		    </div-->
       
 		  	<!-- Floating Action Button -->
 		    <div class="fixed-action-btn" style="bottom: 50px; right: 19px;">

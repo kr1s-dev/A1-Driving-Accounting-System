@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePaymentTransactionTable extends Migration
+class CreateStudentPaymentTransactionTable extends Migration
 {
     /**
      * Run the migrations.

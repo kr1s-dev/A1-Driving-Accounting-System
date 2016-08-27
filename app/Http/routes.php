@@ -29,7 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('students','Students\StudentController');
 
 	//Invoice Routes
-	Route::resource('invoice','Invoices\InvoiceController');
+	Route::resource('invoice','Invoices\InvoiceController',['except'=>['destroy']]);
 	Route::get('student/{id}/invoice', ['as'=>'student.invoice','uses'=>'Invoices\InvoiceController@create']);
 
 	//Expense Routes
@@ -47,8 +47,13 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('accounttitle/{id}/create',['as'=>'accounttitle.with.parent.accounttitle','uses'=>'AccountTitles\AccountTitleController@createWithParent']);
 	Route::get('accounttitle/{id}/group/create',['as'=>'accounttitle.with.parent.accountgroup','uses'=>'AccountTitles\AccountTitleController@createWithGroupParent']);
 
+	//Item Routes
+	Route::resource('item','InvExpItem\InvoiceExpenseItemsController',['except'=>['index']]);
+	Route::get('item/{id}/create',['as'=>'item.create','uses'=>'InvExpItem\InvoiceExpenseItemsController@create']);
+
 	//Journal Entry Routes
-    Route::get('journal/create' ,['as'=>'journal.create','uses'=>'Journal\JournalEntryController@create']);
+    Route::get('journal/create' ,['as'=>'journal.create','uses'=>'Journal\JournalEntryController@getJournalEntry']);
+    Route::get('journal/adjustment/create' ,['as'=>'adjustment.create','uses'=>'Journal\JournalEntryController@getAdjustmenstEntry']);
     Route::post('journal/create' ,'Journal\JournalEntryController@store');
     Route::get('journal' ,['as'=>'journal.index','uses'=>'Journal\JournalEntryController@index']);
 

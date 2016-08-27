@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\AccountTitles;
+namespace App\Http\Requests\InvExpItem;
 
-use App\AccountTitleModel;
+use App\InvExpItemModel;
 use App\Http\Requests\Request;
 
-class AccountTitleRequest extends Request
+class InvoiceExpenseItemsRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,19 +24,21 @@ class AccountTitleRequest extends Request
      */
     public function rules()
     {
-        $accountTitle = AccountTitleModel::find($this->accounttitles);
+        $item = InvExpItemModel::find($this->item);
         switch($this->method())
         {
             case 'GET': break;
             case 'DELETE': break;
             //for insert
             case 'POST':{
-                return ['account_title_name' => 'required|max:255|unique:account_titles',];
+                return ['item_name' => 'required|min:3|max:255|unique:invoice_expense_items',
+                        'account_title_id'=>'required',];
                         // 'opening_balance' => 'required|min:0',];
             }
             //for update
             case 'PATCH':{  
-                return ['account_title_name' => 'required|max:255|unique:account_titles,account_title_name,'.$accountTitle->id,];
+                return ['item_name' => 'required|min:3|max:255|unique:invoice_expense_items,item_name,'.$item->id,
+                        'account_title_id'=>'required',];
                         // 'opening_balance' => 'required|min:0',];
             }
             //default

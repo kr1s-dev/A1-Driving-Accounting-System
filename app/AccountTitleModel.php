@@ -33,4 +33,8 @@ class AccountTitleModel extends Model
     public function accountTitleChildren(){
         return $this->hasMany('App\AccountTitleModel','account_title_id');
     }
+
+    public function items(){
+        return $this->hasMany('App\InvExpItemModel','account_title_id');
+    }
 }

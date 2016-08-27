@@ -4,6 +4,7 @@
    	<div class="container account-entries">
          <meta name="csrf-token" content="{{ csrf_token() }}">
          <meta name="account-list" content="{{ $accountTitlesList }}">
+         <meta name="type" content="{{ $type }}">
       	<div class="section">
           	<div id="table-datatables">
             	<h4 class="header">Create a New Journal Entry</h4>

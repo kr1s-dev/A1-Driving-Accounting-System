@@ -13,6 +13,7 @@ use App\InvoiceModel;
 use App\ExpenseModel;
 use App\JournalModel;
 use App\UserTypeModel;
+use App\InvExpItemModel;
 use App\AccountGroupModel;
 use App\AccountTitleModel;
 use App\PaymentTransactionModel;
@@ -20,7 +21,7 @@ trait UtilityHelper
 {
     public function searchUser($id){
         if(Auth::check()){
-            if(Auth::user()->userType->type === 'Adminstrator' ||
+            if(Auth::user()->userType->type === 'Administrator' ||
                 (Auth::user()->branch_id!=NULL && Auth::user()->branchInfo->main_office)){
                 return $id!=NULL?User::findOrFail($id):User::all();
             }
@@ -45,7 +46,7 @@ trait UtilityHelper
     }
 
     public function searchStudent($id){
-        if(Auth::user()->userType->type === 'Adminstrator' ||
+        if(Auth::user()->userType->type === 'Administrator' ||
                 (Auth::user()->branch_id!=NULL && Auth::user()->branchInfo->main_office)){
             return $id!=NULL?StudentModel::findOrFail($id):StudentModel::all();
         }elseif(Auth::user()->branch_id!=NULL){
@@ -120,7 +121,7 @@ trait UtilityHelper
     }
 
     public function searchInvoice($id){
-        if(Auth::user()->userType->type === 'Adminstrator' ||
+        if(Auth::user()->userType->type === 'Administrator' ||
                 (Auth::user()->branch_id!=NULL && Auth::user()->branchInfo->main_office)){
             return $id!=NULL?InvoiceModel::findOrFail($id):InvoiceModel::all();
         }elseif(Auth::user()->branch_id!=NULL){
@@ -137,7 +138,7 @@ trait UtilityHelper
     }
 
     public function searchExpense($id){
-        if(Auth::user()->userType->type === 'Adminstrator' ||
+        if(Auth::user()->userType->type === 'Administrator' ||
                 (Auth::user()->branch_id!=NULL && Auth::user()->branchInfo->main_office)){
             return $id!=NULL?ExpenseModel::findOrFail($id):ExpenseModel::all();
         }elseif(Auth::user()->branch_id!=NULL){
@@ -154,7 +155,7 @@ trait UtilityHelper
     }
 
     public function searchReceipt($id){
-        if(Auth::user()->userType->type === 'Adminstrator' ||
+        if(Auth::user()->userType->type === 'Administrator' ||
                 (Auth::user()->branch_id!=NULL && Auth::user()->branchInfo->main_office)){
             return $id!=NULL?PaymentTransactionModel::findOrFail($id):PaymentTransactionModel::all();
         }elseif(Auth::user()->branch_id!=NULL){
@@ -171,7 +172,7 @@ trait UtilityHelper
     }
 
     public function searchAsset($id){
-        if(Auth::user()->userType->type === 'Adminstrator' ||
+        if(Auth::user()->userType->type === 'Administrator' ||
                 (Auth::user()->branch_id!=NULL && Auth::user()->branchInfo->main_office)){
             return $id!=NULL?AssetsModel::findOrFail($id):AssetsModel::all();
         }elseif(Auth::user()->branch_id!=NULL){
@@ -204,19 +205,32 @@ trait UtilityHelper
         return $accountGroupsList;
     }
 
+    public function setItem(){
+        return new InvExpItemModel;
+    }
+
+    public function searchItem($id){
+        return $id!=NULL?InvExpItemModel::findOrFail($id):InvExpItemModel::all();
+    }
+
 
 
     public function populateListOfToInsertItems($data,$groupName,$foreignKeyId,$foreignValue,$type){
         $count = 0;
         $toInsertItems = array();
-        $eIncomeAccountTitlesList = array();
+        $itemList = array();
         $eRecord = $this->getLastRecord($type,array('id'=> $foreignValue));
-        $incomeAccountTitlesList = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>$groupName));
+        $accountTitlesList = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>$groupName));
         $tArrayStringList = explode(",",$data);
-        foreach ($incomeAccountTitlesList->accountTitles as $tIncomeAccountTitle) {
-            $eIncomeAccountTitlesList[$tIncomeAccountTitle->account_title_name] = $tIncomeAccountTitle->id;
+        foreach ($accountTitlesList->accountTitles as $accountTitle) {
+            foreach ($accountTitle->items as $item) {
+                $itemList[$item->item_name] = $item->id;
+            }
         }
-
+        // foreach ($incomeAccountTitlesList->accountTitles as $tIncomeAccountTitle) {
+        //     $eIncomeAccountTitlesList[$tIncomeAccountTitle->account_title_name] = $tIncomeAccountTitle->id;
+        // }
+        
         foreach ($tArrayStringList as $tString) {
             ++$count;
             if($count==1){
@@ -224,7 +238,7 @@ trait UtilityHelper
             }else if($count==2){
                 $amount = $tString;
                 $count = 0;
-                $toInsertItems[] = array('account_title_id' => $eIncomeAccountTitlesList[trim($title)],
+                $toInsertItems[] = array('item_id' => $itemList[trim($title)],
                                             'amount' => $amount,
                                             $foreignKeyId => $foreignValue,
                                             'created_at' => $eRecord->created_at,
@@ -269,9 +283,18 @@ trait UtilityHelper
     public function createJournalEntry($dataList,$typeName,$foreignKey,$foreignValue,$description,$amount){
         $count = 0;
         $dataCreated;
+        $itemList = array();
+        $tDataHolder = array();
         $journalEntryList = array();
         $accountReceivableTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Accounts Receivable'));
         $cashTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Cash'));
+        $eAccountGrp = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>($typeName=='Invoice'?'Revenues':'Expenses')));//get account titles
+        foreach ($eAccountGrp->accountTitles as $accountTitle) {
+            foreach ($accountTitle->items as $item) {
+                $itemList[$item->id] = $accountTitle->id;
+            }
+        }
+
         if($typeName=='Invoice'){
             foreach ($dataList as $data) {
                 if($count==0){
@@ -280,20 +303,38 @@ trait UtilityHelper
                                                     0.00,$description,$data['created_at'],
                                                     date('Y-m-d'));
                 }
-
-                $journalEntryList[] = $this->populateJournalEntry($foreignKey,$foreignValue,$typeName,
-                                                    null,$data['account_title_id'],0.00,
-                                                    $data['amount'],$description,$data['created_at'],
-                                                    date('Y-m-d'));
+                $dataCreated = $data['created_at'];
+                if(!(array_key_exists($itemList[$data['item_id']], $tDataHolder)))
+                    $tDataHolder[$itemList[$data['item_id']]] = 0;
+                $tDataHolder[$itemList[$data['item_id']]] += $data['amount'];
+                $count++;
             }
+            foreach ($tDataHolder as $key => $value) {
+                $journalEntryList[] = $this->populateJournalEntry($foreignKey,$foreignValue,$typeName,
+                                            null,$key,0.00,
+                                            $value,$description,$dataCreated,
+                                            date('Y-m-d'));
+            }
+
         }else if($typeName=='Expense'){
             foreach ($dataList as $data) {
                 $dataCreated = $data['created_at'];
                 //for debit in journal
+                // $journalEntryList[] = $this->populateJournalEntry($foreignKey,$foreignValue,$typeName,
+                //                                     $data['account_title_id'],null,$data['amount'],
+                //                                     0.00,$description,$data['created_at'],
+                //                                     date('Y-m-d'));
+                $dataCreated = $data['created_at'];
+                if(!(array_key_exists($itemList[$data['item_id']], $tDataHolder)))
+                    $tDataHolder[$itemList[$data['item_id']]] = 0;
+                $tDataHolder[$itemList[$data['item_id']]] += $data['amount'];
+            }
+            
+            foreach ($tDataHolder as $key => $value) {
                 $journalEntryList[] = $this->populateJournalEntry($foreignKey,$foreignValue,$typeName,
-                                                    $data['account_title_id'],null,$data['amount'],
-                                                    0.00,$description,$data['created_at'],
-                                                    date('Y-m-d'));
+                                            $key,null,$value,
+                                            0.00,$description,$dataCreated,
+                                            date('Y-m-d'));
             }
 
             $journalEntryList[] = $this->populateJournalEntry($foreignKey,$foreignValue,$typeName,
@@ -391,6 +432,8 @@ trait UtilityHelper
                         });
             }
             return $query->get();
+        }elseif($modelName=='InvExpItemModel'){
+            return InvExpItemModel::where($whereClause)->get();
         }
         return null;
     }

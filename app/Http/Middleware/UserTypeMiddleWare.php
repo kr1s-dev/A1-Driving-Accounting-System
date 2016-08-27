@@ -17,7 +17,7 @@ class UserTypeMiddleWare
     {
         $usertype = $request->user()->userType->type;
         if($objectToAccess == 'users' || $objectToAccess == 'branch'){
-            if($usertype === 'Adminstrator' || 
+            if($usertype === 'Administrator' || 
                 ($request->user()->branch_id != NULL&&$request->user()->branchInfo->main_office)){
                 return $next($request);
             }
