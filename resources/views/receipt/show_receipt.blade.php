@@ -155,7 +155,7 @@
               	</div>
             </div>
             
-            <div class="invoice-footer">
+            <!--div class="invoice-footer">
               	<div class="row">
                 	<div class="col s12 m6 l6">
                   		<p class="strong">Payment Method</p>
@@ -173,7 +173,13 @@
           				<p>Managing Director</p>
                 	</div>
               	</div>
-            </div>
+            </div-->
+            <div class="row">
+            <div class="input-field col s12">
+              {!! Form::open(['url'=>'pdf','method'=>'POST','target'=>'_blank','class'=>'col s12']) !!}
+                @include('pdf.pdf_form',['category'=>'receipt','recordId'=>$receipt->id])
+              {!! Form::close() !!}
+          </div>
         </div>
     </div>
               

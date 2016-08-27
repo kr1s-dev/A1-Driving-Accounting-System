@@ -29,13 +29,18 @@ class AssetController extends Controller
      */
     public function create()
     {
-        $title = 'Assets';
-        $asset = $this->putAsset();
-        $accountGroupList = $this->getAssetAccountTitles(null);
-        return view('assets.create_asset',
-                        compact('title',
-                                'asset',
-                                'accountGroupList'));
+        try{
+            $title = 'Assets';
+            $asset = $this->putAsset();
+            $accountGroupList = $this->getAssetAccountTitles(null);
+            return view('assets.create_asset',
+                            compact('title',
+                                    'asset',
+                                    'accountGroupList'));
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
 
 
     }
@@ -48,18 +53,24 @@ class AssetController extends Controller
      */
     public function store(AssetRequest $request)
     {
-        $input = $this->removeKeys($request->all(),true,true);
-        $input['net_value'] =  $input['asset_original_cost'];
-        $input['monthly_depreciation'] = ($input['net_value']-$input['asset_salvage_value']) / $input['asset_lifespan'];  
-        $input['asset_date_acquired'] = date('Y-m-d',strtotime($input['asset_date_acquired']));
-        $assetId = $this->insertRecords('asset_items',$input,false);
+        try{
+            $input = $this->removeKeys($request->all(),true,true);
+            $input['net_value'] =  $input['asset_original_cost'];
+            $input['monthly_depreciation'] = ($input['net_value']-$input['asset_salvage_value']) / $input['asset_lifespan'];  
+            $input['asset_date_acquired'] = date('Y-m-d',strtotime($input['asset_date_acquired']));
+            $assetId = $this->insertRecords('asset_items',$input,false);
 
 
-        $this->insertRecords('journal_entry',
-                                $this->toInsertJournalEntry($input,$assetId,true),
-                                true);
-
-        return redirect('asset/'.$assetId);
+            $this->insertRecords('journal_entry',
+                                    $this->toInsertJournalEntry($input,$assetId,true),
+                                    true);
+            $this->createSystemLogs('Created New Asset Recird');
+            flash()->success('Record successfully created');
+            return redirect('asset/'.$assetId);    
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
     }
 
 
@@ -97,18 +108,23 @@ class AssetController extends Controller
      */
     public function edit($id)
     {
-        $title = 'Assets';
-        $asset = $this->searchAsset($id);
-        if($asset != NULL){
-            $asset->asset_date_acquired = date('d F, Y',strtotime($asset->asset_date_acquired));
-            $accountGroupList = $this->getAssetAccountTitles($asset->account_title_id);
-            return view('assets.edit_asset',
-                        compact('title',
-                                'asset',
-                                'accountGroupList'));
-        }else{
+        try{
+            $title = 'Assets';
+            $asset = $this->searchAsset($id);
+            if($asset != NULL){
+                $asset->asset_date_acquired = date('d F, Y',strtotime($asset->asset_date_acquired));
+                $accountGroupList = $this->getAssetAccountTitles($asset->account_title_id);
+                return view('assets.edit_asset',
+                            compact('title',
+                                    'asset',
+                                    'accountGroupList'));
+            }else{
+                return view('errors.503');
+            }    
+        }catch(\Exception $ex){
             return view('errors.503');
         }
+        
         
     }
 
@@ -121,20 +137,27 @@ class AssetController extends Controller
      */
     public function update(AssetRequest $request, $id)
     {
-        $input = $this->removeKeys($request->all(),false,true);
-        $input['net_value'] =  $input['asset_original_cost'];
-        $input['monthly_depreciation'] = ($input['net_value']-$input['asset_salvage_value']) / $input['asset_lifespan'];
-        $input['asset_date_acquired'] = date('Y-m-d',strtotime($input['asset_date_acquired']));
-        $this->updateRecords('asset_items',array($id),$input);
+        try{
+            $input = $this->removeKeys($request->all(),false,true);
+            $input['net_value'] =  $input['asset_original_cost'];
+            $input['monthly_depreciation'] = ($input['net_value']-$input['asset_salvage_value']) / $input['asset_lifespan'];
+            $input['asset_date_acquired'] = date('Y-m-d',strtotime($input['asset_date_acquired']));
+            $this->updateRecords('asset_items',array($id),$input);
 
-        //Delete Journal Entry Records
-        $this->deleteRecords('journal_entry',array('asset_id'=>$id));
+            //Delete Journal Entry Records
+            $this->deleteRecords('journal_entry',array('asset_id'=>$id));
 
-        //Insert again
-        $this->insertRecords('journal_entry',
-                                $this->toInsertJournalEntry($input,$id,true),
-                                true);
-        return redirect('asset/'.$id);
+            //Insert again
+            $this->insertRecords('journal_entry',
+                                    $this->toInsertJournalEntry($input,$id,true),
+                                    true);
+            $this->createSystemLogs('Updated an Existing Asset');
+            flash()->success('Record successfully Updated');
+            return redirect('asset/'.$id);    
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
     }
 
     /**

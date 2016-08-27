@@ -27,11 +27,16 @@ class BranchController extends Controller
      */
     public function index()
     {
-        $title = 'Branches';
-        $branchList = $this->searchBranch(null);
-        return view('branches.show_branch_list',
-                        compact('branchList',
-                                'title'));
+        try{
+            $title = 'Branches';
+            $branchList = $this->searchBranch(null);
+            return view('branches.show_branch_list',
+                            compact('branchList',
+                                    'title'));    
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
 
     }
 
@@ -42,14 +47,21 @@ class BranchController extends Controller
      */
     public function create()
     {
-        $title = 'Branches';
-        $lastInsertedBranch = $this->getLastRecord('BranchModel',null);
-        $branchNumber = count($lastInsertedBranch)===0?'1':($lastInsertedBranch->id)+1;
-        $branch = $this->putBranch();
-        return view('branches.create_branches',
-        				compact('title',
-        						'branchNumber',
-        						'branch'));
+        try{
+            $title = 'Branches';
+            $lastInsertedBranch = $this->getLastRecord('BranchModel',null);
+            $branchNumber = count($lastInsertedBranch)===0?'1':($lastInsertedBranch->id)+1;
+            $mainBranch = $this->getLastRecord('BranchModel',array('main_office'=>1));
+            $branch = $this->putBranch();
+            return view('branches.create_branches',
+                            compact('title',
+                                    'branchNumber',
+                                    'branch',
+                                    'mainBranch'));    
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
     }
 
     /**
@@ -60,9 +72,14 @@ class BranchController extends Controller
      */
     public function store(BranchRequest $request)
     {
-    	$input = $this->removeKeys($request->all(),true,false);
-        $branchId = $this->insertRecords('branch',$input,false);
-        return redirect('branches/' . $branchId);
+        try{
+            $input = $this->removeKeys($request->all(),true,false);
+            $branchId = $this->insertRecords('branch',$input,false);
+            return redirect('branches/' . $branchId);    
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+    	
     }
 
     /**
@@ -91,10 +108,15 @@ class BranchController extends Controller
         $title = 'Branches';
         $branch = $this->searchBranch($id);
         $branchNumber = $id;
+        $mainBranch = NULL;
+        if(!($branch->main_office)){
+            $mainBranch = $this->getLastRecord('BranchModel',array('main_office'=>1));
+        }
         return view('branches.edit_branches',
         				compact('title',
         						'branchNumber',
-        						'branch'));
+        						'branch',
+                                'mainBranch'));
     }
 
     /**
@@ -107,6 +129,9 @@ class BranchController extends Controller
     public function update(BranchRequest $request, $id)
     {
         $input = $this->removeKeys($request->all(),false,false);
+        if(!(array_key_exists('main_office', $input))){
+            $input['main_office'] = 0;
+        }
         $this->updateRecords('branch',array($id),$input);
         return redirect('branches/' . $id);
     }

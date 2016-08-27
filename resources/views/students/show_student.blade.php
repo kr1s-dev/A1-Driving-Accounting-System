@@ -218,13 +218,14 @@
                       <table class="striped bordered" id="otherFeeList">
                         <thead>
                           <tr>
-                            <td colspan="4" class="grey darken-3 white-text center-align">Other Fees</td>
+                            <td colspan="5" class="grey darken-3 white-text center-align">Other Fees</td>
                           </tr>
                           <tr>
-                             <th width="25%">Date</th>
-                             <th width="25%">Receipt #</th>
-                             <th width="25%">Invoice #</th>
-                             <th width="25%">Amount in PHP</th>
+                             <th width="20%">Date</th>
+                             <th width="20%">Item</th>
+                             <th width="20%">Receipt #</th>
+                             <th width="20%">Invoice #</th>
+                             <th width="20%">Amount in PHP</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -232,12 +233,13 @@
                             @foreach($receiptList as $receipt)
                               @foreach($receipt->invoiceInfo->invoiceItemsInfo as $invoiceItems)
                                 @if($invoiceItems->item->item_name != 'Course Fee'
-                                    && strpos($invoiceItems->item->item_name,'Course Fee'))
+                                    && !strpos($invoiceItems->item->item_name,'Course Fee'))
                                     <tr>
                                       <td>{{date('m-d-Y',strtotime($receipt->created_at))}}</td>
+                                      <td>{{$invoiceItems->item->item_name}}</td>
                                       <td><a href="{{route('receipt.show',$receipt->id)}}">{{sprintf("%'.07d\n",$receipt->id)}}</a></td>
                                       <td><a href="{{route('invoice.show',$receipt->invoiceInfo->id)}}">{{sprintf("%'.07d\n",$receipt->invoiceInfo->id)}}</a></td>
-                                      <td>₱ {{$receipt->amount_paid}}</td>
+                                      <td>₱ {{$invoiceItems->amount}}</td>
                                     </tr>
                                 @endif
                               @endforeach

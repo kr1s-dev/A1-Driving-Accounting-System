@@ -53,9 +53,16 @@
                                     </td>
                                   @else
                                     <td class="center-align">
-                                        <a href="{{route('invoice.edit',$invoice->id)}}" style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4">
-                                        <i class="mdi-content-create"></i>
+                                      @if(count($invoice->receiptInfo)>0)
+                                        <a href="#" style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4">
+                                          <i class="mdi-content-create"></i>
                                         </a>
+                                      @else
+                                        <a href="{{route('invoice.edit',$invoice->id)}}" style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4">
+                                          <i class="mdi-content-create"></i>
+                                        </a>
+                                      @endif
+                                        
                                         <a href="{{route('invoice.receipt.create',$invoice->id)}}" class="btn-floating waves-effect waves-light grey darken-4">
                                           <i class="mdi-action-lock"></i>
                                         </a>

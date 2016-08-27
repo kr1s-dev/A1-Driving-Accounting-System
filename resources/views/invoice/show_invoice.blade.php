@@ -110,6 +110,14 @@
                		</div>
             	</div>
          	</div-->
+          <div class="row">
+            <div class="input-field col s12">
+              {!! Form::open(['url'=>'pdf','method'=>'POST','target'=>'_blank','class'=>'col s12']) !!}
+                @include('pdf.pdf_form',['category'=>'invoice','recordId'=>$invoice->id])
+              {!! Form::close() !!}
+            </div>
+          </div>
+          
       	</div>
     </div>
 

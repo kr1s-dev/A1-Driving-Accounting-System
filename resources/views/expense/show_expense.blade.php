@@ -104,8 +104,14 @@
 		            	</tbody>
 		          	</table>
 	        	</div>
-	      	</div>
-	    </div>
+	        	<div class="row">
+		            <div class="input-field col s12">
+		              	{!! Form::open(['url'=>'pdf','method'=>'POST','target'=>'_blank','class'=>'col s12']) !!}
+		                	@include('pdf.pdf_form',['category'=>'expense','recordId'=>$expense->id])
+		              	{!! Form::close() !!}
+		          	</div>
+	      		</div>
+	    	</div>
 	    
 	    <!--div class="invoice-footer">
 	      	<div class="row">

@@ -90,7 +90,7 @@ class AuthController extends Controller
             if(Auth::user()->userType->type==='Accountant')
                 return redirect('/students');
             elseif(Auth::user()->userType->type==='Administrator')
-                return redirect('/users');
+                return redirect('/user');
 
         }
     }

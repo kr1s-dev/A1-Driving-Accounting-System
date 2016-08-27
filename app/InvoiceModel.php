@@ -36,5 +36,9 @@ class InvoiceModel extends Model
         return $this->hasMany('App\InvoiceItemModel','invoice_id');
     }
 
+    public function receiptInfo(){
+        return $this->hasMany('App\PaymentTransactionModel','payment_id');
+    }
+
     
 }

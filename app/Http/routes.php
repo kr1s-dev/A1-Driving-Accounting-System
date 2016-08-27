@@ -68,4 +68,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('reports/balancesheet',['as'=>'balancesheet','uses'=>'reports\ReportController@getGenerateBalanceSheet']);
     Route::post('reports/balancesheet','reports\ReportController@postGenerateBalanceSheet');
     Route::get('reports/assets',['as'=>'asset.registry','uses'=>'reports\ReportController@getGenerateAssetRegistry']);
+
+    //PDF Generation
+    Route::post('pdf','PDF\PDFController@postGeneratePDF');
 });

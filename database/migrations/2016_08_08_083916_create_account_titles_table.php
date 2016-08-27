@@ -20,9 +20,6 @@ class CreateAccountTitlesTable extends Migration
                 $table->string('account_title_name',255)->unique();
                 $table->decimal('opening_balance',10,2)->default(0.00);
                 $table->string('description',255)->default('No Description');
-                //$table->decimal('default_value',10,2)->default(0.00);
-                //$table->Boolean('subject_to_vat')->default(0);
-                //$table->Decimal('vat_percent',10,2)->default(0);
                 $table->Integer('account_title_id')->unsigned()->nullable();
                 $table->foreign('account_title_id')->references('id')->on('account_titles');
                 $table->Integer('created_by')->unsigned()->nullable();

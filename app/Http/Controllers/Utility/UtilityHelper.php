@@ -378,7 +378,10 @@ trait UtilityHelper
 
     public function getLastRecord($modelName,$whereClause){
         if($modelName==='BranchModel'){
-            return BranchModel::orderBy('id', 'desc')->first();
+            return $whereClause==null?BranchModel::orderBy('id', 'desc')->first():
+                                        BranchModel::where($whereClause)
+                                        ->orderBy('id', 'desc')
+                                        ->first();
         }elseif($modelName==='StudentModel'){
             return StudentModel::orderBy('id', 'desc')->first();
         }elseif($modelName==='AccountGroupModel'){
@@ -402,6 +405,11 @@ trait UtilityHelper
         }elseif($modelName==='ExpenseModel'){
             return $whereClause==NULL? ExpenseModel::orderBy('id', 'desc')->first():
                                         ExpenseModel::where($whereClause)
+                                        ->orderBy('id', 'desc')
+                                        ->first();
+        }elseif($modelName==='PaymentTransactionModel'){
+            return $whereClause==NULL? PaymentTransactionModel::orderBy('id', 'desc')->first():
+                                        PaymentTransactionModel::where($whereClause)
                                         ->orderBy('id', 'desc')
                                         ->first();
         }
@@ -539,5 +547,13 @@ trait UtilityHelper
                                                                     ->whereMonth('created_at','=',$monthFilter);
         }
         return $query->get();
+    }
+
+    public function createSystemLogs($action){
+        $this->insertRecords('system_logs',array('created_by'=>Auth::user()->id,
+                                            'updated_by'=>Auth::user()->id,
+                                            'action'=>$action,
+                                            'created_at' => date('Y-m-d H:i:sa'),
+                                            'updated_at' => date('Y-m-d H:i:sa')),false);
     }
 }

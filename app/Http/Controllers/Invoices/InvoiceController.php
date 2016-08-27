@@ -53,7 +53,8 @@ class InvoiceController extends Controller
                                     'student',
                                     'invNumber',
                                     'incomeAccountItems',
-                                    'invoice'));
+                                    'invoice',
+                                    'receiptList'));
         }catch(\Exception $ex){
             return view('errors.503');
         }
@@ -156,6 +157,7 @@ class InvoiceController extends Controller
                     }
                 }
                 $invNumber = $id;
+
                 return view('invoice.create_update_invoice',
                                 compact('title',
                                         '_method',

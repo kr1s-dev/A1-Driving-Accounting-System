@@ -24,18 +24,33 @@
     <label for="email">Branch Telephone Number</label>
   </div>
 </div>
-<div class="row">
-  <div class=" col s12 m12 l12">
-    <p>
-      @if($branch->main_office)
-        <input type="checkbox" id="main-branch" name="main_office" checked>
-      @else
-        <input type="checkbox" id="main-branch" name="main_office">
-      @endif
-      <label for="main-branch">Is this branch the main office?</label>
-    </p>
+@if($branch->main_office == 1)
+  <div class="row">
+    <div class=" col s12 m12 l12">
+      <p>
+        @if($branch->main_office)
+          <input type="checkbox" id="main-branch" name="main_office" checked>
+        @else
+          <input type="checkbox" id="main-branch" name="main_office">
+        @endif
+        <label for="main-branch">Is this branch the main office?</label>
+      </p>
+    </div>
   </div>
-</div>
+@elseif($mainBranch==NULL)
+  <div class="row">
+    <div class=" col s12 m12 l12">
+      <p>
+        @if($branch->main_office)
+          <input type="checkbox" id="main-branch" name="main_office" checked>
+        @else
+          <input type="checkbox" id="main-branch" name="main_office">
+        @endif
+        <label for="main-branch">Is this branch the main office?</label>
+      </p>
+    </div>
+  </div>
+@endif
 <div class="row">
   <div class="input-field col s12">
     <button class="btn cyan waves-effect waves-light right" type="submit" name="action">{{$submitButton}}
