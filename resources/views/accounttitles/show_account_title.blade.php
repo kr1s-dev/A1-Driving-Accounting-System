@@ -66,46 +66,50 @@
                   					</div>
                 				</div>
               				</div>
-              				<div class="row">
-                				<div class="col l12 m12 s12">
-                  					<div class="card-panel">
-                    					<h4 class="header2">Account Title Items </h4>
-                						<div class="row right-align">
-                							<div class="col l12 m12 s12">
-                 								<a href="{{ route('item.create',$eAccountTitle->id) }}" class="btn waves-effect waves-light cyan" type="submit" name="action">Add Item
-                    								<i class="mdi-action-receipt right"></i>
-                  							</a>
-                							</div>
-                						</div>
-                						<br>
-                    					<div class="row">
-	                      					<table class="striped" id="courseFeeList">
-	                        					<thead>
-	                          						<tr>
-	                             						<th>Item Name</th>
-	                             						<th>Default Value</th>
-                                          <th>Action</th>
-	                          						</tr>
-	                        					</thead>
-	                        					<tbody>
-                                      @foreach($itemList as $item)
-                                        <tr>
-                                          <td>{{$item->item_name}}</td>
-                                          <td>PHP {{number_format($item->default_value,2)}}</td>
-                                          <td class="center-align">
-                                            <a href="{{route('item.edit',$item->id)}}" style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4">
-                                              <i class="mdi-content-create"></i>
-                                            </a>
-                                          </td>
-                                        </tr>
-                                      @endforeach
-	                        					</tbody>
-	                      					</table>
-	                    				</div>
-                    					<br>
-                  					</div>
-                				</div>
-              				</div>
+                      @if($eAccountTitle->group->account_group_name == 'Revenues' ||       strpos($eAccountTitle->group->account_group_name,'Revenues') ||
+                          $eAccountTitle->group->account_group_name == 'Expenses' || strpos($eAccountTitle->group->account_group_name,'Expenses'))
+                        <div class="row">
+                          <div class="col l12 m12 s12">
+                              <div class="card-panel">
+                                <h4 class="header2">Account Title Items </h4>
+                              <div class="row right-align">
+                                <div class="col l12 m12 s12">
+                                  <a href="{{ route('item.create',$eAccountTitle->id) }}" class="btn waves-effect waves-light cyan" type="submit" name="action">Add Item
+                                      <i class="mdi-action-receipt right"></i>
+                                  </a>
+                                </div>
+                              </div>
+                              <br>
+                                <div class="row">
+                                    <table class="striped" id="courseFeeList">
+                                      <thead>
+                                          <tr>
+                                            <th>Item Name</th>
+                                            <th>Default Value</th>
+                                            <th>Action</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                        @foreach($itemList as $item)
+                                          <tr>
+                                            <td>{{$item->item_name}}</td>
+                                            <td>PHP {{number_format($item->default_value,2)}}</td>
+                                            <td class="center-align">
+                                              <a href="{{route('item.edit',$item->id)}}" style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4">
+                                                <i class="mdi-content-create"></i>
+                                              </a>
+                                            </td>
+                                          </tr>
+                                        @endforeach
+                                      </tbody>
+                                    </table>
+                                </div>
+                                <br>
+                              </div>
+                          </div>
+                        </div>
+                      @endif
+              				
             			</div>
           			</div>
         		</div>

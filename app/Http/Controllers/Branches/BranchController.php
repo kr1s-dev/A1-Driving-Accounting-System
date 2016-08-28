@@ -75,6 +75,8 @@ class BranchController extends Controller
         try{
             $input = $this->removeKeys($request->all(),true,false);
             $branchId = $this->insertRecords('branch',$input,false);
+            $this->createSystemLogs('Created New Branch Record');
+            flash()->success('Record successfully created');
             return redirect('branches/' . $branchId);    
         }catch(\Exception $ex){
             return view('errors.503');
@@ -90,11 +92,16 @@ class BranchController extends Controller
      */
     public function show($id)
     {
-        $title = 'Branches';
-        $branch = $this->searchBranch($id);
-        return view('branches.show_branch_info',
-                        compact('branch',
-                                'title'));
+        try{
+            $title = 'Branches';
+            $branch = $this->searchBranch($id);
+            return view('branches.show_branch_info',
+                            compact('branch',
+                                    'title'));    
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
     }
 
     /**
@@ -105,18 +112,23 @@ class BranchController extends Controller
      */
     public function edit($id)
     {
-        $title = 'Branches';
-        $branch = $this->searchBranch($id);
-        $branchNumber = $id;
-        $mainBranch = NULL;
-        if(!($branch->main_office)){
-            $mainBranch = $this->getLastRecord('BranchModel',array('main_office'=>1));
+        try{
+            $title = 'Branches';
+            $branch = $this->searchBranch($id);
+            $branchNumber = $id;
+            $mainBranch = NULL;
+            if(!($branch->main_office)){
+                $mainBranch = $this->getLastRecord('BranchModel',array('main_office'=>1));
+            }
+            return view('branches.edit_branches',
+                            compact('title',
+                                    'branchNumber',
+                                    'branch',
+                                    'mainBranch'));    
+        }catch(\Exception $ex){
+            return view('errors.503');
         }
-        return view('branches.edit_branches',
-        				compact('title',
-        						'branchNumber',
-        						'branch',
-                                'mainBranch'));
+        
     }
 
     /**
@@ -128,12 +140,19 @@ class BranchController extends Controller
      */
     public function update(BranchRequest $request, $id)
     {
-        $input = $this->removeKeys($request->all(),false,false);
-        if(!(array_key_exists('main_office', $input))){
-            $input['main_office'] = 0;
+        try{
+            $input = $this->removeKeys($request->all(),false,false);
+            if(!(array_key_exists('main_office', $input))){
+                $input['main_office'] = 0;
+            }
+            $this->updateRecords('branch',array($id),$input);
+            $this->createSystemLogs('Updated an Existing Branch');
+            flash()->success('Record successfully Updated');
+            return redirect('branches/' . $id);    
+        }catch(\Exception $ex){
+            return view('errors.503');
         }
-        $this->updateRecords('branch',array($id),$input);
-        return redirect('branches/' . $id);
+        
     }
 
     /**

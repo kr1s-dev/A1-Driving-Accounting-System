@@ -412,6 +412,11 @@ trait UtilityHelper
                                         PaymentTransactionModel::where($whereClause)
                                         ->orderBy('id', 'desc')
                                         ->first();
+        }elseif($modelName=='User'){
+            return $whereClause==NULL? User::orderBy('id', 'desc')->first():
+                                        User::where($whereClause)
+                                        ->orderBy('id', 'desc')
+                                        ->first();
         }
         return null;
     }

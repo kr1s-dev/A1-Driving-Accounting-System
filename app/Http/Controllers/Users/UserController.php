@@ -29,11 +29,16 @@ class UserController extends Controller
      */
     public function index()
     {
-        $title = 'Users';
-        $userList = $this->searchUser(null);
-        return view('users.show_user_list',
-                        compact('title',
-                                'userList'));
+        try{
+            $title = 'Users';
+            $userList = $this->searchUser(null);
+            return view('users.show_user_list',
+                            compact('title',
+                                    'userList'));    
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
     }
 
     /**
@@ -43,17 +48,22 @@ class UserController extends Controller
      */
     public function create()
     {
-        $title = 'Users';
-        $user = $this->putUser();
-        $isCreate = 1;
-        $userTypesList = $this->getUsersUserType(null);
-        $branchList = $this->getUsersBranch(null);;
-        return view('users.create_user',
-                        compact('title',
-                                'user',
-                                'isCreate',
-                                'userTypesList',
-                                'branchList'));
+        try{
+            $title = 'Users';
+            $user = $this->putUser();
+            $isCreate = 1;
+            $userTypesList = $this->getUsersUserType(null);
+            $branchList = $this->getUsersBranch(null);;
+            return view('users.create_user',
+                            compact('title',
+                                    'user',
+                                    'isCreate',
+                                    'userTypesList',
+                                    'branchList'));    
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
     }
 
     /**
@@ -64,10 +74,17 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $confirmation_code = array('confirmation_code'=>str_random(30));
-        $input = $this->removeKeys($request->all(),true,true);
-        $input['confirmation_code'] = $confirmation_code['confirmation_code'];
-        $this->insertRecords('users',$input,false);
+        try{
+            $confirmation_code = array('confirmation_code'=>str_random(30));
+            $input = $this->removeKeys($request->all(),true,true);
+            $input['confirmation_code'] = $confirmation_code['confirmation_code'];
+            $this->createSystemLogs('Created New User Record');
+            flash()->success('Record successfully created');
+            $this->insertRecords('users',$input,false);    
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
         //Pending Email Verification for the user
         // try{
             
@@ -101,17 +118,22 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $title = 'Users';
-        $user = $this->searchUser($id);
-        $isCreate = 0;
-        $userTypesList = $this->getUsersUserType($user->user_type_id);
-        $branchList = $this->getUsersBranch($user->branch_id);;
-        return view('users.edit_user',
-                        compact('title',
-                                'user',
-                                'isCreate',
-                                'userTypesList',
-                                'branchList'));
+        try{
+            $title = 'Users';
+            $user = $this->searchUser($id);
+            $isCreate = 0;
+            $userTypesList = $this->getUsersUserType($user->user_type_id);
+            $branchList = $this->getUsersBranch($user->branch_id);;
+            return view('users.edit_user',
+                            compact('title',
+                                    'user',
+                                    'isCreate',
+                                    'userTypesList',
+                                    'branchList'));    
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
     }
 
     /**
@@ -123,9 +145,16 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
-        $input = $this->removeKeys($request->all(),false,true);
-        $this->updateRecords('users',array($id),$input);
-        return redirect('user');
+        try{
+            $input = $this->removeKeys($request->all(),false,true);
+            $this->updateRecords('users',array($id),$input);
+            $this->createSystemLogs('Updated an Existing Student Record');
+            flash()->success('Record successfully Updated');
+            return redirect('user');    
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
     }
 
     /**

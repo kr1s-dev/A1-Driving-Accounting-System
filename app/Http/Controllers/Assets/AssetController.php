@@ -58,13 +58,14 @@ class AssetController extends Controller
             $input['net_value'] =  $input['asset_original_cost'];
             $input['monthly_depreciation'] = ($input['net_value']-$input['asset_salvage_value']) / $input['asset_lifespan'];  
             $input['asset_date_acquired'] = date('Y-m-d',strtotime($input['asset_date_acquired']));
+            $input['next_depreciation_date'] = date('Y-m-d',strtotime('+1 Month'));
             $assetId = $this->insertRecords('asset_items',$input,false);
 
 
             $this->insertRecords('journal_entry',
                                     $this->toInsertJournalEntry($input,$assetId,true),
                                     true);
-            $this->createSystemLogs('Created New Asset Recird');
+            $this->createSystemLogs('Created New Asset Record');
             flash()->success('Record successfully created');
             return redirect('asset/'.$assetId);    
         }catch(\Exception $ex){
@@ -151,7 +152,7 @@ class AssetController extends Controller
             $this->insertRecords('journal_entry',
                                     $this->toInsertJournalEntry($input,$id,true),
                                     true);
-            $this->createSystemLogs('Updated an Existing Asset');
+            $this->createSystemLogs('Updated an Existing Asset Record');
             flash()->success('Record successfully Updated');
             return redirect('asset/'.$id);    
         }catch(\Exception $ex){
@@ -174,12 +175,13 @@ class AssetController extends Controller
 
 
     public function getAssetAccountTitles($id){
-        $value = '%fixed asset%';
+        $value = '%Non-current asset%';
         $accountTitles = array();
         if($id==null){
             $tAccountTitles = AccountTitleModel::whereHas('group',function($q) use ($value){
                                                     $q->where('account_group_name','like',$value);
                                                     })
+                                                ->where('account_title_id','=',NULL)
                                                 ->get();
             foreach($tAccountTitles as $tAccountTitle){
                 $accountTitles[$tAccountTitle->id] = $tAccountTitle->account_title_name;
@@ -191,6 +193,7 @@ class AssetController extends Controller
                                                     $q->where('account_group_name','like',$value);
                                                     })
                                                 ->where('id','!=',$id)
+                                                ->where('account_title_id','=',NULL)
                                                 ->get();
             foreach($tAccountTitles as $tAccountTitle){
                 $accountTitles[$tAccountTitle->id] = $tAccountTitle->account_title_name;

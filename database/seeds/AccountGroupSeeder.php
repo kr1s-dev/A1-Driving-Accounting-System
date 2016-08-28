@@ -12,9 +12,9 @@ class AccountGroupSeeder extends Seeder
     public function run()
     {
         $accountGoupNames = array('Current Assets',
-                                    'Fixed Assets',
+                                    'Non-Current Assets',
                                     'Current Liabilities',
-                                    'Fixed Liabilities',
+                                    'Non-Current Liabilities',
                                     'Revenues',
                                     'Expenses',
                                     'Owners Equity');
@@ -33,6 +33,10 @@ class AccountGroupSeeder extends Seeder
                                         'updated_at' => date('Y-m-d h:i:sa'));
         $accountAssetTitles[] = array('account_group_id'=>1,
                                         'account_title_name'=>'Cash',
+                                        'created_at' => date('Y-m-d h:i:sa'),
+                                        'updated_at' => date('Y-m-d h:i:sa'));
+        $accountAssetTitles[] = array('account_group_id'=>6,
+                                        'account_title_name'=>'Depreciation Expense',
                                         'created_at' => date('Y-m-d h:i:sa'),
                                         'updated_at' => date('Y-m-d h:i:sa'));
         DB::table('account_titles')->insert($accountAssetTitles);

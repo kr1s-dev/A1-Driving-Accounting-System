@@ -16,21 +16,29 @@ class JournalEntryController extends Controller
 	use UtilityHelper;
 
     public function index(){
-        $title = 'Journal';
-        $journalEntryList = $this->getRecords('JournalModel',null);
-        return view('journal.show_journal_entries',
-                        compact('title',
-                                'journalEntryList'));
+        try{
+            $title = 'Journal';
+            $journalEntryList = $this->getRecords('JournalModel',null);
+            return view('journal.show_journal_entries',
+                            compact('title',
+                                    'journalEntryList'));
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
     }
 
     public function getJournalEntry(){
-    	$title = 'Journal';
-        $type = 'Journal Entry';
-    	$accountTitlesList = $this->searchAccountTitle(null);
-        return view('journal.create_journal_entry',
-                        compact('accountTitlesList',
-                                'type',
-                        		'title'));
+        try{
+        	$title = 'Journal';
+            $type = 'Journal Entry';
+        	$accountTitlesList = $this->searchAccountTitle(null);
+            return view('journal.create_journal_entry',
+                            compact('accountTitlesList',
+                                    'type',
+                            		'title'));
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
     }
 
     public function getAdjustmenstEntry(){
@@ -61,6 +69,8 @@ class JournalEntryController extends Controller
             $this->insertRecords('journal_entry',
                                     $this->createJouralEntry($request->input('data'),$request->input('type')),
                                     true);
+            $this->createSystemLogs('Created New ' . $request->input('type') . ' Record');
+            flash()->success('Record successfully created');
         }catch(\Exception $ex){
             echo $ex.getMessage();
         }

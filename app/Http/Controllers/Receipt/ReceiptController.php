@@ -19,11 +19,16 @@ class ReceiptController extends Controller
      */
     public function index()
     {
-        $title = 'Receipt';
-        $receiptList = $this->searchReceipt(null);
-        return view('receipt.show_receipt_list',
-                        compact('title',
-                                'receiptList'));
+        try{
+            $title = 'Receipt';
+            $receiptList = $this->searchReceipt(null);
+            return view('receipt.show_receipt_list',
+                            compact('title',
+                                    'receiptList'));    
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
 
     }
 
@@ -87,6 +92,8 @@ class ReceiptController extends Controller
                                                                                 $invoice->studentInfo->stud_last_name,
                                                                             $input['amount_paid']),
                                 true);
+            $this->createSystemLogs('Created New Receipt Record');
+            flash()->success('Record successfully created');
             return redirect('/receipt/' . $receiptId);
         }catch(\Exception $ex){
             echo $ex->getMessage();

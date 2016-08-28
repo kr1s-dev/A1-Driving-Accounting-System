@@ -19,11 +19,16 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        $title = "Invoice";
-        $invoiceList = $this->searchInvoice(null);
-        return view('invoice.show_invoice_list',
-                        compact('invoiceList',
-                                'title'));
+        try{
+            $title = "Invoice";
+            $invoiceList = $this->searchInvoice(null);
+            return view('invoice.show_invoice_list',
+                            compact('invoiceList',
+                                    'title'));    
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
     }
 
     /**
@@ -102,7 +107,8 @@ class InvoiceController extends Controller
                                                                             $input['total_amount']),
                                 true);
 
-            
+            $this->createSystemLogs('Created New Invoice Record');
+            flash()->success('Record successfully created');
             echo $studInvId;
         }catch(\Exception $ex){
             echo 'Error ' . $ex->getMessage() . ' ' . $ex->getLine();
@@ -220,7 +226,8 @@ class InvoiceController extends Controller
                                                                                 $student->stud_last_name,
                                                                             $input['total_amount']),
                                 true);
-            
+            $this->createSystemLogs('Updated an Existing Invoice Record');
+            flash()->success('Record successfully Updated');
             echo $id;
         }catch(\Exception $ex){
             echo 'Error ' . $ex->getMessage();

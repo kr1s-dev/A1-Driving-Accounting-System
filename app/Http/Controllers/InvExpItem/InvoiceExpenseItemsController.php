@@ -58,6 +58,8 @@ class InvoiceExpenseItemsController extends Controller
     	try{
     		$input = $this->removeKeys($request->all(),true,true);
 	        $this->insertRecords('invoice_expense_items',$input,false);
+            $this->createSystemLogs('Created New Item Record');
+            flash()->success('Record successfully created');
 	        return redirect('accounttitle/' . $input['account_title_id']);
     	}catch(\Exception $ex){
             return view('errors.503');
@@ -113,6 +115,8 @@ class InvoiceExpenseItemsController extends Controller
         try{
     		$input = $this->removeKeys($request->all(),false,true);
 	        $this->updateRecords('invoice_expense_items',array($id),$input);
+            $this->createSystemLogs('Updated an Existing Item');
+            flash()->success('Record successfully Updated');
 	        return redirect('accounttitle/' . $input['account_title_id']);
     	}catch(\Exception $ex){
             return view('errors.503');

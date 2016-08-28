@@ -25,14 +25,15 @@ class CreateAssetTable extends Migration
                 $table->String('asset_desc',255)->default('No Description');
                 $table->String('asset_vendor',255);
                 $table->timestamp('asset_date_acquired');
-                $table->Decimal('asset_original_cost')->default(0);
-                $table->Decimal('asset_salvage_value')->default(0);
+                $table->Decimal('asset_original_cost',10,2)->default(0);
+                $table->Decimal('asset_salvage_value',10,2)->default(0);
                 $table->Integer('asset_lifespan')->default(0);
                 $table->Decimal('monthly_depreciation',10,2)->default(0);
                 $table->String('asset_mode_of_acq',255);
-                $table->Decimal('asset_down_payment');    
+                $table->Decimal('asset_down_payment',10,2)->default(0);    
                 $table->Decimal('accumulated_depreciation',10,2)->default(0);
                 $table->Decimal('net_value',10,2)->default(0);
+                $table->timestamp('next_depreciation_date');
                 $table->timestamps();
             });
         }

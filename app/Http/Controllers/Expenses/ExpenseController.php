@@ -17,11 +17,16 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        $title = "Expense";
-        $expenseList = $this->searchExpense(null);
-        return view('expense.show_expense_list',
-                        compact('expenseList',
-                                'title'));
+        try{
+            $title = "Expense";
+            $expenseList = $this->searchExpense(null);
+            return view('expense.show_expense_list',
+                            compact('expenseList',
+                                    'title'));    
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
     }
 
     /**
@@ -89,7 +94,8 @@ class ExpenseController extends Controller
                                                                             $input['total_amount']),
                                 true);
 
-            
+            $this->createSystemLogs('Created New Expense Record');
+            flash()->success('Record successfully created');
             echo $expenseId;
         }catch(\Exception $ex){
             echo 'Error ' . $ex->getMessage();
@@ -191,7 +197,8 @@ class ExpenseController extends Controller
                                                                             $input['total_amount']),
                                 true);
 
-            
+            $this->createSystemLogs('Updated an Existing Expense Record');
+            flash()->success('Record successfully Updated');
             echo $id;
         }catch(\Exception $ex){
             echo 'Error ' . $ex->getMessage();
