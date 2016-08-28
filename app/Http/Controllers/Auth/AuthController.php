@@ -114,7 +114,48 @@ class AuthController extends Controller
                         compact('user'));
     }
 
-    
+    /**
+     * Handle a login request to the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function login(Request $request)
+    {
+        $this->validateLogin($request);
+
+        // If the class is using the ThrottlesLogins trait, we can automatically throttle
+        // the login attempts for this application. We'll key this by the username and
+        // the IP address of the client making these requests into this application.
+        $throttles = $this->isUsingThrottlesLoginsTrait();
+
+        if ($throttles && $lockedOut = $this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+
+        $credentials = $this->getCredentials($request);
+        $user = $this->getLastRecord('User',array('email'=>$request->input('email')));
+        if(count($user) && $user->is_active){
+            $credentials = $this->getCredentials($request);
+        }else{
+            $credentials = array('email'=>'','password'=>'');
+        }
+
+        if (Auth::guard($this->getGuard())->attempt($credentials, $request->has('remember'))) {
+            return $this->handleUserWasAuthenticated($request, $throttles);
+        }
+
+        // If the login attempt was unsuccessful we will increment the number of attempts
+        // to login and redirect the user back to the login form. Of course, when this
+        // user surpasses their maximum number of attempts they will get locked out.
+        if ($throttles && ! $lockedOut) {
+            $this->incrementLoginAttempts($request);
+        }
+
+        return $this->sendFailedLoginResponse($request);
+    }
 
     protected function handleUserWasAuthenticated(Request $request, $throttles)
     {
@@ -159,8 +200,12 @@ class AuthController extends Controller
                 $request, $validator
             );
         }
-
+        $confirmation_code = array('confirmation_code'=>str_random(30));
         $this->create($request->all());
+        $this->sendEmailVerification($request->input('email'),
+                                        $request->input('first_name') . ' ' . $request->input('last_name'),
+                                        $confirmation_code);
+        flash()->success('Congratulations. You\'ve Successfully Registered. An email is sent to your email to verify your account.');
         return redirect('/login');
     }
 

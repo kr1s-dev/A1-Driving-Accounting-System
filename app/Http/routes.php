@@ -16,6 +16,9 @@ Route::get('/', function () {
     return Redirect::to('/login');
 });
 Route::auth();
+//Verification of newly created user
+Route::get('auth/verify/{token}', ['as'=>'verify','uses' => 'RegisterVerifier\RegisterVerifierController@getVerifier']);
+Route::post('auth/verify', ['as'=>'verify','uses' => 'RegisterVerifier\RegisterVerifierController@postVerifier']);
 
 // Uses authentication middleware, to avoid uneccessary access if not login
 Route::group(['middleware' => 'auth'], function () {

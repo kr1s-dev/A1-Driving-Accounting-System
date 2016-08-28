@@ -51,6 +51,7 @@
 
   <!-- START CONTENT -->
   <section id="content">
+    
     @yield('content')
   </section>
   <!-- END CONTENT -->

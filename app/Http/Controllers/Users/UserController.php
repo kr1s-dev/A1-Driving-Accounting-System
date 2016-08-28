@@ -80,21 +80,16 @@ class UserController extends Controller
             $input['confirmation_code'] = $confirmation_code['confirmation_code'];
             $this->createSystemLogs('Created New User Record');
             flash()->success('Record successfully created');
-            $this->insertRecords('users',$input,false);    
+            $this->insertRecords('users',$input,false);   
+            $this->sendEmailVerification($input['email'],
+                                        $input['first_name'] . ' ' . $input['last_name'],
+                                        $confirmation_code);
+            return redirect('/user'); 
         }catch(\Exception $ex){
-            return view('errors.503');
+            echo $ex->getMessage();
         }
         
-        //Pending Email Verification for the user
-        // try{
-            
-        //    $this->sendEmailVerification($input['email'],
-        //                                 $input['first_name'] . ' ' . $input['last_name'],
-        //                                 $confirmation_code);
-        //     return redirect('user'); 
-        // }catch(\Exception $ex){
-        //     echo $ex->getMessage();
-        // }
+        
         
         
     }
@@ -165,6 +160,31 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+            $this->deactivateUser($id);  
+            return redirect('user');   
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+    }
+
+
+    /**
+    * Deactivate User
+    * @param  int  $id
+    * @return \Illuminate\Http\Response
+    **/
+    public function deactivateUser($id){
+        try{
+            $user = $this->searchUser($id);
+            $user->is_active = 0;
+            $user->save();
+            $this->createSystemLogs('Deactivated an Active User');
+            flash()->success('User succesfully deactivated')->important();
+               
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }
+        
     }
 }

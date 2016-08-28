@@ -1,50 +1,42 @@
-Guzzle, PHP HTTP client
-=======================
+Guzzle, PHP HTTP client and webservice framework
+================================================
 
-[![Build Status](https://travis-ci.org/guzzle/guzzle.svg?branch=master)](https://travis-ci.org/guzzle/guzzle)
+[![Build Status](https://secure.travis-ci.org/guzzle/guzzle.png?branch=master)](http://travis-ci.org/guzzle/guzzle)
 
-Guzzle is a PHP HTTP client that makes it easy to send HTTP requests and
-trivial to integrate with web services.
-
-- Simple interface for building query strings, POST requests, streaming large
-  uploads, streaming large downloads, using HTTP cookies, uploading JSON data,
-  etc...
-- Can send both synchronous and asynchronous requests using the same interface.
-- Uses PSR-7 interfaces for requests, responses, and streams. This allows you
-  to utilize other PSR-7 compatible libraries with Guzzle.
-- Abstracts away the underlying HTTP transport, allowing you to write
-  environment and transport agnostic code; i.e., no hard dependency on cURL,
-  PHP streams, sockets, or non-blocking event loops.
-- Middleware system allows you to augment and compose client behavior.
+Guzzle is a PHP HTTP client that makes it easy to work with HTTP/1.1 and takes
+the pain out of consuming web services.
 
 ```php
-$client = new \GuzzleHttp\Client();
-$res = $client->request('GET', 'https://api.github.com/user', [
-    'auth' => ['user', 'pass']
-]);
+$client = new GuzzleHttp\Client();
+$response = $client->get('http://guzzlephp.org');
+$res = $client->get('https://api.github.com/user', ['auth' =>  ['user', 'pass']]);
 echo $res->getStatusCode();
-// 200
-echo $res->getHeaderLine('content-type');
+// "200"
+echo $res->getHeader('content-type');
 // 'application/json; charset=utf8'
 echo $res->getBody();
 // {"type":"User"...'
-
-// Send an asynchronous request.
-$request = new \GuzzleHttp\Psr7\Request('GET', 'http://httpbin.org');
-$promise = $client->sendAsync($request)->then(function ($response) {
-    echo 'I completed! ' . $response->getBody();
-});
-$promise->wait();
+var_export($res->json());
+// Outputs the JSON decoded data
 ```
 
-## Help and docs
+- Pluggable HTTP adapters that can send requests serially or in parallel
+- Doesn't require cURL, but uses cURL by default
+- Streams data for both uploads and downloads
+- Provides event hooks & plugins for cookies, caching, logging, OAuth, mocks,
+  etc.
+- Keep-Alive & connection pooling
+- SSL Verification
+- Automatic decompression of response bodies
+- Streaming multipart file uploads
+- Connection timeouts
 
-- [Documentation](http://guzzlephp.org/)
-- [stackoverflow](http://stackoverflow.com/questions/tagged/guzzle)
-- [Gitter](https://gitter.im/guzzle/guzzle)
+Get more information and answers with the
+[Documentation](http://guzzlephp.org/),
+[Forums](https://groups.google.com/forum/?hl=en#!forum/guzzle),
+and IRC ([#guzzlephp](irc://irc.freenode.net/#guzzlephp) @ irc.freenode.net).
 
-
-## Installing Guzzle
+### Installing via Composer
 
 The recommended way to install Guzzle is through
 [Composer](http://getcomposer.org).
@@ -54,10 +46,14 @@ The recommended way to install Guzzle is through
 curl -sS https://getcomposer.org/installer | php
 ```
 
-Next, run the Composer command to install the latest stable version of Guzzle:
+Next, update your project's composer.json file to include Guzzle:
 
-```bash
-php composer.phar require guzzlehttp/guzzle
+```javascript
+{
+    "require": {
+        "guzzlehttp/guzzle": "~4.0"
+    }
+}
 ```
 
 After installing, you need to require Composer's autoloader:
@@ -66,25 +62,7 @@ After installing, you need to require Composer's autoloader:
 require 'vendor/autoload.php';
 ```
 
-You can then later update Guzzle using composer:
+### Documentation
 
- ```bash
-composer.phar update
- ```
-
-
-## Version Guidance
-
-| Version | Status      | Packagist           | Namespace    | Repo                | Docs                | PSR-7 |
-|---------|-------------|---------------------|--------------|---------------------|---------------------|-------|
-| 3.x     | EOL         | `guzzle/guzzle`     | `Guzzle`     | [v3][guzzle-3-repo] | [v3][guzzle-3-docs] | No    |
-| 4.x     | EOL         | `guzzlehttp/guzzle` | `GuzzleHttp` | N/A                 | N/A                 | No    |
-| 5.x     | Maintained  | `guzzlehttp/guzzle` | `GuzzleHttp` | [v5][guzzle-5-repo] | [v5][guzzle-5-docs] | No    |
-| 6.x     | Latest      | `guzzlehttp/guzzle` | `GuzzleHttp` | [v6][guzzle-6-repo] | [v6][guzzle-6-docs] | Yes   |
-
-[guzzle-3-repo]: https://github.com/guzzle/guzzle3
-[guzzle-5-repo]: https://github.com/guzzle/guzzle/tree/5.3
-[guzzle-6-repo]: https://github.com/guzzle/guzzle
-[guzzle-3-docs]: http://guzzle3.readthedocs.org/en/latest/
-[guzzle-5-docs]: http://guzzle.readthedocs.org/en/5.3/
-[guzzle-6-docs]: http://guzzle.readthedocs.org/en/latest/
+More information can be found in the online documentation at
+http://guzzlephp.org/.
