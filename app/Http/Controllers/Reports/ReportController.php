@@ -89,6 +89,10 @@ class ReportController extends Controller
     	$incStatementItemsList = $this->getJournalEntryRecordsWithFilter('5',$monthFilter,$yearFilter);
     	$expStatementItemsList = $this->getJournalEntryRecordsWithFilter('6',$monthFilter,$yearFilter);
 
+        //print_r($expStatementItemsList);
+        //echo (count($incomeItemsList));
+        //echo (count($expenseItemsList));
+
     	$incomeItemsList = $this->getItemsAmountList($incStatementItemsList,'Income');
     	$expenseItemsList = $this->getItemsAmountList($expStatementItemsList,'Expense');
 
@@ -114,6 +118,7 @@ class ReportController extends Controller
 
         $incomeItemsList = $this->getItemsAmountList($incStatementItemsList,'Income');
         $expenseItemsList = $this->getItemsAmountList($expStatementItemsList,'Expense');
+        
 
         $incTotalSum = $this->getTotalSum($incomeItemsList);
         $expTotalSum = $this->getTotalSum($expenseItemsList);
@@ -126,7 +131,7 @@ class ReportController extends Controller
 
     	$eqTotalSum = ($this->getTotalSum($equityItemsList)) + $totalProfit ;
 
-    	//print_r($equityItemsList);
+    	print_r($equityItemsList);
     	return view('reports.statement_of_owners_equity',
     					compact('yearFilter',
     							'monthFilter',

@@ -528,10 +528,19 @@ trait UtilityHelper
     }
 
     public function getJournalEntryRecordsWithFilter($accountGroupId,$monthFilter,$yearFilter){
+        DB::enableQueryLog();
         $yearFilter = $yearFilter==NULL?date('Y'):date($yearFilter);
         $query = null;
+        if(Auth::user()->branch_id != NULL && !(Auth::user()->branchInfo->main_office) && Auth::user()->userType->type != 'Administrator'){
+            $query = JournalModel::whereHas('userCreateInfo',function($q){
+                                            $q->where('branch_id','!=',NULL)
+                                            ->where('branch_id','=',Auth::user()->branch_id);
+                                            });
+        }
+
         if(!is_null($accountGroupId)){
-            $query = JournalModel::orWhere(function($query) use ($accountGroupId){
+            if($query==NULL){
+                $query = JournalModel::where(function($query) use ($accountGroupId){
                                                     $query->whereHas('credit',function($q) use ($accountGroupId){
                                                         $q->where('account_group_id', '=', $accountGroupId);
                                                     })
@@ -539,11 +548,25 @@ trait UtilityHelper
                                                         $q->where('account_group_id', '=', $accountGroupId);
                                                     });
                                                 });
+            }else{
+                $query->where(function($query) use ($accountGroupId){
+                                $query->whereHas('credit',function($q) use ($accountGroupId){
+                                    $q->where('account_group_id', '=', $accountGroupId);
+                                })
+                                ->orWhereHas('debit',function($q) use ($accountGroupId){
+                                    $q->where('account_group_id', '=', $accountGroupId);
+                                });
+                            });
+            }
+            
+            
         }
 
         if(empty($monthFilter)){
             $query  = $query==NULL? JournalModel::whereYear('created_at','=',$yearFilter) : 
                             $query->whereYear('created_at','=',$yearFilter);
+
+            
         }else{
             $monthFilter = $monthFilter==NULL?date('m'):date($monthFilter); 
             $query  = $query==NULL? JournalModel::whereYear('created_at','=',$yearFilter)
@@ -551,6 +574,7 @@ trait UtilityHelper
                                                             $query->whereYear('created_at','=',$yearFilter)
                                                                     ->whereMonth('created_at','=',$monthFilter);
         }
+        \Log::debug(DB::getQueryLog());
         return $query->get();
     }
 

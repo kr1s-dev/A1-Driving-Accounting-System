@@ -68,9 +68,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('reports/incomestatement','Reports\ReportController@postGenerateIncomeStatement');
     Route::get('reports/ownersequitystatement',['as'=>'ownersequity','uses'=>'Reports\ReportController@getGenerateOwnersEquityStatement']);
     Route::post('reports/ownersequitystatement','Reports\ReportController@postGenerateOwnersEquityStatement');
-    Route::get('reports/balancesheet',['as'=>'balancesheet','uses'=>'reports\ReportController@getGenerateBalanceSheet']);
-    Route::post('reports/balancesheet','reports\ReportController@postGenerateBalanceSheet');
-    Route::get('reports/assets',['as'=>'asset.registry','uses'=>'reports\ReportController@getGenerateAssetRegistry']);
+    Route::get('reports/balancesheet',['as'=>'balancesheet','uses'=>'Reports\ReportController@getGenerateBalanceSheet']);
+    Route::post('reports/balancesheet','Reports\ReportController@postGenerateBalanceSheet');
+    Route::get('reports/assets',['as'=>'asset.registry','uses'=>'Reports\ReportController@getGenerateAssetRegistry']);
 
     //PDF Generation
     Route::post('pdf','PDF\PDFController@postGeneratePDF');

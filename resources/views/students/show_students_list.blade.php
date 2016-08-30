@@ -36,23 +36,26 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                  @foreach($studentList as $student)
-                    <tr>
-                      <td><a href="{{route('students.show',$student->id)}}">{{sprintf("%'.07d\n", $student->id)}}</a></td>
-                      <td>{{$student->stud_first_name}}</td>
-                      <td>{{$student->stud_last_name}}</td>
-                      <td>{{$student->stud_email}}</td>
-                      <td>{{$student->stud_mobile_no}}</td>
-                      <td class="center-align">
-                        <a href="{{route('students.edit',$student->id)}}" style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4">
-                          <i class="mdi-content-create"></i>
-                        </a>
-                        <!--a class="btn-floating waves-effect waves-light grey darken-4">
-                          <i class="mdi-action-lock"></i>
-                        </a-->
-                      </td>
-                    </tr>
-                  @endforeach
+                  @if(!(empty($studentList)))
+                    @foreach($studentList as $student)
+                      <tr>
+                        <td><a href="{{route('students.show',$student->id)}}">{{sprintf("%'.07d\n", $student->id)}}</a></td>
+                        <td>{{$student->stud_first_name}}</td>
+                        <td>{{$student->stud_last_name}}</td>
+                        <td>{{$student->stud_email}}</td>
+                        <td>{{$student->stud_mobile_no}}</td>
+                        <td class="center-align">
+                          <a href="{{route('students.edit',$student->id)}}" style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4">
+                            <i class="mdi-content-create"></i>
+                          </a>
+                          <!--a class="btn-floating waves-effect waves-light grey darken-4">
+                            <i class="mdi-action-lock"></i>
+                          </a-->
+                        </td>
+                      </tr>
+                    @endforeach
+                  @endif
+                  
                 </tbody>
               </table>
             </div>
