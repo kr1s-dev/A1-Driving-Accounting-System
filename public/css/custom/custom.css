@@ -13,3 +13,7 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
 .breadcrumbs-wrapper {
 	background:#e53935;
 }
+
+.form-wrapper {
+	display: inline;
+}
