@@ -24,8 +24,8 @@
   <!-- For iPhone -->
   <meta name="msapplication-TileColor" content="#00bcd4">
   <meta name="msapplication-TileImage" content="images/favicon/mstile-144x144.png">
-  <!-- For Windows Phone -->
-
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <!-- CORE CSS-->
   <link href="{{ URL::asset('css/materialize.css')}}" rel="stylesheet" media="screen,projection">
