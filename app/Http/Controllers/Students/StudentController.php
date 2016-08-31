@@ -41,15 +41,19 @@ class StudentController extends Controller
         try{
             $title = 'Students';
             $student = $this->putStudent();
-            $student->stud_date_of_birth = date('d F, Y');
+            $student->stud_date_of_birth = date('d F, Y',strtotime('-2 days'));
             $lastInsertedBranch = $this->getControlNo('students');
             $branchList = $this->getUsersBranch(null);
             $studentNumber = $lastInsertedBranch->AUTO_INCREMENT;
+            $maritalStatus = $this->generateMaritalStatus(null);
+            $genderList = $this->generateGender(null);
             return view('students.create_student',
                             compact('title',
                                     'student',
                                     'studentNumber',
-                                    'branchList'));    
+                                    'branchList',
+                                    'maritalStatus',
+                                    'genderList'));    
         }catch(\Exception $ex){
             return view('errors.503');
         }
@@ -66,7 +70,7 @@ class StudentController extends Controller
     {
         try{
             $input = $this->removeKeys($request->all(),true,true);
-            $input['stud_date_of_birth'] = date('Y-d-m',strtotime($input['stud_date_of_birth']));
+            $input['stud_date_of_birth'] = date('Y-m-d',strtotime($input['stud_date_of_birth']));
             $studentId = $this->insertRecords('students',$input,false);
             $this->createSystemLogs('Created New Student Record');
             flash()->success('Record successfully created');
@@ -125,11 +129,15 @@ class StudentController extends Controller
             if($student != NULL){
                 $branchList = $this->getUsersBranch($student->training_station_id);
                 $studentNumber = $id;
+                $maritalStatus = $this->generateMaritalStatus($student->stud_marital_status);
+                $genderList = $this->generateGender($student->stud_gender);
                 return view('students.edit_student',
                                 compact('title',
                                         'student',
                                         'studentNumber',
-                                        'branchList'));
+                                        'branchList',
+                                        'maritalStatus',
+                                        'genderList'));
             }else{
                 return view('errors.503');
             }
@@ -171,5 +179,36 @@ class StudentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function generateMaritalStatus($chosen){
+        $maritalStatusList = array('Single','Married','Widowed','Divorced','Annuled');
+        $maritalStatus = array();
+        if(is_null($chosen)){
+            $maritalStatus[] = $chosen;
+            foreach ($maritalStatusList as $marStat) {
+               if($chosen !== $marStat)
+                    $maritalStatus[] = $marStat;
+            }
+            return $maritalStatus;
+        }else{
+            return $maritalStatusList;
+        }
+    }
+
+
+    public function generateGender($chosen){
+        $genderDefaultList = array('Male','Female');
+        $genderList = array();
+        if(is_null($chosen)){
+            $genderList[] = $chosen;
+            foreach ($genderDefaultList as $gen) {
+               if($chosen !== $gen)
+                    $genderList[] = $gen;
+            }
+            return $genderList;
+        }else{
+            return $genderDefaultList;
+        }
     }
 }

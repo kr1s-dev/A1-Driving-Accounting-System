@@ -15,13 +15,12 @@
                   	<div class="card-panel">
                     	<br>
                       <div class="row">
-              					<div class="col s12 m12 l6">
+              					<div class="col s12 m12 l12">
                 					<table class="striped">
                 						<thead class="green white-text">
                   						<tr>
                                 <th>Asset No#</th>
                                 <th>Item Name</th>
-                                <th>Quantity</th>
                                 <th>Monthly Depreciation</th>
                                 <th>Accumulated Depreciation</th>
                                 <th>Remaining Months</th>
@@ -34,12 +33,11 @@
                               @else
                                 @foreach($assetItemList as $assetItem)
                                   <tr>
-                                    <td><a href="{{route('assets.show',$assetItem->id)}}"><em><strong>{{sprintf("%'.07d\n", $assetItem->id)}}</strong></em></a></td>
-                                    <td>{{$assetItem->item_name}}</td>
-                                    <td>{{number_format($assetItem->quantity,2)}}</td>
+                                    <td><a href="{{route('asset.show',$assetItem->id)}}"><em><strong>{{sprintf("%'.07d\n", $assetItem->id)}}</strong></em></a></td>
+                                    <td>{{$assetItem->asset_name}}</td>
                                     <td>PHP {{number_format($assetItem->monthly_depreciation,2)}}</td>
                                     <td>PHP {{number_format($assetItem->accumulated_depreciation,2)}}</td>  
-                                    <td>{{$assetItem->useful_life}}</td>
+                                    <td>{{$assetItem->asset_lifespan}} mo/s</td>
                                     <td>{{$assetItem->net_value}}</td>  
                                   </tr>
                                 @endforeach

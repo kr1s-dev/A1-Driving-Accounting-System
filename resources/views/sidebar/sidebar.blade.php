@@ -20,7 +20,7 @@
           </div>
         </div>
         </li>
-        <li class="bold"><a href="../index.html" class="waves-effect waves-cyan"><i class="mdi-action-dashboard"></i> Dashboard</a>
+        <li class="bold"><a href="{{route('admin-dashboard')}}" class="waves-effect waves-cyan"><i class="mdi-action-dashboard"></i> Dashboard</a>
         </li>
         
         @if(Auth::user()->userType->type === 'Administrator' ||
@@ -45,7 +45,7 @@
                 <ul class="collapsible collapsible-accordion">
                     <li class="bold">
                     <a class="collapsible-header waves-effect waves-cyan">
-                    <i class="mdi-social-school"></i> Branches
+                    <i class="material-icons">location_city</i> Branches
                     </a>
                         <div class="collapsible-body">
                             <ul>
@@ -65,7 +65,7 @@
             <ul class="collapsible collapsible-accordion">
                 <li class="bold">
                 <a class="collapsible-header waves-effect waves-cyan">
-                <i class="mdi-social-school"></i> Students
+                <i class="material-icons">school</i> Students
                 </a>
                     <div class="collapsible-body">
                         <ul>
@@ -83,7 +83,7 @@
             <ul class="collapsible collapsible-accordion">
                 <li class="bold">
                 <a class="collapsible-header waves-effect waves-cyan">
-                <i class="mdi-social-school"></i> Invoices
+                <i class="material-icons">assignment</i> Invoices
                 </a>
                     <div class="collapsible-body">
                         <ul>
@@ -101,7 +101,7 @@
             <ul class="collapsible collapsible-accordion">
                 <li class="bold">
                 <a class="collapsible-header waves-effect waves-cyan">
-                <i class="mdi-social-school"></i> Receipts
+                <i class="material-icons">receipt</i> Receipts
                 </a>
                     <div class="collapsible-body">
                         <ul>
@@ -119,7 +119,7 @@
             <ul class="collapsible collapsible-accordion">
                 <li class="bold">
                 <a class="collapsible-header waves-effect waves-cyan">
-                <i class="mdi-social-school"></i> Expenses
+                <i class="material-icons">attach_money</i> Expenses
                 </a>
                     <div class="collapsible-body">
                         <ul>
@@ -137,7 +137,7 @@
             <ul class="collapsible collapsible-accordion">
                 <li class="bold">
                 <a class="collapsible-header waves-effect waves-cyan">
-                <i class="mdi-social-school"></i> Assets
+                <i class="material-icons">directions_car</i> Assets
                 </a>
                     <div class="collapsible-body">
                         <ul>
@@ -155,7 +155,7 @@
             <ul class="collapsible collapsible-accordion">
                 <li class="bold">
                 <a class="collapsible-header waves-effect waves-cyan">
-                <i class="mdi-social-school"></i> Account Information
+                <i class="material-icons">account_balance</i> Account Information
                 </a>
                     <div class="collapsible-body">
                         <ul>
@@ -173,7 +173,7 @@
             <ul class="collapsible collapsible-accordion">
                 <li class="bold">
                 <a class="collapsible-header waves-effect waves-cyan">
-                <i class="mdi-social-school"></i> Account Titles
+                <i class="material-icons">folder</i> Account Titles
                 </a>
                     <div class="collapsible-body">
                         <ul>
@@ -191,7 +191,7 @@
             <ul class="collapsible collapsible-accordion">
                 <li class="bold">
                 <a class="collapsible-header waves-effect waves-cyan">
-                <i class="mdi-social-school"></i> Journal Entry
+                <i class="material-icons">account_balance_wallet</i> Journal Entry
                 </a>
                     <div class="collapsible-body">
                         <ul>
@@ -212,13 +212,13 @@
             <ul class="collapsible collapsible-accordion">
                 <li class="bold">
                 <a class="collapsible-header waves-effect waves-cyan">
-                <i class="mdi-social-school"></i> Reports
+                <i class="material-icons">picture_as_pdf</i> Reports
                 </a>
                     <div class="collapsible-body">
                         <ul>
                             <li><a href="{{route('incomestatement')}}">Income Statement</a>
                             </li>
-                            <li><a href="{{route('ownersequity')}}">Statement of Owners Equity</a>
+                            <li><a href="{{route('ownersequity')}}">Statement of OE</a>
                             </li>
                             <li><a href="{{route('balancesheet')}}">Balance Sheet</a>
                             </li>

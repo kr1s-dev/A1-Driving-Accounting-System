@@ -24,19 +24,15 @@
   <!-- For iPhone -->
   <meta name="msapplication-TileColor" content="#00bcd4">
   <meta name="msapplication-TileImage" content="images/favicon/mstile-144x144.png">
-  <!-- For Windows Phone -->
-
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <!-- CORE CSS-->
   <link href="{{ URL::asset('css/materialize.css')}}" rel="stylesheet" media="screen,projection">
   <link href="{{ URL::asset('css/style.css')}}" rel="stylesheet" media="screen,projection">
   <!-- Custome CSS-->    
   <link href="{{ URL::asset('css/custom/custom.css')}}" rel="stylesheet" media="screen,projection">
-  
-  
 
-
-  <!-- INCLUDED PLUGIN CSS ON THIS PAGE -->
   <!-- INCLUDED PLUGIN CSS ON THIS PAGE -->
   <link href="{{ URL::asset('js/plugins/prism/prism.css')}}" rel="stylesheet" media="screen,projection">
   <link href="{{ URL::asset('js/plugins/perfect-scrollbar/perfect-scrollbar.css')}}" type="text/css" rel="stylesheet" media="screen,projection">

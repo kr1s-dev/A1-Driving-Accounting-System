@@ -85,7 +85,7 @@
                                       <thead>
                                           <tr>
                                             <th>Item Name</th>
-                                            <th>Default Value</th>
+                                            <!--th>Default Value</th-->
                                             <th>Action</th>
                                           </tr>
                                       </thead>
@@ -93,7 +93,7 @@
                                         @foreach($itemList as $item)
                                           <tr>
                                             <td>{{$item->item_name}}</td>
-                                            <td>PHP {{number_format($item->default_value,2)}}</td>
+                                            <!--td>PHP {{number_format($item->default_value,2)}}</td-->
                                             <td class="center-align">
                                               <a href="{{route('item.edit',$item->id)}}" style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4">
                                                 <i class="mdi-content-create"></i>

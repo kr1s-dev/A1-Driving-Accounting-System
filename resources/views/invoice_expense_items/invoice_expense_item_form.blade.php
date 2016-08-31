@@ -15,12 +15,12 @@
     <label for="first_name">Item Name</label>
   </div>
 </div>
-<div class="row">
+<!--div class="row">
   <div class="input-field col s12 m6 l6">
     <input id="name" type="number" min="0" name="default_value" value="{{ count($errors) > 0? old('default_value'):($item->default_value) }}">
     <label for="first_name">Default Value</label>
   </div>
-</div>
+</div-->
 <div class="row">
   <div class="input-field col s12 m6 l6">
     <textarea class="materialize-textarea" name="remarks" id="desc" cols="30" rows="10">{{ count($errors) > 0? old('remarks'):($item->remarks) }}</textarea>

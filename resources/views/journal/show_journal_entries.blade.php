@@ -7,7 +7,7 @@
             	<h4 class="header">View All Account Entries</h4>
             	<div class="row right-align">
                 	<div class="col l12 m12 s12">
-                  		<a href="../invoices/create.html" class="btn waves-effect waves-light cyan" type="submit" name="action">
+                  		<a href="{{route('journal.create')}}" class="btn waves-effect waves-light cyan" type="submit" name="action">
                      		Create New Journal Entry
                   		</a>
                 	</div>

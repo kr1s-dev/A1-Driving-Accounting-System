@@ -8,13 +8,22 @@
       <div id="table-datatables">
         <h4 class="header">{{sprintf("%'.07d\n", $student->id)}} | {{$student->stud_first_name}}&nbsp;{{$student->stud_last_name}}</h4>
         <div class="row">
-          <div class="col s12 m12 l12">
+          <div class="col s12 m12 l12">   
             <!--Basic Form-->
             <div id="basic-form" class="section">
               <div class="row">
                 <div class="col s12 m12 l12">
                   <div class="card-panel">
-                    <h4 class="header2">Student Information</h4>
+                    <div class="row">
+                      <div class="col l6 m6 s12">
+                        <h4 class="header2">Student Information</h4>
+                      </div>
+                      <div class="col l6 m6 s12">
+                        <a href="{{route('students.edit',$student->id)}}" class="btn waves-effect waves-light cyan right" type="submit" name="action">Update Student
+                          <i class="mdi-action-receipt right"></i>
+                      </a>
+                      </div>
+                    </div>
                     <div class="row">
                       <div class="col l3 m3 s12">
                         <h6><strong>Branch Enrolled</strong></h6>
@@ -25,7 +34,7 @@
                           @if($student->userCreateInfo->branch_id != NULL)
                             {{$student->userCreateInfo->branchInfo->branch_name}}
                           @else
-                            No Branch
+                            - 
                           @endif
                         </h6>
                       </div>
@@ -93,7 +102,7 @@
                         <h6><strong>Age</strong></h6>
                       </div>
                       <div class="col l3 m3 s12">
-                        <h6>0</h6>
+                        <h6>{{date_diff(date_create($student->stud_date_of_birth),date_create('today'))->y}}</h6>
                       </div>
                     </div>
                     <div class="divider"></div>

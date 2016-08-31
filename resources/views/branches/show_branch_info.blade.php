@@ -14,9 +14,9 @@
                   					<div class="card-panel">
                     					<div class="row">
                       						<div class="input-field col s12">
-                        						<button class="btn red darken-2 waves-effect waves-light right" type="submit" name="action" style="margin-left:10px;">Disable
+                        						<!--button class="btn red darken-2 waves-effect waves-light right" type="submit" name="action" style="margin-left:10px;">Disable
                           							<i class="mdi-action-lock left"></i>
-                        						</button>
+                        						</button-->
                         						<a href="{{route('branches.edit',$branch->id)}}" class="btn cyan waves-effect waves-light right">Edit
                         							<i class="mdi-content-create left"></i>
                         						</a>

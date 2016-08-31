@@ -22,6 +22,10 @@ Route::post('auth/verify', ['as'=>'verify','uses' => 'RegisterVerifier\RegisterV
 
 // Uses authentication middleware, to avoid uneccessary access if not login
 Route::group(['middleware' => 'auth'], function () {
+
+	//Admin Dashboard Routes
+	Route::get('admin-dashboard',['as'=>'admin-dashboard','uses'=>'AdminDashboard\AdminDashboardController@getAdminDashboard']);
+
 	//Branch Routes
 	Route::resource('branches','Branches\BranchController');
 

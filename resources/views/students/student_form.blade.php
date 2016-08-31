@@ -18,7 +18,6 @@
   </div-->
   <div class="input-field col s12 m6 l6">
       <select name="training_station_id">
-        <option value="" disabled selected>Select Training Station</option>
         @foreach($branchList as $key => $value)
           <option value="{{$key}}">{{$value}}</option>
         @endforeach
@@ -89,22 +88,34 @@
 
 <div class="row">
   <div class="input-field col s12 m6 l6">
-      <select name="stud_marital_status" value="{{count($errors)>0?old('stud_marital_status'):$student->stud_marital_status}}">
-        <option value="" disabled selected>Choose marital status</option>
-        <option value="1">Single</option>
-        <option value="2">Married</option>
-        <option value="3">Widowed</option>
-        <option value="3">Divorced</option>
-        <option value="3">Annuled</option>
+      <select name="stud_marital_status" >
+        @foreach($maritalStatus as $maritalStat)
+          @if(empty($maritalStat))
+            <option value="" disabled selected>Choose marital status</option>
+          @endif
+          <option value="{{$maritalStat}}">{{$maritalStat}}</option>
+        @endforeach
+        
+        
+        <!-- <option value="Single">Single</option>
+        <option value="Married">Married</option>
+        <option value="Widowed">Widowed</option>
+        <option value="Divorced">Divorced</option>
+        <option value="Annuled">Annuled</option> -->
       </select>
       <label>Select Marital Status</label>
   </div>
   <div class="input-field col s12 m6 l6">
-      <select name="stud_gender" value="{{count($errors)>0?old('stud_gender'):$student->stud_gender}}">
-        <option value="" disabled selected>Choose gender</option>
-        <option value="1">Male</option>
-        <option value="2">Female</option>
-        <option value="3">Others</option>
+      <select name="stud_gender" >
+        @foreach($genderList as $gen)
+          @if(empty($gen))
+            <option value="" disabled selected>Choose gender</option>
+          @endif
+          <option value="{{$gen}}">{{$gen}}</option>
+        @endforeach
+        <!-- <option value="" disabled selected>Choose gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option> -->
       </select>
       <label>Gender</label>
   </div>

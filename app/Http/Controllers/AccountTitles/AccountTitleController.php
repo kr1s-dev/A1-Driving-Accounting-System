@@ -114,10 +114,10 @@ class AccountTitleController extends Controller
             if(array_key_exists('account_group_name', $input)){
                 unset($input['account_group_name']);
             }
-            $this->insertRecords('account_titles',$input,false);
+            $id = $this->insertRecords('account_titles',$input,false);
             $this->createSystemLogs('Created New Account Title');
             flash()->success('Record successfully created');
-            return redirect('accounttitle');
+            return redirect('accounttitle/' . $id);
         }catch(\Exception $ex){
             return view('errors.503');
         }
@@ -184,7 +184,7 @@ class AccountTitleController extends Controller
             $this->updateRecords('account_titles',array($id),$input);
             $this->createSystemLogs('Updated Account Title');
             flash()->success('Record successfully Updated');
-            return redirect('accounttitle');
+            return redirect('accounttitle/' . $id);
         }catch(\Exception $ex){
             return view('errors.503');
         }
