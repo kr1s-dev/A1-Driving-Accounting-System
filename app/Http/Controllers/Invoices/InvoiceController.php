@@ -76,6 +76,8 @@ class InvoiceController extends Controller
     {
         $input = $this->removeKeys($request->all(),true,true);
         $data = $input['data'];
+        $toConvertData = explode(' ',$input['payment_due_date']);
+        $input['payment_due_date'] = str_replace(',',' ',$toConvertData[1]) . $toConvertData[0] . ' ,' . $toConvertData[2];
         $input['payment_due_date'] = date('Y-m-d',strtotime($input['payment_due_date']));
         unset($input['data']);
         $student = $this->searchStudent($input['student_id']);
@@ -192,6 +194,8 @@ class InvoiceController extends Controller
     {
         $input = $this->removeKeys($request->all(),false,true);
         $data = $input['data'];
+        $toConvertData = explode(' ',$input['payment_due_date']);
+        $input['payment_due_date'] = str_replace(',',' ',$toConvertData[1]) . $toConvertData[0] . ' ,' . $toConvertData[2];
         $input['payment_due_date'] = date('Y-m-d',strtotime($input['payment_due_date']));
         unset($input['data']);
         $student = $this->searchStudent($input['student_id']);

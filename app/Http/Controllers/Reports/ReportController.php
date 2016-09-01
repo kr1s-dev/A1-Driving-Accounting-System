@@ -131,7 +131,7 @@ class ReportController extends Controller
 
     	$eqTotalSum = ($this->getTotalSum($equityItemsList)) + $totalProfit ;
 
-    	print_r($equityItemsList);
+    	//print_r($equityItemsList);
     	return view('reports.statement_of_owners_equity',
     					compact('yearFilter',
     							'monthFilter',

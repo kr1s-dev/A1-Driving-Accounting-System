@@ -70,6 +70,8 @@ class StudentController extends Controller
     {
         try{
             $input = $this->removeKeys($request->all(),true,true);
+            $toConvertData = explode(' ',$input['stud_date_of_birth']);
+            $input['stud_date_of_birth'] = str_replace(',',' ',$toConvertData[1]) . $toConvertData[0] . ' ,' . $toConvertData[2];
             $input['stud_date_of_birth'] = date('Y-m-d',strtotime($input['stud_date_of_birth']));
             $studentId = $this->insertRecords('students',$input,false);
             $this->createSystemLogs('Created New Student Record');
@@ -159,6 +161,8 @@ class StudentController extends Controller
     {
         try{
             $input = $this->removeKeys($request->all(),false,true);
+            $toConvertData = explode(' ',$input['stud_date_of_birth']);
+            $input['stud_date_of_birth'] = str_replace(',',' ',$toConvertData[1]) . $toConvertData[0] . ' ,' . $toConvertData[2];
             $input['stud_date_of_birth'] = date('Y-m-d',strtotime($input['stud_date_of_birth']));
             $this->updateRecords('students',array($id),$input);
             $this->createSystemLogs('Updated an Existing Student Record');

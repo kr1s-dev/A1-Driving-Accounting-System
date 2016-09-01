@@ -81,7 +81,7 @@ return [
     |
     */
 
-    //'username' => env('MAIL_USERNAME',null),
+    'username' => env('MAIL_USERNAME',null),
 
     /*
     |--------------------------------------------------------------------------
@@ -94,7 +94,7 @@ return [
     |
     */
 
-    //'password' => env('MAIL_PASSWORD',null),
+    'password' => env('MAIL_PASSWORD',null),
 
     /*
     |--------------------------------------------------------------------------

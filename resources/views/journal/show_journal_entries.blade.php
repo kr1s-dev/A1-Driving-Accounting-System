@@ -18,6 +18,7 @@
                      	<thead>
 	                        <tr>
 	                           <th>Date</th>
+	                           <th>Branch</th>
 	                           <th>Ref #</th>
 	                           <th>Description</th>
 	                           <th>Debit</th>
@@ -29,6 +30,7 @@
                      	<tfoot>
 	                        <tr>
 	                           <th>Date</th>
+	                           <th>Branch</th>
 	                           <th>Ref #</th>
 	                           <th>Description</th>
 	                           <th>Debit</th>
@@ -41,6 +43,13 @@
                      		@foreach($journalEntryList as $journalEntry)
 	                     		<tr>
 		                           <td>{{date('m-d-Y',strtotime($journalEntry->created_at))}}</td>
+		                           <td>
+		                           		@if($journalEntry->userCreateInfo->branch_id != NULL)
+		                           			{{$journalEntry->userCreateInfo->branchInfo->branch_name}}
+		                           		@else
+		                           			-
+		                           		@endif
+		                           
 		                           <td>
 		                        		@if($journalEntry->invoice_id != NULL)
 		                        			<a href="{{route('invoice.show',$journalEntry->invoice_id)}}">

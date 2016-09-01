@@ -70,6 +70,7 @@ class ReceiptController extends Controller
     public function store(ReceiptRequest $request)
     {
         $input = $this->removeKeys($request->all(),true,true);
+        $amount = str_replace(',','', $input['outstanding_balance']);
         $balance = str_replace(',','', $input['outstanding_balance']) - $input['amount_paid'];
         $input['outstanding_balance'] = $balance<0?0:$balance;
         $invoice = $this->getLastRecord('InvoiceModel',array('id'=>$input['payment_id']));
@@ -90,7 +91,7 @@ class ReceiptController extends Controller
                                                                             'Created Receipt for Student ' .
                                                                                 $invoice->studentInfo->stud_first_name . ' ' .
                                                                                 $invoice->studentInfo->stud_last_name,
-                                                                            $input['amount_paid']),
+                                                                            $balance<0?$amount:$input['amount_paid']),
                                 true);
             $this->createSystemLogs('Created New Receipt Record');
             flash()->success('Record successfully created');
