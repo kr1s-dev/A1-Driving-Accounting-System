@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => null, 'name' => null],
+    'from' => ['address' => 'do_not_reply@a1driving_school.com', 'name' => 'A1 Driving School'],
 
     /*
     |--------------------------------------------------------------------------

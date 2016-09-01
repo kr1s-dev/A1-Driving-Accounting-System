@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 
 use Auth;
 use App\Http\Requests;
+use Illuminate\Mail\Message;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\UserRequest;
+use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\Utility\UtilityHelper;
 
 class UserController extends Controller
@@ -168,6 +170,16 @@ class UserController extends Controller
         }
     }
 
+    public function sendUserResetLinkEmail($id){
+        try{
+            $user = $this->searchUser($id);
+            $this->sendResetLinkEmail($user->email);  
+            return redirect('user');   
+        }catch(\Exception $ex){
+            return view('errors.503');
+        }       
+    }
+
 
     /**
     * Deactivate User
@@ -186,5 +198,49 @@ class UserController extends Controller
             return view('errors.503');
         }
         
+    }
+
+    /**
+     * Send a reset link to the given user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function sendResetLinkEmail($email)
+    {
+        $broker = null;
+        $response = Password::broker($broker)->sendResetLink(
+            array('email'=>$email),
+            $this->resetEmailBuilder()
+        );
+        switch ($response) {
+            case Password::RESET_LINK_SENT:
+                return $this->getSendResetLinkEmailSuccessResponse($response);
+            case Password::INVALID_USER:
+            default:
+                return $this->getSendResetLinkEmailFailureResponse($response);
+        }
+    }
+
+    /**
+     * Get the Closure which is used to build the password reset email message.
+     *
+     * @return \Closure
+     */
+    protected function resetEmailBuilder()
+    {
+        return function (Message $message) {
+            $message->subject($this->getEmailSubject());
+        };
+    }
+
+    /**
+     * Get the e-mail subject line to be used for the reset link email.
+     *
+     * @return string
+     */
+    protected function getEmailSubject()
+    {
+        return property_exists($this, 'subject') ? $this->subject : 'Your Password Reset Link';
     }
 }

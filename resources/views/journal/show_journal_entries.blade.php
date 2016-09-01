@@ -49,7 +49,6 @@
 		                           		@else
 		                           			-
 		                           		@endif
-		                           
 		                           <td>
 		                        		@if($journalEntry->invoice_id != NULL)
 		                        			<a href="{{route('invoice.show',$journalEntry->invoice_id)}}">

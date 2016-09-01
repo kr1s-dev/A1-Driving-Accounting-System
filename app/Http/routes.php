@@ -31,6 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//User Routes
 	Route::resource('user','Users\UserController');
+	Route::get('user/resetpassword/{id}', ['as'=>'user.resetpassword','uses' => 'Users\UserController@sendUserResetLinkEmail']);
 
 	//Students Routes
 	Route::resource('students','Students\StudentController');
