@@ -213,13 +213,13 @@ class UserController extends Controller
             array('email'=>$email),
             $this->resetEmailBuilder()
         );
-        switch ($response) {
-            case Password::RESET_LINK_SENT:
-                return $this->getSendResetLinkEmailSuccessResponse($response);
-            case Password::INVALID_USER:
-            default:
-                return $this->getSendResetLinkEmailFailureResponse($response);
-        }
+        // switch ($response) {
+        //     case Password::RESET_LINK_SENT:
+        //         return $this->getSendResetLinkEmailSuccessResponse($response);
+        //     case Password::INVALID_USER:
+        //     default:
+        //         return $this->getSendResetLinkEmailFailureResponse($response);
+        // }
     }
 
     /**
