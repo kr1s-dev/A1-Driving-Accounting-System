@@ -451,7 +451,14 @@ Scripts
           }else{
             alert('Please Input Recepients Information.');
           }
-          
+      });
+
+      $("#filterCat").change(function(e){
+        if($(this).val() == 'Custom'){
+          $("#customFilter").css('display','');
+        }else{
+          $("#customFilter").css('display','none');
+        }
       });
   });
 </script>
@@ -459,26 +466,24 @@ Scripts
   var ctx = document.getElementById("myChart");
   var dataIncome = {!! isset($incomePerMonth)?json_encode($incomePerMonth):null !!};
   var dataExpense = {!! isset($expensePerMonth)?json_encode($expensePerMonth):null !!};
+  var d1 = [];
+  var d2 = [];
+  for(var c in dataExpense){
+    d1.push(dataExpense[c])
+  }
+
+  for(var c in dataIncome){
+    d2.push(dataIncome[c])
+  }
+
   var myChart = new Chart(ctx, {
       type: 'line',
       responsive: true,
       data: {
-          labels: ["January", "February", "March", "April", "May", "June",
-                  "July", "August", "September", "October", "November", "December"],
+          labels: Object.keys(dataExpense),
           datasets: [{
               label: 'Expenses',
-              data: [dataExpense["January"], 
-                      dataExpense["February"], 
-                      dataExpense["March"],
-                      dataExpense["April"],
-                      dataExpense["May"],
-                      dataExpense["June"],
-                      dataExpense["July"],
-                      dataExpense["August"],
-                      dataExpense["September"],
-                      dataExpense["October"],
-                      dataExpense["November"],
-                      dataExpense["December"]],
+              data: d1,
               backgroundColor: [
                   'rgba(255, 99, 132, 0.2)',
                   'rgba(54, 162, 235, 0.2)',
@@ -498,18 +503,7 @@ Scripts
               borderWidth: 1
           },{
               label: 'Income',
-              data: [dataIncome["January"], 
-                      dataIncome["February"], 
-                      dataIncome["March"],
-                      dataIncome["April"],
-                      dataIncome["May"],
-                      dataIncome["June"],
-                      dataIncome["July"],
-                      dataIncome["August"],
-                      dataIncome["September"],
-                      dataIncome["October"],
-                      dataIncome["November"],
-                      dataIncome["December"]],
+              data: d2,
               backgroundColor: [
                   'rgba(139,195,74,0.2)',
                   'rgba(54, 162, 235, 0.2)',

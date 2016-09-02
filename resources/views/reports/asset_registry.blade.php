@@ -38,7 +38,7 @@
                                     <td>PHP {{number_format($assetItem->monthly_depreciation,2)}}</td>
                                     <td>PHP {{number_format($assetItem->accumulated_depreciation,2)}}</td>  
                                     <td>{{$assetItem->asset_lifespan}} mo/s</td>
-                                    <td>{{$assetItem->net_value}}</td>  
+                                    <td>PHP {{$assetItem->net_value}}</td>  
                                   </tr>
                                 @endforeach
                               @endif
@@ -49,8 +49,13 @@
             					<br><br>
             					<div class="row">
               						<div class="input-field col s12">
-                						<button class="btn red darken-2 waves-effect waves-light right" type="submit" name="action" style="margin-left:10px;">
-                  					<i class="material-icons left">picture_as_pdf</i> Generate PDF
+                						{!!Form::open(['url'=>'pdf','method'=>'POST','target'=>'_blank']) !!}
+                              @include('pdf.pdf_form',['category'=>'asset_registry_report',
+                                              'recordId'=>null,
+                                              'month_filter'=>null,
+                                              'year_filter'=>null,
+                                              'type'=>null])
+                            {!! Form::close() !!}
                 				</button>
               				</div>
                     </div>

@@ -25,6 +25,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//Admin Dashboard Routes
 	Route::get('admin-dashboard',['as'=>'admin-dashboard','uses'=>'AdminDashboard\AdminDashboardController@getAdminDashboard']);
+	Route::post('admin-dashboard','AdminDashboard\AdminDashboardController@postAdminDashboard');
 
 	//Branch Routes
 	Route::resource('branches','Branches\BranchController');

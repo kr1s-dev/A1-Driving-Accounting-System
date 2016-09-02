@@ -84,11 +84,11 @@ class UserController extends Controller
             $input['confirmation_code'] = $confirmation_code['confirmation_code'];
             $this->createSystemLogs('Created New User Record');
             flash()->success('Record successfully created');
-            $this->insertRecords('users',$input,false);   
+            $userId = $this->insertRecords('users',$input,false);   
             $this->sendEmailVerification($input['email'],
                                         $input['first_name'] . ' ' . $input['last_name'],
                                         $confirmation_code);
-            return redirect('/user'); 
+            return redirect('/user/'.$userId); 
         }catch(\Exception $ex){
             return view('errors.500');
         }
@@ -157,7 +157,7 @@ class UserController extends Controller
             $this->updateRecords('users',array($id),$input);
             $this->createSystemLogs('Updated an Existing Student Record');
             flash()->success('Record successfully Updated');
-            return redirect('user');    
+            return redirect('user/'.$id);    
         }catch(\Exception $ex){
             return view('errors.500');
         }

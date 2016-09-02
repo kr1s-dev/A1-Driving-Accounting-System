@@ -49,7 +49,7 @@ class DepreciationAutomation_Batch extends Command
         $toUpdateAssets = array();
         $userAdmin = $this->getLastRecord('User',array('user_type_id'=>1));
         try{
-            $eAssetItemsList = AssetsModel::where('created_at','=',date('Y-m-d'))
+            $eAssetItemsList = AssetsModel::where('next_depreciation_date','=',date('Y-m-d'))
                                 ->where('asset_lifespan','>',0)
                                 ->get();
             if(!empty($eAssetItemsList)){
