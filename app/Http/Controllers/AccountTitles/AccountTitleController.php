@@ -28,7 +28,7 @@ class AccountTitleController extends Controller
                             compact('taccountGroupList',
                                     'title'));
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }
@@ -52,7 +52,7 @@ class AccountTitleController extends Controller
                                     'accountGroupsList',
                                     'title'));
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
 
@@ -72,7 +72,7 @@ class AccountTitleController extends Controller
                                     'accountTitle',
                                     'title'));
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
     }
 
@@ -93,7 +93,7 @@ class AccountTitleController extends Controller
                                     'accountTitle',
                                     'title'));
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
     }
 
@@ -119,7 +119,7 @@ class AccountTitleController extends Controller
             flash()->success('Record successfully created');
             return redirect('accounttitle/' . $id);
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }
@@ -143,7 +143,7 @@ class AccountTitleController extends Controller
                                     'eAccountTitle',
                                     'itemList'));
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }
@@ -165,7 +165,7 @@ class AccountTitleController extends Controller
                                     'accountGroupsList',
                                     'title'));    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }
@@ -186,7 +186,7 @@ class AccountTitleController extends Controller
             flash()->success('Record successfully Updated');
             return redirect('accounttitle/' . $id);
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }

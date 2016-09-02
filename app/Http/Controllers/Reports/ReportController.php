@@ -15,7 +15,7 @@ class ReportController extends Controller
         try{
             return $this->generateIncomeStatement(null,null);
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
     }
 
@@ -25,7 +25,7 @@ class ReportController extends Controller
             $yearFilter = $request->input('year_filter');
             return $this->generateIncomeStatement($monthFilter,$yearFilter);
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
 	}
 
@@ -33,7 +33,7 @@ class ReportController extends Controller
         try{
             return $this->generateOwnersEquityStatement(null,null);
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
     }
 
@@ -43,7 +43,7 @@ class ReportController extends Controller
             $yearFilter = $request->input('year_filter');
             return $this->generateOwnersEquityStatement($monthFilter,$yearFilter);
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
 	}
 
@@ -52,7 +52,7 @@ class ReportController extends Controller
             return $this->generateBalanceSheet(null,null);    
         }catch(\Exception $ex){
         	echo $ex->getMessage() . ' ' . $ex->getLine();
-            //return view('errors.503');
+            //return view('errors.404');
         }    
     }
 
@@ -62,7 +62,7 @@ class ReportController extends Controller
             $yearFilter = $request->input('year_filter');
             return $this->generateBalanceSheet($monthFilter,$yearFilter);    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }
@@ -75,7 +75,7 @@ class ReportController extends Controller
                             compact('assetItemList',
                                     'title'));    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }

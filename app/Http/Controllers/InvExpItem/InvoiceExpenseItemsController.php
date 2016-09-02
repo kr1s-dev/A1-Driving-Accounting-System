@@ -42,7 +42,7 @@ class InvoiceExpenseItemsController extends Controller
                                     'itemNumber',
                                     'title'));
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
             //echo $ex->getMessage();
         }
     }
@@ -62,7 +62,7 @@ class InvoiceExpenseItemsController extends Controller
             flash()->success('Record successfully created');
 	        return redirect('accounttitle/' . $input['account_title_id']);
     	}catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
             //echo $ex->getMessage();
         }
         
@@ -98,7 +98,7 @@ class InvoiceExpenseItemsController extends Controller
                                     'itemNumber',
                                     'title'));
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
             //echo $ex->getMessage();
         }
     }
@@ -119,7 +119,7 @@ class InvoiceExpenseItemsController extends Controller
             flash()->success('Record successfully Updated');
 	        return redirect('accounttitle/' . $input['account_title_id']);
     	}catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
             //echo $ex->getMessage();
         }
     }

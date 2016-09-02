@@ -38,7 +38,7 @@ class AssetController extends Controller
                                     'asset',
                                     'accountGroupList'));
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
 
@@ -72,7 +72,7 @@ class AssetController extends Controller
             return redirect('asset/'.$assetId);    
         }catch(\Exception $ex){
             echo $ex->getmessage();
-            //return view('errors.503');
+            //return view('errors.404');
         }
         
     }
@@ -95,10 +95,10 @@ class AssetController extends Controller
                         compact('title',
                                 'asset'));
             }else{
-                return view('errors.503');
+                return view('errors.404');
             }
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
         
@@ -123,10 +123,10 @@ class AssetController extends Controller
                                     'asset',
                                     'accountGroupList'));
             }else{
-                return view('errors.503');
+                return view('errors.404');
             }    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
         
@@ -161,7 +161,7 @@ class AssetController extends Controller
             flash()->success('Record successfully Updated');
             return redirect('asset/'.$id);    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }

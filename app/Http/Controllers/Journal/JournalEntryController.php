@@ -23,7 +23,7 @@ class JournalEntryController extends Controller
                             compact('title',
                                     'journalEntryList'));
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
     }
 
@@ -37,7 +37,7 @@ class JournalEntryController extends Controller
                                     'type',
                             		'title'));
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
     }
 
@@ -58,7 +58,7 @@ class JournalEntryController extends Controller
                                     'title',
                                     'type'));    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
 

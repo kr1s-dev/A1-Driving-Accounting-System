@@ -26,7 +26,7 @@ class ReceiptController extends Controller
                             compact('title',
                                     'receiptList'));    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
 
@@ -52,10 +52,10 @@ class ReceiptController extends Controller
                                         'recNumber',
                                         'lastInvReceipt'));
             }else{
-                return view('errors.503');
+                return view('errors.404');
             }
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
         
@@ -129,10 +129,10 @@ class ReceiptController extends Controller
                                         'title',
                                         'change'));
             }else{
-                return view('errors.503');
+                return view('errors.404');
             }
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
         

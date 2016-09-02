@@ -39,7 +39,7 @@ class PDFController extends Controller
                 	return $this->generateBalanceSheet($monthFilter,$yearFilter)->stream('balance_sheet_'. date('m_d_y') .'.pdf');
                     break;
                 default:
-                    return view('errors.503');
+                    return view('errors.404');
                     break;
             }    
         }catch(\Exception $ex){

@@ -26,7 +26,7 @@ class InvoiceController extends Controller
                             compact('invoiceList',
                                     'title'));    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }
@@ -61,7 +61,7 @@ class InvoiceController extends Controller
                                     'invoice',
                                     'receiptList'));
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }
@@ -134,10 +134,10 @@ class InvoiceController extends Controller
                             compact('invoice',
                                     'title'));
             }else{
-                return view('errors.503');
+                return view('errors.404');
             }
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
         
@@ -174,10 +174,10 @@ class InvoiceController extends Controller
                                         'incomeAccountItems',
                                         'invoice'));
             }else{
-                return view('errors.503');
+                return view('errors.404');
             }
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
         
