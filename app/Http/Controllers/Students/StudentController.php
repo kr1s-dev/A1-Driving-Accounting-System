@@ -26,7 +26,7 @@ class StudentController extends Controller
                             compact('studentList',
                                     'title'));    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }
@@ -55,7 +55,7 @@ class StudentController extends Controller
                                     'maritalStatus',
                                     'genderList'));    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }
@@ -78,7 +78,7 @@ class StudentController extends Controller
             flash()->success('Record successfully created');
             return redirect('students/'.$studentId);    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }
@@ -108,10 +108,10 @@ class StudentController extends Controller
                                         'student',
                                         'receiptList'));
             }else{
-                return view('errors.503');
+                return view('errors.404');
             }
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
         
@@ -141,10 +141,10 @@ class StudentController extends Controller
                                         'maritalStatus',
                                         'genderList'));
             }else{
-                return view('errors.503');
+                return view('errors.404');
             }
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
         
@@ -169,7 +169,7 @@ class StudentController extends Controller
             flash()->success('Record successfully Updated');
             return redirect('students/'.$id);    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Users;
 use Illuminate\Http\Request;
 
 use Auth;
+use Hash;
+use Bcrypt;
 use App\Http\Requests;
 use Illuminate\Mail\Message;
 use App\Http\Controllers\Controller;
@@ -38,7 +40,7 @@ class UserController extends Controller
                             compact('title',
                                     'userList'));    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.500');
         }
         
     }
@@ -63,7 +65,7 @@ class UserController extends Controller
                                     'userTypesList',
                                     'branchList'));    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.500');
         }
         
     }
@@ -88,7 +90,7 @@ class UserController extends Controller
                                         $confirmation_code);
             return redirect('/user'); 
         }catch(\Exception $ex){
-            echo $ex->getMessage();
+            return view('errors.500');
         }
         
         
@@ -104,7 +106,15 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        try{
+            $title = 'Users';
+            $user = $this->searchUser($id);
+            return view('users.show_user',
+                            compact('user',
+                                    'title'));
+        }catch(\Exception $ex){
+            return view('errors.404');
+        }
     }
 
     /**
@@ -128,7 +138,7 @@ class UserController extends Controller
                                     'userTypesList',
                                     'branchList'));    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }
@@ -149,7 +159,7 @@ class UserController extends Controller
             flash()->success('Record successfully Updated');
             return redirect('user');    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.500');
         }
         
     }
@@ -166,7 +176,7 @@ class UserController extends Controller
             $this->deactivateUser($id);  
             return redirect('user');   
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.500');
         }
     }
 
@@ -176,7 +186,50 @@ class UserController extends Controller
             $this->sendResetLinkEmail($user->email);  
             return redirect('user');   
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.500');
+        }       
+    }
+
+
+    public function getChangePassword($id){
+        try{
+            $title = 'Change Password';
+            $user = $this->searchUser($id);
+            return view('users.change_password',
+                            compact('title',
+                                    'user'));
+        }catch(\Exception $ex){
+            return view('errors.404');
+        }       
+    }
+
+    public function postChangePassword(Request $request){
+        try{
+             $this->validate($request, [
+                'old_password' => 'required|min:6|max:255',
+                'new_password' => 'required|confirmed|min:6|max:255',
+            ]);
+            $user = $this->searchUser(Auth::user()->id);
+            if(Hash::check($request->input('old_password'), $user->password)){
+                if($request->input('old_password') === $request->input('new_password')){
+                    return redirect()
+                        ->back()
+                        ->withError(['new_password'=>'Can\'t used old password again']);
+                }else{
+                    $user->password = bcrypt($request->input('new_password'));
+                    $user->save();
+                    $this->createSystemLogs('User: ' . $user->first_name . ' ' , $user->last_name . ', Changed Password.');
+                    flash()->success('Successfully Changed Password')->important(); 
+                    return redirect('user/'.$user->id);
+                }
+            }else{
+                return redirect()
+                        ->back()
+                        ->withError(['old_password'=>'Old Password doesn\'t Match']);
+            }
+
+        }catch(\Exception $ex){
+            return view('errors.500');
         }       
     }
 
@@ -195,7 +248,7 @@ class UserController extends Controller
             flash()->success('User succesfully deactivated')->important();
                
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.500');
         }
         
     }

@@ -19,7 +19,7 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard($guard)->check()) {
             if(Auth::user()->userType->type === 'Administrator')
-                return redirect('/user');
+                return redirect('/admin-dashboard');
             elseif(Auth::user()->userType->type === 'Accountant')
                 return redirect('/students');
         }

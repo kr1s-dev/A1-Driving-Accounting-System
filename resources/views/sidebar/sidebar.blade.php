@@ -7,9 +7,7 @@
           </div>
           <div class="col col s8 m8 l8">
             <ul id="profile-dropdown" class="dropdown-content">
-              <li><a href="../#"><i class="mdi-action-face-unlock"></i> Profile</a>
-              </li>
-              <li><a href="../#"><i class="mdi-action-settings"></i> Settings</a>
+              <li><a href="{{route('user.show',Auth::user()->id)}}"><i class="mdi-action-face-unlock"></i> Profile</a>
               </li>
               <li class="divider"></li>
               <li><a href="/logout"><i class="mdi-hardware-keyboard-tab"></i> Logout</a>

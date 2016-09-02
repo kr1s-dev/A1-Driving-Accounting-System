@@ -32,6 +32,8 @@ Route::group(['middleware' => 'auth'], function () {
 	//User Routes
 	Route::resource('user','Users\UserController');
 	Route::get('user/resetpassword/{id}', ['as'=>'user.resetpassword','uses' => 'Users\UserController@sendUserResetLinkEmail']);
+	Route::get('user/changepassword/{id}', ['as'=>'user.changepassword','uses' => 'Users\UserController@getChangePassword']);
+	Route::post('user/changepassword', 'Users\UserController@postChangePassword');
 
 	//Students Routes
 	Route::resource('students','Students\StudentController');
