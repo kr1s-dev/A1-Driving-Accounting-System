@@ -30,6 +30,7 @@
                                 @if(count($user)===0)
                                     <a href="/register" class="btn btn-large red darken-1 waves-effect waves-light"><i class="mdi-action-lock-open"></i> Register</a>
                                 @endif
+                                <a href="password/reset" style="float:left !important;">Forgot Password</a>
                                 <button class="btn btn-large red darken-1 waves-effect waves-light" type="submit" name="action"><i class="mdi-action-lock-open"></i> Login</button>
                             </div>
                         {!! Form::close() !!}

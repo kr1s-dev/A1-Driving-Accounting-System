@@ -28,16 +28,15 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <!-- CORE CSS-->
-  <link href="{{ URL::asset('css/materialize.css')}}" rel="stylesheet" media="screen,projection">
-  <link href="{{ URL::asset('css/style.css')}}" rel="stylesheet" media="screen,projection">
+  <link href="{{ URL::asset('css/materialize.min.css')}}" rel="stylesheet" media="screen,projection">
+  <link href="{{ URL::asset('css/style.min.css')}}" rel="stylesheet" media="screen,projection">
   <!-- Custome CSS-->    
-  <link href="{{ URL::asset('css/custom/custom.css')}}" rel="stylesheet" media="screen,projection">
+  <link href="{{ URL::asset('css/custom/custom.min.css')}}" rel="stylesheet" media="screen,projection">
+  <link href="{{ URL::asset('css/layouts/page-center.css')}}" rel="stylesheet" media="screen,projection">
 
   <!-- INCLUDED PLUGIN CSS ON THIS PAGE -->
   <link href="{{ URL::asset('js/plugins/prism/prism.css')}}" rel="stylesheet" media="screen,projection">
   <link href="{{ URL::asset('js/plugins/perfect-scrollbar/perfect-scrollbar.css')}}" type="text/css" rel="stylesheet" media="screen,projection">
-  <link href="{{ URL::asset('js/plugins/data-tables/css/jquery.dataTables.min.css')}}" type="text/css" rel="stylesheet" media="screen,projection">
-  <link href="{{ URL::asset('js/plugins/chartist-js/chartist.min.css')}}" type="text/css" rel="stylesheet" media="screen,projection">
 </head>
 
 <body>
@@ -48,48 +47,9 @@
       <div class="loader-section section-right"></div>
   </div>
   <!-- End Page Loading -->
-
-  <!-- //////////////////////////////////////////////////////////////////////////// -->
-
-  <!-- START HEADER -->
-  <header id="header" class="page-topbar">
-        <!-- start header nav-->
-        @include('header.header')
-        <!-- end header nav-->
-  </header>
-  <!-- END HEADER -->
-
-  <!-- //////////////////////////////////////////////////////////////////////////// -->
-
-  <!-- START MAIN -->
-  <div id="main">
-    <!-- START WRAPPER -->
-    <div class="wrapper">
-      <!-- START LEFT SIDEBAR NAV-->
-      @include('sidebar.sidebar')
-      <!-- END LEFT SIDEBAR NAV-->
-      <!-- //////////////////////////////////////////////////////////////////////////// -->
-      <!-- START CONTENT -->
-      <section id="content">
-        @include('errors.validation')
-        @include('sidebar.breadcrumbs')
-        @yield('content')
-      </section>
-      <!-- END CONTENT -->
-    </div>
-    <!-- END WRAPPER -->
-  </div>
-  <!-- END MAIN -->
-
-
-
-  <!-- //////////////////////////////////////////////////////////////////////////// -->
-  <!-- START FOOTER -->
-  <footer class="page-footer red darken-1">
-    @include('footer.footer')
-  </footer>
-    <!-- END FOOTER -->
-   @include('scripts.scripts');
+  @yield('content')
+  
+  @include('scripts.error_page_script')
 </body>
 
 </html>

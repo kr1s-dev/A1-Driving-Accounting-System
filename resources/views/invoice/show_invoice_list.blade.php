@@ -48,7 +48,7 @@
                                       <i class="mdi-content-create"></i>
                                       </a>
                                       <a href="#" class="btn-floating waves-effect waves-light grey darken-4">
-                                        <i class="mdi-action-lock"></i>
+                                        <i class="mdi-action-receipt"></i>
                                       </a>
                                     </td>
                                   @else
@@ -64,7 +64,7 @@
                                       @endif
                                         
                                         <a href="{{route('invoice.receipt.create',$invoice->id)}}" class="btn-floating waves-effect waves-light grey darken-4">
-                                          <i class="mdi-action-lock"></i>
+                                          <i class="mdi-action-receipt"></i>
                                         </a>
                                     </td>
                                   @endif

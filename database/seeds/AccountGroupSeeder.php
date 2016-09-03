@@ -39,6 +39,10 @@ class AccountGroupSeeder extends Seeder
                                         'account_title_name'=>'Depreciation Expense',
                                         'created_at' => date('Y-m-d h:i:sa'),
                                         'updated_at' => date('Y-m-d h:i:sa'));
+        $accountAssetTitles[] = array('account_group_id'=>3,
+                                        'account_title_name'=>'Accounts Payable',
+                                        'created_at' => date('Y-m-d h:i:sa'),
+                                        'updated_at' => date('Y-m-d h:i:sa'));
         DB::table('account_titles')->insert($accountAssetTitles);
     }
 }

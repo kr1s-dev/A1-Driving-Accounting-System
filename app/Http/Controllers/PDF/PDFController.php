@@ -38,8 +38,12 @@ class PDFController extends Controller
                 case 'balance_sheet_report':
                 	return $this->generateBalanceSheet($monthFilter,$yearFilter)->stream('balance_sheet_'. date('m_d_y') .'.pdf');
                     break;
+                case 'asset_registry_report':
+                    return $this->genearateAssetRegistry()->setPaper('a4', 'landscape')->stream('asset_registry_report'. date('m_d_y').'.pdf');
+                    
+                    break;
                 default:
-                    return view('errors.503');
+                    return view('errors.404');
                     break;
             }    
         }catch(\Exception $ex){
@@ -64,6 +68,12 @@ class PDFController extends Controller
 		return PDF::loadView('pdf.expense_pdf',
 								compact('expense'));
 	}
+
+    private function genearateAssetRegistry(){
+        $assetItemList = $this->searchAsset(null);
+        return PDF::loadView('pdf.asset_registry',
+                                compact('assetItemList'));
+    }
 
 	public function generateIncomeStatement($monthFilter,$yearFilter){
     	$title = 'Reports';

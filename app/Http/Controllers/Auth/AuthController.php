@@ -31,7 +31,7 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected static $redirectPath = '/user';
+    protected static $redirectPath = '/admin-dashboard';
     protected $redirectAfterLogout = '/';
 
     /**
@@ -90,7 +90,7 @@ class AuthController extends Controller
             if(Auth::user()->userType->type==='Accountant')
                 return redirect('/students');
             elseif(Auth::user()->userType->type==='Administrator')
-                return redirect('/user');
+                return redirect('/admin-dashboard');
 
         }
     }

@@ -22,11 +22,19 @@ Route::post('auth/verify', ['as'=>'verify','uses' => 'RegisterVerifier\RegisterV
 
 // Uses authentication middleware, to avoid uneccessary access if not login
 Route::group(['middleware' => 'auth'], function () {
+
+	//Admin Dashboard Routes
+	Route::get('admin-dashboard',['as'=>'admin-dashboard','uses'=>'AdminDashboard\AdminDashboardController@getAdminDashboard']);
+	Route::post('admin-dashboard','AdminDashboard\AdminDashboardController@postAdminDashboard');
+
 	//Branch Routes
 	Route::resource('branches','Branches\BranchController');
 
 	//User Routes
 	Route::resource('user','Users\UserController');
+	Route::get('user/resetpassword/{id}', ['as'=>'user.resetpassword','uses' => 'Users\UserController@sendUserResetLinkEmail']);
+	Route::get('user/changepassword/{id}', ['as'=>'user.changepassword','uses' => 'Users\UserController@getChangePassword']);
+	Route::post('user/changepassword', 'Users\UserController@postChangePassword');
 
 	//Students Routes
 	Route::resource('students','Students\StudentController');

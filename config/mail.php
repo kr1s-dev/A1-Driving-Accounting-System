@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => null, 'name' => null],
+    'from' => ['address' => 'do_not_reply@a1driving_school.com', 'name' => 'A1 Driving School'],
 
     /*
     |--------------------------------------------------------------------------
@@ -81,7 +81,7 @@ return [
     |
     */
 
-    //'username' => env('MAIL_USERNAME',null),
+    'username' => env('MAIL_USERNAME',null),
 
     /*
     |--------------------------------------------------------------------------
@@ -94,7 +94,7 @@ return [
     |
     */
 
-    //'password' => env('MAIL_PASSWORD',null),
+    'password' => env('MAIL_PASSWORD',null),
 
     /*
     |--------------------------------------------------------------------------

@@ -38,7 +38,7 @@ class AssetController extends Controller
                                     'asset',
                                     'accountGroupList'));
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
 
@@ -57,6 +57,8 @@ class AssetController extends Controller
             $input = $this->removeKeys($request->all(),true,true);
             $input['net_value'] =  $input['asset_original_cost'];
             $input['monthly_depreciation'] = ($input['net_value']-$input['asset_salvage_value']) / $input['asset_lifespan'];  
+            $toConvertData = explode(' ',$input['asset_date_acquired']);
+            $input['asset_date_acquired'] = str_replace(',',' ',$toConvertData[1]) . $toConvertData[0] . ' ,' . $toConvertData[2];
             $input['asset_date_acquired'] = date('Y-m-d',strtotime($input['asset_date_acquired']));
             $input['next_depreciation_date'] = date('Y-m-d',strtotime('+1 Month'));
             $assetId = $this->insertRecords('asset_items',$input,false);
@@ -69,7 +71,8 @@ class AssetController extends Controller
             flash()->success('Record successfully created');
             return redirect('asset/'.$assetId);    
         }catch(\Exception $ex){
-            return view('errors.503');
+            echo $ex->getmessage();
+            //return view('errors.404');
         }
         
     }
@@ -92,10 +95,10 @@ class AssetController extends Controller
                         compact('title',
                                 'asset'));
             }else{
-                return view('errors.503');
+                return view('errors.404');
             }
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
         
@@ -120,10 +123,10 @@ class AssetController extends Controller
                                     'asset',
                                     'accountGroupList'));
             }else{
-                return view('errors.503');
+                return view('errors.404');
             }    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
         
@@ -142,6 +145,8 @@ class AssetController extends Controller
             $input = $this->removeKeys($request->all(),false,true);
             $input['net_value'] =  $input['asset_original_cost'];
             $input['monthly_depreciation'] = ($input['net_value']-$input['asset_salvage_value']) / $input['asset_lifespan'];
+            $toConvertData = explode(' ',$input['asset_date_acquired']);
+            $input['asset_date_acquired'] = str_replace(',',' ',$toConvertData[1]) . $toConvertData[0] . ' ,' . $toConvertData[2];
             $input['asset_date_acquired'] = date('Y-m-d',strtotime($input['asset_date_acquired']));
             $this->updateRecords('asset_items',array($id),$input);
 
@@ -156,7 +161,7 @@ class AssetController extends Controller
             flash()->success('Record successfully Updated');
             return redirect('asset/'.$id);    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }

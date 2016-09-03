@@ -21,7 +21,7 @@
                             <div class="row">
                                 <div class="input-field col s12">
                                     <i class="mdi-communication-email prefix"></i>
-                                    <input id="name3" type="email" name="password_confirmation">
+                                    <input id="name3" type="password" name="password_confirmation">
                                     <label for="email" class="">Confirm Password</label>
                                 </div>
                             </div>

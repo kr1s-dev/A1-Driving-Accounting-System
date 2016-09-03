@@ -14,7 +14,8 @@ Scripts
 <script type="text/javascript" src="{{ URL::asset('js/plugins/data-tables/data-tables-script.js')}}"></script>
 <!-- chartist -->
 <script type="text/javascript" src="{{ URL::asset('js/plugins/chartist-js/chartist.min.js')}}"></script>
-
+<!-- Charts JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.bundle.min.js"></script>
 <!--plugins.js - Some Specific JS codes for Plugin Settings-->
 <script type="text/javascript" src="{{ URL::asset('js/plugins.js')}}"></script>
 <!--custom-script.js - Add your own theme custom JS-->
@@ -130,7 +131,9 @@ Scripts
           var totalAmount = $("#amountCalc tbody tr:eq(2) td:nth-child(2)").text().replace('₱ ','');
 
           console.log('../../invoice' + (_method==='POST'?'':(invoiceId+'/edit')));
-          if(dueDate >=  getTodaysDate()){
+          var dateConverter = dueDate.split(" ");
+          var dueDate_1 = new Date(Date.parse(dateConverter[1].substring(0,3) + ' ' + dateConverter[0] + ',' + dateConverter[2]));
+          if(dueDate_1 >  new Date().setDate(new Date().getDate()-1)){
             table.find('tr').each(function(rowIndex, r){
               $(this).find('td').each(function (colIndex, c) {
                 if(c.textContent.trim())
@@ -448,9 +451,86 @@ Scripts
           }else{
             alert('Please Input Recepients Information.');
           }
-          
+      });
+
+      $("#filterCat").change(function(e){
+        if($(this).val() == 'Custom'){
+          $("#customFilter").css('display','');
+        }else{
+          $("#customFilter").css('display','none');
+        }
       });
   });
+</script>
+<script type="text/javascript">
+  var ctx = document.getElementById("myChart");
+  var dataIncome = {!! isset($incomePerMonth)?json_encode($incomePerMonth):null !!};
+  var dataExpense = {!! isset($expensePerMonth)?json_encode($expensePerMonth):null !!};
+  var d1 = [];
+  var d2 = [];
+  for(var c in dataExpense){
+    d1.push(dataExpense[c])
+  }
 
+  for(var c in dataIncome){
+    d2.push(dataIncome[c])
+  }
 
+  var myChart = new Chart(ctx, {
+      type: 'line',
+      responsive: true,
+      data: {
+          labels: Object.keys(dataExpense),
+          datasets: [{
+              label: 'Expenses',
+              data: d1,
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255,99,132,1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          },{
+              label: 'Income',
+              data: d2,
+              backgroundColor: [
+                  'rgba(139,195,74,0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(139,195,74,1)',
+                  'rgba(139,195,74,1)',
+                  'rgba(139,195,74,1)',
+                  'rgba(139,195,74,1)',
+                  'rgba(139,195,74,1)',
+                  'rgba(139,195,74,1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero:true
+                  }
+              }]
+          }
+      }
+  });
 </script>

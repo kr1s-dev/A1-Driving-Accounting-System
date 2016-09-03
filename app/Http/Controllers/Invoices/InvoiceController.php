@@ -26,7 +26,7 @@ class InvoiceController extends Controller
                             compact('invoiceList',
                                     'title'));    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }
@@ -61,7 +61,7 @@ class InvoiceController extends Controller
                                     'invoice',
                                     'receiptList'));
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }
@@ -76,6 +76,8 @@ class InvoiceController extends Controller
     {
         $input = $this->removeKeys($request->all(),true,true);
         $data = $input['data'];
+        $toConvertData = explode(' ',$input['payment_due_date']);
+        $input['payment_due_date'] = str_replace(',',' ',$toConvertData[1]) . $toConvertData[0] . ' ,' . $toConvertData[2];
         $input['payment_due_date'] = date('Y-m-d',strtotime($input['payment_due_date']));
         unset($input['data']);
         $student = $this->searchStudent($input['student_id']);
@@ -132,10 +134,10 @@ class InvoiceController extends Controller
                             compact('invoice',
                                     'title'));
             }else{
-                return view('errors.503');
+                return view('errors.404');
             }
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
         
@@ -172,10 +174,10 @@ class InvoiceController extends Controller
                                         'incomeAccountItems',
                                         'invoice'));
             }else{
-                return view('errors.503');
+                return view('errors.404');
             }
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
         
@@ -192,6 +194,8 @@ class InvoiceController extends Controller
     {
         $input = $this->removeKeys($request->all(),false,true);
         $data = $input['data'];
+        $toConvertData = explode(' ',$input['payment_due_date']);
+        $input['payment_due_date'] = str_replace(',',' ',$toConvertData[1]) . $toConvertData[0] . ' ,' . $toConvertData[2];
         $input['payment_due_date'] = date('Y-m-d',strtotime($input['payment_due_date']));
         unset($input['data']);
         $student = $this->searchStudent($input['student_id']);

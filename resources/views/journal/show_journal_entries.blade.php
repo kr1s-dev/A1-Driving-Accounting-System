@@ -7,7 +7,7 @@
             	<h4 class="header">View All Account Entries</h4>
             	<div class="row right-align">
                 	<div class="col l12 m12 s12">
-                  		<a href="../invoices/create.html" class="btn waves-effect waves-light cyan" type="submit" name="action">
+                  		<a href="{{route('journal.create')}}" class="btn waves-effect waves-light cyan" type="submit" name="action">
                      		Create New Journal Entry
                   		</a>
                 	</div>
@@ -18,6 +18,7 @@
                      	<thead>
 	                        <tr>
 	                           <th>Date</th>
+	                           <th>Branch</th>
 	                           <th>Ref #</th>
 	                           <th>Description</th>
 	                           <th>Debit</th>
@@ -29,6 +30,7 @@
                      	<tfoot>
 	                        <tr>
 	                           <th>Date</th>
+	                           <th>Branch</th>
 	                           <th>Ref #</th>
 	                           <th>Description</th>
 	                           <th>Debit</th>
@@ -41,6 +43,12 @@
                      		@foreach($journalEntryList as $journalEntry)
 	                     		<tr>
 		                           <td>{{date('m-d-Y',strtotime($journalEntry->created_at))}}</td>
+		                           <td>
+		                           		@if($journalEntry->userCreateInfo->branch_id != NULL)
+		                           			{{$journalEntry->userCreateInfo->branchInfo->branch_name}}
+		                           		@else
+		                           			-
+		                           		@endif
 		                           <td>
 		                        		@if($journalEntry->invoice_id != NULL)
 		                        			<a href="{{route('invoice.show',$journalEntry->invoice_id)}}">

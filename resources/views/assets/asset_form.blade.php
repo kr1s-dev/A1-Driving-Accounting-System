@@ -2,9 +2,13 @@
 <div class="row">
   <div class="input-field col s12 m6 l6">
     <select name="account_title_id">
-      @foreach($accountGroupList as $key=>$value)
-        <option value="{{$key}}">{{$value}}</option>
-      @endforeach
+      @if(empty($accountGroupList))
+        <option value="" disabled>Select Type of Asset</option>
+      @else
+        @foreach($accountGroupList as $key=>$value)
+          <option value="{{$key}}">{{$value}}</option>
+        @endforeach
+      @endif
     </select>
     <label for="first_name">Fixed Asset Group</label>
   </div>

@@ -9,7 +9,7 @@
                   		<img src="{{ URL::asset('images/generic-logo.png')}}" alt="company logo">
                   		<p>To,
 	                     	<br>
-	                     	<span class="strong">{{$invoice->studentInfo->stud_first_name}}&nbsp;{{$invoice->studentInfo->stud_last_name}}</span>
+	                     	<span class="strong"><a href="{{route('students.show',$invoice->student_id)}}">{{$invoice->studentInfo->stud_first_name}}&nbsp;{{$invoice->studentInfo->stud_last_name}}</a></span>
 	                     	<br>
 	                     	<span>{{$invoice->studentInfo->stud_address}}</span>
 	                     	<br>

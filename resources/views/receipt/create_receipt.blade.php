@@ -170,7 +170,7 @@
               	</div>
             </div>
             
-            <div class="invoice-footer">
+            <!--div class="invoice-footer">
               	<div class="row">
                 	<div class="col s12 m6 l6">
                   		<p class="strong">Payment Method</p>
@@ -188,7 +188,7 @@
           				<p>Managing Director</p>
                 	</div>
               	</div>
-            </div>
+            </div-->
         </div>
     </div>
               

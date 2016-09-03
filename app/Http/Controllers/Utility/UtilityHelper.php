@@ -439,7 +439,7 @@ trait UtilityHelper
         }elseif($modelName==='JournalModel'){
             $value = Auth::user()->branch_id;
             $query = JournalModel::whereYear('created_at','=',date('Y'));
-            if(!(is_null($value))){
+            if(!(is_null($value)) && !(Auth::user()->branchInfo->main_office)){
                 $query->whereHas('userCreateInfo',function($q) use ($value){
                             $q->where('branch_id','=',$value);
                         });

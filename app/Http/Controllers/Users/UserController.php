@@ -5,9 +5,13 @@ namespace App\Http\Controllers\Users;
 use Illuminate\Http\Request;
 
 use Auth;
+use Hash;
+use Bcrypt;
 use App\Http\Requests;
+use Illuminate\Mail\Message;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\UserRequest;
+use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\Utility\UtilityHelper;
 
 class UserController extends Controller
@@ -36,7 +40,7 @@ class UserController extends Controller
                             compact('title',
                                     'userList'));    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.500');
         }
         
     }
@@ -61,7 +65,7 @@ class UserController extends Controller
                                     'userTypesList',
                                     'branchList'));    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.500');
         }
         
     }
@@ -80,13 +84,13 @@ class UserController extends Controller
             $input['confirmation_code'] = $confirmation_code['confirmation_code'];
             $this->createSystemLogs('Created New User Record');
             flash()->success('Record successfully created');
-            $this->insertRecords('users',$input,false);   
+            $userId = $this->insertRecords('users',$input,false);   
             $this->sendEmailVerification($input['email'],
                                         $input['first_name'] . ' ' . $input['last_name'],
                                         $confirmation_code);
-            return redirect('/user'); 
+            return redirect('/user/'.$userId); 
         }catch(\Exception $ex){
-            echo $ex->getMessage();
+            return view('errors.500');
         }
         
         
@@ -102,7 +106,15 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        try{
+            $title = 'Users';
+            $user = $this->searchUser($id);
+            return view('users.show_user',
+                            compact('user',
+                                    'title'));
+        }catch(\Exception $ex){
+            return view('errors.404');
+        }
     }
 
     /**
@@ -126,7 +138,7 @@ class UserController extends Controller
                                     'userTypesList',
                                     'branchList'));    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.404');
         }
         
     }
@@ -145,9 +157,9 @@ class UserController extends Controller
             $this->updateRecords('users',array($id),$input);
             $this->createSystemLogs('Updated an Existing Student Record');
             flash()->success('Record successfully Updated');
-            return redirect('user');    
+            return redirect('user/'.$id);    
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.500');
         }
         
     }
@@ -164,8 +176,61 @@ class UserController extends Controller
             $this->deactivateUser($id);  
             return redirect('user');   
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.500');
         }
+    }
+
+    public function sendUserResetLinkEmail($id){
+        try{
+            $user = $this->searchUser($id);
+            $this->sendResetLinkEmail($user->email);  
+            return redirect('user');   
+        }catch(\Exception $ex){
+            return view('errors.500');
+        }       
+    }
+
+
+    public function getChangePassword($id){
+        try{
+            $title = 'Change Password';
+            $user = $this->searchUser($id);
+            return view('users.change_password',
+                            compact('title',
+                                    'user'));
+        }catch(\Exception $ex){
+            return view('errors.404');
+        }       
+    }
+
+    public function postChangePassword(Request $request){
+        try{
+             $this->validate($request, [
+                'old_password' => 'required|min:6|max:255',
+                'new_password' => 'required|confirmed|min:6|max:255',
+            ]);
+            $user = $this->searchUser(Auth::user()->id);
+            if(Hash::check($request->input('old_password'), $user->password)){
+                if($request->input('old_password') === $request->input('new_password')){
+                    return redirect()
+                        ->back()
+                        ->withError(['new_password'=>'Can\'t used old password again']);
+                }else{
+                    $user->password = bcrypt($request->input('new_password'));
+                    $user->save();
+                    $this->createSystemLogs('User: ' . $user->first_name . ' ' , $user->last_name . ', Changed Password.');
+                    flash()->success('Successfully Changed Password')->important(); 
+                    return redirect('user/'.$user->id);
+                }
+            }else{
+                return redirect()
+                        ->back()
+                        ->withError(['old_password'=>'Old Password doesn\'t Match']);
+            }
+
+        }catch(\Exception $ex){
+            return view('errors.500');
+        }       
     }
 
 
@@ -183,8 +248,52 @@ class UserController extends Controller
             flash()->success('User succesfully deactivated')->important();
                
         }catch(\Exception $ex){
-            return view('errors.503');
+            return view('errors.500');
         }
         
+    }
+
+    /**
+     * Send a reset link to the given user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function sendResetLinkEmail($email)
+    {
+        $broker = null;
+        $response = Password::broker($broker)->sendResetLink(
+            array('email'=>$email),
+            $this->resetEmailBuilder()
+        );
+        // switch ($response) {
+        //     case Password::RESET_LINK_SENT:
+        //         return $this->getSendResetLinkEmailSuccessResponse($response);
+        //     case Password::INVALID_USER:
+        //     default:
+        //         return $this->getSendResetLinkEmailFailureResponse($response);
+        // }
+    }
+
+    /**
+     * Get the Closure which is used to build the password reset email message.
+     *
+     * @return \Closure
+     */
+    protected function resetEmailBuilder()
+    {
+        return function (Message $message) {
+            $message->subject($this->getEmailSubject());
+        };
+    }
+
+    /**
+     * Get the e-mail subject line to be used for the reset link email.
+     *
+     * @return string
+     */
+    protected function getEmailSubject()
+    {
+        return property_exists($this, 'subject') ? $this->subject : 'Your Password Reset Link';
     }
 }
