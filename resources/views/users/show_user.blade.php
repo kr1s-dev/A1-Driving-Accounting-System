@@ -36,7 +36,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col l3 m3 s12">
+                      <div class="col l3 m3 s12 style="padding: 10px;"">
                         <h6><strong>User Branch</strong></h6>
                       </div>
                       <div class="col l3 m3 s12">
@@ -51,46 +51,46 @@
                     </div>
                     <div class="divider"></div>
                     <div class="row">
-                      <div class="col l3 m3 s12">
+                      <div class="col l3 m3 s12" style="padding: 10px;">
                         <h6><strong>First Name</strong></h6>
                       </div>
-                      <div class="col l3 m3 s12">
+                      <div class="col l3 m3 s12 style="padding: 10px;"">
                         <h6>{{$user->first_name}}</h6>
                       </div>
                     </div>
                     <div class="divider"></div>
                     <div class="row">
-                      <div class="col l3 m3 s12">
+                      <div class="col l3 m3 s12" style="padding: 10px;">
                         <h6><strong>Last Name</strong></h6>
                       </div>
-                      <div class="col l3 m3 s12">
+                      <div class="col l3 m3 s12" style="padding: 10px;">
                         <h6>{{$user->last_name}}</h6>
                       </div>
                     </div>
                     <div class="divider"></div>
                     <div class="row">
-                      <div class="col l3 m3 s12">
+                      <div class="col l3 m3 s12" style="padding: 10px;">
                         <h6><strong>Email Address</strong></h6>
                       </div>
-                      <div class="col l3 m3 s12">
+                      <div class="col l3 m3 s12" style="padding: 10px;">
                         <h6>{{$user->email}}</h6>
                       </div>
                     </div>
                     <div class="divider"></div>
                     <div class="row">
-                      <div class="col l3 m3 s12">
+                      <div class="col l3 m3 s12" style="padding: 10px;">
                         <h6><strong>Mobile Number</strong></h6>
                       </div>
-                      <div class="col l3 m3 s12">
+                      <div class="col l3 m3 s12" style="padding: 10px;">
                         <h6>{{$user->mobile_number}}</h6>
                       </div>
                     </div>
                     <div class="divider"></div>
                     <div class="row">
-                      <div class="col l3 m3 s12">
+                      <div class="col l3 m3 s12" style="padding: 10px;">
                         <h6><strong>Telephone Number</strong></h6>
                       </div>
-                      <div class="col l3 m3 s12">
+                      <div class="col l3 m3 s12" style="padding: 10px;">
                         <h6>{{$user->telephone_number}}</h6>
                         </div>
                     </div>

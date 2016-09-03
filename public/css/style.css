@@ -372,7 +372,8 @@ header .brand-logo {
 }
 
 header .brand-logo img {
-  width: 172px;
+  max-width: 80px;
+    margin-top: -15px;
 }
 
 @media only screen and (max-width: 992px) {
@@ -1413,7 +1414,7 @@ tr.group:hover {
 
 #site-layout-example-right {
   background-color: #26a69a;
-  height: 300px;
+  height: 350px;
 }
 
 #site-layout-example-top {

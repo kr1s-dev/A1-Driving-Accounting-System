@@ -29,9 +29,9 @@
 
   <!-- CORE CSS-->
   <link href="{{ URL::asset('css/materialize.min.css')}}" rel="stylesheet" media="screen,projection">
-  <link href="{{ URL::asset('css/style.min.css')}}" rel="stylesheet" media="screen,projection">
+  <link href="{{ URL::asset('css/style.css')}}" rel="stylesheet" media="screen,projection">
   <!-- Custome CSS-->    
-  <link href="{{ URL::asset('css/custom/custom.min.css')}}" rel="stylesheet" media="screen,projection">
+  <link href="{{ URL::asset('css/custom/custom.css')}}" rel="stylesheet" media="screen,projection">
   <link href="{{ URL::asset('css/layouts/page-center.css')}}" rel="stylesheet" media="screen,projection">
 
   <!-- INCLUDED PLUGIN CSS ON THIS PAGE -->

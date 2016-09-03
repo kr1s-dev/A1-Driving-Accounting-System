@@ -1,7 +1,5 @@
 @extends('master_layout.master_page_layout')
 @section('content')
- 
-        
 
   <!--start container-->
   <div class="container">

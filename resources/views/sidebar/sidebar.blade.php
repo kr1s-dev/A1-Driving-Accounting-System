@@ -2,10 +2,7 @@
     <ul id="slide-out" class="side-nav fixed leftside-navigation">
         <li class="user-details cyan darken-2">
         <div class="row">
-          <div class="col col s4 m4 l4">
-            <img src=" {{ URL::asset('images/avatar.jpg')}}" alt="" class="circle responsive-img valign profile-image">
-          </div>
-          <div class="col col s8 m8 l8">
+          <div class="col col s12 m12 l12">
             <ul id="profile-dropdown" class="dropdown-content">
               <li><a href="{{route('user.show',Auth::user()->id)}}"><i class="mdi-action-face-unlock"></i> Profile</a>
               </li>
