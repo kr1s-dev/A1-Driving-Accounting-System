@@ -228,7 +228,7 @@ Scripts
                '</td>' +
                '<td style="width: 20%;">' +
                   '<div class="input-field" id="textarea-input-field">' +
-                     '<textarea class="materialize-textarea" name="" id="desc" cols="30" rows="10"></textarea>' +
+                     '<textarea style="padding:0;" class="materialize-textarea" name="" id="desc" cols="30" rows="10"></textarea>' +
                      '<label for="">Description</label>' +
                   '</div>' +
                '</td>' +
@@ -245,8 +245,8 @@ Scripts
                   '</div>' +
                '</td>' +
                '<td>' +
-                  '<a class="waves-effect waves-light btn red add-entry">Add</a>' +
-                  '<a class="waves-effect waves-light btn red delete-entry">Delete</a>'+
+                  '<a class="waves-effect waves-light btn blue add-entry"><i class="material-icons">add</i></a>' +
+                  '<a class="waves-effect waves-light btn red delete-entry"><i class="material-icons">delete</i></a>'+
                '</td>' +
             '</tr>'
           );

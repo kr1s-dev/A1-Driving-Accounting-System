@@ -1,9 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
   	<head>
+  		<style>
+        body {
+          font-family: "Open Sans", "Arial", "Calibri", sans-serif;
+          font-size: 12px;
+        }
+        .header p{
+          margin: 5px;
+        }
+        th {
+          background: #eee;
+        }
+        table, th, td {
+          border: 1px solid #000;
+          padding: 5px;
+        }
+        th h4 {
+        	margin: 5px;
+        	text-transform: uppercase;
+        }
+      </style>
   	</head>
   	<body>
-       	<div align="center">
+       	<div class="header" align="center">
 		     <p><strong>A1 Driving School</strong></p>
 		     <p>Balance Sheet </p>
 		     <p>For 
@@ -17,7 +37,7 @@
 		<hr/>
 		<table style="width:100%; border-collapse: collapse;">
 			<tr>
-		        <th colspan="3" align="left"><h3><strong>ASSETS</strong></h3></th>
+		        <th colspan="3" align="center"><h4><strong>ASSETS</strong></h4></th>
 		    </tr>
 		    @foreach($fBalanceSheetItemsList as $key => $value)
       			@if(strpos($key, 'Assets') !== false)
@@ -60,7 +80,7 @@
 	  	</table>
 	  	<table style="width:100%; border-collapse: collapse;">
       		<tr>
-	          	<th colspan="3" align="left"><h3><strong>LIABILITIES AND OWNERS EQUITY</strong></h3></th>
+	          	<th align="center" colspan="3" align="left"><h4><strong>LIABILITIES AND OWNERS EQUITY</strong></h4></th>
 	        </tr>
 	        @foreach($fBalanceSheetItemsList as $key => $value)
 	  			@if(strpos($key, 'Liabilities'))
@@ -100,9 +120,9 @@
 	        @foreach($fBalanceSheetItemsList as $key => $value)
 	  			@if(strpos($key, 'Equity'))
 	  				<tr>
-      					<td colspan="3">
-      						<strong>{{$key}}</strong>
-      					</td>
+      					<th colspan="3">
+      						<h4><strong>{{$key}}</strong></th>
+      					</th>
       				</tr>
 	  				@foreach($value as $k => $val)
 	  				<tr>

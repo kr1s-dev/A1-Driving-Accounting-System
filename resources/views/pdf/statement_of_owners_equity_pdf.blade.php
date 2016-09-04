@@ -1,25 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
   	<head>
+  		<style>
+	        body {
+	          font-family: "Open Sans", "Arial", "Calibri", sans-serif;
+	          font-size: 12px;
+	        }
+	        .header p, .header h4{
+	          margin: 3px;
+	        }
+	        
+	        th {
+	          background: #eee;
+	        }
+	        table, th, td {
+	          border: 1px solid #000;
+	          padding: 5px;
+	        }
+	      </style>
   	</head>
   	<body>
-       	<div align="center">
+       	<div class="header" align="center">
 		     <p><strong>A1 Driving School</strong></p>
-		     <p>Statement of Changes in Equity </p>
-		     <p>For
+		     <p>A-1 Driving Bldg, #2 Sta. Lucia St., 1550</p>
+		     <p>+63 (2) 532.2272 / +63 (927) 7415331 / +63 (942) 3827688</p>
+		     <br>
+		     <h4>Statement of Changes in Equity </h4>
+		     <h4>For
 		     	@if(empty($monthFilter))
 		     		Year End {{$yearFilter}}
 		     	@else
 		     		Month End {{$monthArray[$monthFilter]}},{{$yearFilter}}
 		     	@endif
-		     </p>
+		     </h4>
 		</div>
 		<hr/>
 		<table style="width:100%; border-collapse: collapse;">
 		    <!-- equity items -->
 		    @if(count($equityItemsList)<=0)
 				<tr>
-			        <td>
+			        <td colspan="2">
 				         Capital
 			        </td>
 			        <td style="text-align: right">

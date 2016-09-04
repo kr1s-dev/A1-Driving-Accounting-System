@@ -1,7 +1,7 @@
 <div class="row">
   <div class="input-field col s12 m6 l6">
     <input disabled="disabled" id="name" type="text" value="{{sprintf("%'.07d\n", count($errors)>0?$studentNumber:$studentNumber)}}">
-    <label for="first_name">Control No.</label>
+    <label for="first_name">Student No.</label>
   </div>
 </div>
 <div class="row">

@@ -38,7 +38,7 @@
 	                           </td>
 	                           <td style="width: 20%;">
 	                              	<div class="input-field" id="textarea-input-field">
-		                                 <textarea class="materialize-textarea" name="" id="desc" cols="30" rows="2"></textarea>
+		                                 <textarea style="padding: 0;" class="materialize-textarea" name="" id="desc" cols="30" rows="2"></textarea>
 		                                 <label for="desc">Description</label>
 	                              	</div>
 	                           </td>

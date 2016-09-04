@@ -6,7 +6,7 @@
          	<div class="invoice-header">
             	<div class="row section">
                		<div class="col s12 m6 l6">
-                  		<img src="{{ URL::asset('images/generic-logo.png')}}" alt="company logo">
+                  		<img class="invoice-logo" src="{{ URL::asset('images/a1-logo.png')}}" alt="company logo">
                   		<p>To,
 	                     	<br>
 	                     	<span class="strong"><a href="{{route('students.show',$invoice->student_id)}}">{{$invoice->studentInfo->stud_first_name}}&nbsp;{{$invoice->studentInfo->stud_last_name}}</a></span>
@@ -20,24 +20,22 @@
                   		<div class="invoce-company-address right-align">
                      		<span class="invoice-icon"><i class="mdi-social-location-city cyan-text"></i></span>
                  			<p>
-                 				<span class="strong">Company Name LLC</span>
+                 				<span class="strong">A1 Driving School</span>
                         		<br>
-                        		<span>125, ABC Street,</span>
+                        		<span>A-1 Driving Bldg</span>
                         		<br>
-                        		<span>New Yourk, USA</span>
+                        		<span>#2 Sta. Lucia St., 1550</span>
                         		<br>
-                        		<span>+91-(444)-(333)-(221)</span>
+                        		<span>+63 (2) 532.2272</span>
                  			</p>
                   		</div>
                   		<div class="invoce-company-contact right-align">
                      		<span class="invoice-icon"><i class="mdi-communication-quick-contacts-mail cyan-text"></i></span>
                     	 	<p>
-                    	 		<span class="strong">www.exampledomain.com</span>
-                        		<br>
-                        		<span>info@exampledomain.com</span>
-                        		<br>
-                        		<span>admin@exampledomain.com</span>
-                     		</p>
+                          <span class="strong">www.a-1driving.com</span>
+                            <br/>
+                            <span>info@a-1driving.com</span>
+                        </p>
                   		</div>
                		</div>
             	</div>
@@ -53,11 +51,11 @@
                        	 		<p class="strong">Total Due</p>
                         		<h4 class="header">₱ {{number_format($invoice->total_amount,2)}}</h4>
                      		</div>
-                     		<div class="col s12 m3 l3">
+                     		<div class="col s12 m3 l2">
                         		<p class="strong">Invoice No</p>
                         		<h4 class="header">{{sprintf("%'.07d\n", $invoice->id)}}</h4>
                      		</div>
-                     		<div class="col s12 m3 l3">
+                     		<div class="col s12 m3 l4">
                         		<p class="strong">Due Date</p>
                         		<h4 class="header">{{date('d F,Y',strtotime($invoice->payment_due_date))}}</h4>
                      		</div>

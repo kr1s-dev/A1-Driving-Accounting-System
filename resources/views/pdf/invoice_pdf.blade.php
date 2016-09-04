@@ -1,11 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
   	<head>
+      <style>
+          body {
+            font-family: "Open Sans", "Arial", "Calibri", sans-serif;
+            font-size: 12px;
+          }
+          .header p, .header h4{
+            margin: 5px;
+          }
+          th {
+            background: #eee;
+          }
+          table, th, td {
+            border: 1px solid #000;
+            padding: 5px;
+          }
+        </style>
   	</head>
   	<body>
        	<div style="display:inline-block; width:100%">
-      		<div>
-          		<h2><strong>A1 Driving School</strong></h2>
+      		<div class="header">
+          		<p><strong>A1 Driving School</strong></p>
+             <p>A-1 Driving Bldg, #2 Sta. Lucia St., 1550</p>
+             <p>+63 (2) 532.2272 / +63 (927) 7415331 / +63 (942) 3827688</p>
       		</div>
       		<div style="float:right;">
           		<h2>Invoice</h2>
@@ -13,7 +31,7 @@
   		</div>
   		<hr/>
   
-  		<div style="display:inline-block; width:100%">
+  		<div style="width:100%">
       	<div style="float:left;">
           	<strong>Invoice #: {{sprintf("%'.07d\n",$invoice->id)}}</strong>
       	</div>
@@ -23,21 +41,17 @@
   		</div>
   		<br/><br/>
   		<div>
-      		<table>
-          		<tr>
-              		<td><strong> Student Information </strong></td>
+      		<table style="width: 100%;" border="1" cellspacing="0" cellpadding="5">
+          		<tr class="header">
+              		<th colspan="2"><strong> <h4> Student Information </h4></strong></th>
           		</tr>
           		<tr>
-              		<td> Name:  {{$invoice->studentInfo->stud_first_name}} {{$invoice->studentInfo->stud_last_name}}</td>
+              		<td> <strong>Name:</strong>  {{$invoice->studentInfo->stud_first_name}} {{$invoice->studentInfo->stud_last_name}}</td>
+                  <td> <strong>Address:</strong> {{$invoice->studentInfo->stud_address}} </td>
           		</tr>
           		<tr>
-              		<td> Address:  {{$invoice->studentInfo->stud_address}} </td>
-          		</tr>
-          		<tr>
-              		<td> Contact Number:  {{$invoice->studentInfo->stud_mobile_no}}</td>
-          		</tr>
-          		<tr>
-              		<td> Email Address:  {{$invoice->studentInfo->stud_email}}</td>
+                <td> <strong>Contact Number:</strong>  {{$invoice->studentInfo->stud_mobile_no}}</td>
+                <td> <strong>Email Address:</strong>  {{$invoice->studentInfo->stud_email}}</td>
           		</tr>
       		</table>
   		</div>
@@ -45,36 +59,36 @@
   		<div>
       		<table border="1" style="width:100%; border-collapse: collapse; border: 1px solid black;">
           		<tr>
-              		<th style="padding:0px 10px 0px 10px;"> Item </th>
-              		<th style="padding:0px 10px 0px 10px;"> Description</th>
-              		<th style="padding:0px 10px 0px 10px;"> Amount </th>
+              		<th> Item </th>
+              		<th> Description</th>
+              		<th> Amount </th>
           		</tr>
               
           		@foreach($invoice->invoiceItemsInfo as $invItem)
           			<tr>
-	              		<td style="padding:0px 10px 0px 10px;"> {{$invItem->item->item_name}}  </td>
-	              		<td style="padding:0px 10px 0px 10px;"> {{$invItem->remarks}}  </td>
-	              		<td style="padding:0px 10px 0px 10px;"> PHP {{$invItem->amount}}  </td>
+	              		<td> {{$invItem->item->item_name}}  </td>
+	              		<td> {{$invItem->remarks}}  </td>
+	              		<td> PHP {{$invItem->amount}}  </td>
 	          		</tr>
           		@endforeach
               <tr>
-                  <td colspan="2" align="right" style="padding-right:5px;"> Sub Total: </td>
-                  <td style="padding:0px 10px 0px 10px;">PHP {{number_format($invoice->total_amount-(number_format($invoice->total_amount*.12,2)),2)}}</td>
+                  <td style="background:#eee" colspan="2" align="right" style="padding-right:5px;"> Sub Total: </td>
+                  <td>PHP {{number_format($invoice->total_amount-(number_format($invoice->total_amount*.12,2)),2)}}</td>
               </tr>
               <tr>
-                  <td colspan="2" align="right" style="padding-right:5px;"> VAT(12%): </td>
+                  <td style="background:#eee" colspan="2" align="right" style="padding-right:5px;"> VAT(12%): </td>
                   <td style="padding:0px 10px 0px 10px;">PHP {{number_format($invoice->total_amount*.12,2)}}</td>
               </tr>
           		<tr>
-              		<td colspan="2" align="right" style="padding-right:5px;"> Total Amount: </td>
-              		<td style="padding:0px 10px 0px 10px;">PHP {{$invoice->total_amount}}</td>
+              		<td style="background:#eee" colspan="2" align="right" style="padding-right:5px;"> Total Amount: </td>
+              		<td>PHP {{$invoice->total_amount}}</td>
           		</tr>
       		</table>
   		</div>
   		<br/><br/>
-  		<div style="margin-left: 60%;">
+  		<div style="margin-left: 70%;">
   			_______________________________ <br/>
-  			<div align="center" style="width:90%">
+  			<div align="center">
           {{Auth::user()->first_name}}&nbsp;{{Auth::user()->last_name}}
   			</div>
   		</div>

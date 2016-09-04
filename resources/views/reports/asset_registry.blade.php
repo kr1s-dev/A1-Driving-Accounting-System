@@ -4,7 +4,7 @@
     <div class="section">
 			<div id="table-datatables">
         <h4 class="header">Asset Registry as of
-                    {{date('F')}}, {{date('Y')}}
+                    {{date('F')}} {{date('Y')}}
         </h4>
         <div class="row">
           <div class="col s12 m12 l12">
@@ -19,12 +19,12 @@
                 					<table class="striped">
                 						<thead class="green white-text">
                   						<tr>
-                                <th>Asset No#</th>
-                                <th>Item Name</th>
-                                <th>Monthly Depreciation</th>
-                                <th>Accumulated Depreciation</th>
-                                <th>Remaining Months</th>
-                                <th>Net Amount</th>
+                                <th style="border-radius: 0;">Asset No#</th>
+                                <th style="border-radius: 0;">Item Name</th>
+                                <th style="border-radius: 0;">Monthly Depreciation</th>
+                                <th style="border-radius: 0;">Accumulated Depreciation</th>
+                                <th style="border-radius: 0;">Remaining Months</th>
+                                <th style="border-radius: 0;">Net Amount</th>
                               </tr>
                 						</thead>
                 						<tbody>

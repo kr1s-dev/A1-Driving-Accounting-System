@@ -1,16 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
   	<head>
+      <style>
+            body {
+              font-family: "Open Sans", "Arial", "Calibri", sans-serif;
+              font-size: 12px;
+            }
+            .header p, .header h4{
+              margin: 5px;
+            }
+            th {
+              background: #eee;
+            }
+            table, th, td {
+              border: 1px solid #000;
+              padding: 5px;
+            }
+          </style>
   	</head>
   	<body>
        	<div style="display:inline-block; width:100%">
-      		<div>
-          		<h2><strong>A1 Driving School</strong></h2>
-      		</div>
-      		<div style="float:right;">
-          		<h2>Cash Voucher</h2>
-      		</div>
-  		</div>
+          <div class="header">
+              <p><strong>A1 Driving School</strong></p>
+             <p>A-1 Driving Bldg, #2 Sta. Lucia St., 1550</p>
+             <p>+63 (2) 532.2272 / +63 (927) 7415331 / +63 (942) 3827688</p>
+          </div>
+          <div style="float:right;">
+              <h2>Cash Voucher</h2>
+          </div>
+      </div>
   		<hr/>
   
   		<div style="display:inline-block; width:100%">
@@ -23,14 +41,14 @@
   		</div>
   		<br/><br/>
   		<div>
-      		<table>
+      		<table cellspacing="0" width="100%">
           		<tr>
-              		<td><strong> Receiver Information </strong></td>
+              		<th colspan="3" class="header"><h4><strong> Receiver Information </strong></h4></th>
           		</tr>
           		<tr>
-                  <p>{{$expense->vendor_number}}</p>
-                  <p>{{$expense->vendor_address}}</p>
-                  <p>{{$expense->vendor_name}}</p>
+                  <td>{{$expense->vendor_number}}</td>
+                  <td>{{$expense->vendor_address}}</td>
+                  <td>{{$expense->vendor_name}}</td>
                 
           		</tr>
       		</table>
@@ -39,28 +57,28 @@
   		<div>
       		<table border="1" style="width:100%; border-collapse: collapse; border: 1px solid black;">
           		<tr>
-              		<th style="padding:0px 10px 0px 10px;"> Item </th>
-              		<th style="padding:0px 10px 0px 10px;"> Description</th>
-              		<th style="padding:0px 10px 0px 10px;"> Amount </th>
+              		<th> Item </th>
+              		<th> Description</th>
+              		<th> Amount </th>
           		</tr>
           		@foreach($expense->expenseItemsInfo as $expItem)
           			<tr>
-	              		<td style="padding:0px 10px 0px 10px;"> {{$expItem->item->item_name}}  </td>
-	              		<td style="padding:0px 10px 0px 10px;"> {{$expItem->remarks}}  </td>
-	              		<td style="padding:0px 10px 0px 10px;"> PHP {{$expItem->amount}}  </td>
+	              		<td> {{$expItem->item->item_name}}  </td>
+	              		<td> {{$expItem->remarks}}  </td>
+	              		<td> PHP {{$expItem->amount}}  </td>
 	          		</tr>
           		
           		@endforeach
           		<tr>
               		<td colspan="2" align="right" style="padding-right:5px;"> Total Amount: </td>
-              		<td style="padding:0px 10px 0px 10px;">PHP {{$expense->total_amount}}</td>
+              		<td>PHP {{$expense->total_amount}}</td>
           		</tr>
       		</table>
   		</div>
   		<br/><br/>
-  		<div style="margin-left: 60%;">
+  		<div style="margin-left: 70%;">
   			_______________________________ <br/>
-  			<div align="center" style="width:90%">
+  			<div align="center" style="width:100%">
   				{{Auth::user()->first_name}}&nbsp;{{Auth::user()->last_name}}
   			</div>
   		</div>

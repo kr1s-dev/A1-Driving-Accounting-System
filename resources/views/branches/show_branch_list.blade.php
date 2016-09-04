@@ -63,4 +63,10 @@
         	<br>
         </div>
    </div>
+   <!-- Floating Action Button -->
+  <div class="fixed-action-btn" style="bottom: 50px; right: 19px;">
+    <a href="{{route('branches.create')}}" class="btn-floating btn-large red darken-2">
+      <i class="mdi-content-add-circle"></i>
+    </a>
+  </div>
 @endsection

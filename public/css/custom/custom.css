@@ -21,3 +21,26 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
 .error-pages {
 	background :red;
 }
+
+.alert {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 3px;
+    color: #fff;
+}
+
+.alert-success {
+	background: #4caf50;
+}
+
+.alert-danger {
+	background: #c62828;
+}
+
+button.close {
+	display: none;
+}
+
+.invoice-logo {
+	max-width: 200px;
+}

@@ -5,7 +5,7 @@
 	    	<div class="invoice-header">
 	      		<div class="row section">
 	        		<div class="col s12 m6 l6">
-	          		<img src="{{ URL::asset('images/generic-logo.png')}}" alt="company logo">
+	          		<img class="invoice-logo" src="{{ URL::asset('images/a1-logo.png')}}" alt="company logo">
 	          		<p>To,</p>
 	          		<p>
 	          			<strong>{{$expense->vendor_name}}</strong><br>
@@ -15,31 +15,27 @@
 	        </div>
 
 	        <div class="col s12 m6 l6">
-	          	<div class="invoice-company-address right-align">
-	            	<span class="invoice-icon"><i class="mdi-social-location-city cyan-text"></i></span>
-
-	            	<p><span class="strong">A1 Driving School</span>
-	              		<br/>
-	              		<span>125, ABC Street,</span>
-	              		<br/>
-	              		<span>New Yourk, USA</span>
-	              		<br/>
-	              		<span>+91-(444)-(333)-(221)</span>
-	            	</p>
-	          	</div>
-
-	          	<div class="invoice-company-contact right-align">
-	            	<span class="invoice-icon"><i class="mdi-communication-quick-contacts-mail cyan-text"></i></span>
-	            	<p><span class="strong">www.exampledomain.com</span>
-	              		<br/>
-	              		<span>info@exampledomain.com</span>
-	              		<br/>
-	              		<span>admin@exampledomain.com</span>
-	            	</p>
-	          	</div>
-
-	        	</div>
-	      	</div>
+                      <div class="invoce-company-address right-align">
+                        <span class="invoice-icon"><i class="mdi-social-location-city cyan-text"></i></span>
+                      <p>
+                        <span class="strong">A1 Driving School</span>
+                            <br>
+                            <span>A-1 Driving Bldg</span>
+                            <br>
+                            <span>#2 Sta. Lucia St., 1550</span>
+                            <br>
+                            <span>+63 (2) 532.2272</span>
+                      </p>
+                      </div>
+                      <div class="invoce-company-contact right-align">
+                        <span class="invoice-icon"><i class="mdi-communication-quick-contacts-mail cyan-text"></i></span>
+                        <p>
+                          <span class="strong">www.a-1driving.com</span>
+                            <br/>
+                            <span>info@a-1driving.com</span>
+                        </p>
+                      </div>
+                  </div>
 	    </div>
 
 	    <div class="invoice-lable">
@@ -53,11 +49,11 @@
 	              			<p class="strong">Total Due</p>
 	              			<h4 class="header">₱ {{$expense->total_amount}}</h4>
 	            		</div>
-	            		<div class="col s12 m3 l3">
+	            		<div class="col s12 m3 l2">
 		              		<p class="strong">Expense No</p>
 		              		<h4 class="header">#{{sprintf("%'.07d\n",$expense->id)}}</h4>
 	            		</div>
-	            		<div class="col s12 m3 l3">
+	            		<div class="col s12 m3 l4">
 		              		<p class="strong">Date Issued</p>
 		              		<h4 class="header">{{date('F d, Y',strtotime($expense->created_at))}}</h4>
 	            		</div>

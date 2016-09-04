@@ -11,13 +11,13 @@
               				<div class="row">
                         @if(Auth::user()->userType->type=='Administrator' || (Auth::user()->branch_id!=NULL && Auth::user()->branchInfo->main_office))
                           <div class="col l2"><h6>Name</h6></div>
-                          <div class="col l4"><h5>A1 Driving School Accounting</h5></div>
+                          <div class="col l4"><h6>A1 Driving School Accounting</h6></div>
                         @else
                           <div class="col l2"><h6>Branch</h6></div>
-                          <div class="col l4"><h5>{{Auth::user()->branchInfo->branch_name}}</h5></div>
+                          <div class="col l4"><h6>{{Auth::user()->branchInfo->branch_name}}</h6></div>
                         @endif
 			                    <div class="col l2"><h6>Calendar Year</h6></div>
-			                    <div class="col l4"><h5>{{$dateToday}} - {{$dateNextYear}}</h5></div>
+			                    <div class="col l4"><h6>{{$dateToday}} - {{$dateNextYear}}</h6></div>
               				</div>
                 		</div>
               		</div>

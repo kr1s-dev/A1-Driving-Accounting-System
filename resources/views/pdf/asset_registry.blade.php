@@ -1,15 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
   	<head>
+      <style>
+        body {
+          font-family: "Open Sans", "Arial", "Calibri", sans-serif;
+          font-size: 12px;
+        }
+        .header p{
+          margin: 5px;
+        }
+        th {
+          background: #eee;
+        }
+        table, th, td {
+          border: 1px solid #000;
+          padding: 5px;
+        }
+      </style>
   	</head>
   	<body>
-       	<div align="center">
+       	<div class="header" align="center">
 		     <p><strong>Somerset Homeowners Association</strong></p>
 		     <p>Asset Registry</p>
 		     <p>{{date('F')}}, {{date('Y')}} </p>
-		</div>
+		  </div>
 		<hr/>
-		<table style="width:100%; border-collapse: collapse; text-align:center;">
+		<table cellborder="1" style="width:100%; border-collapse: collapse; text-align:center;">
 			<thead>
         <tr>
           	<th>Item Name</th>

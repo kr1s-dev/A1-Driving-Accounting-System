@@ -15,7 +15,7 @@
               <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                 <thead>
                     <tr>
-                      <th>Control No.</th>
+                      <th>Student No.</th>
                       <th>First Name</th>
                       <th>Last Name</th>
                       <th>Email</th>
@@ -26,7 +26,7 @@
              
                 <tfoot>
                     <tr>
-                      <th>Control No.</th>
+                      <th>Student No.</th>
                       <th>First Name</th>
                       <th>Last Name</th>
                       <th>Email</th>

@@ -10,7 +10,7 @@
 	    	<div class="invoice-header">
 	      		<div class="row section">
 	        		<div class="col s12 m6 l6">
-	          			<img src="{{ URL::asset('images/generic-logo.png')}} " alt="company logo">
+	          			<img class="invoice-logo" src="{{ URL::asset('images/a1-logo.png')}} " alt="company logo">
 	         			<p>To,
 		            		<br/>
 
@@ -26,23 +26,22 @@
 		          		<div class="invoce-company-address right-align">
 		            		<span class="invoice-icon"><i class="mdi-social-location-city cyan-text"></i></span>
 
-		            		<p><span class="strong">A1 Driving School</span>
-		              			<br/>
-				              	<span>125, ABC Street,</span>
-				              	<br/>
-				              	<span>New Yourk, USA</span>
-				              	<br/>
-				              	<span>+91-(444)-(333)-(221)</span>
+		            		<p>
+		            		<span class="strong">A1 Driving School</span>
+                        		<br>
+                        		<span>A-1 Driving Bldg</span>
+                        		<br>
+                        		<span>#2 Sta. Lucia St., 1550</span>
+                        		<br>
+                        		<span>+63 (2) 532.2272</span>
 		            		</p>
 		          		</div>
 
 			          	<div class="invoce-company-contact right-align">
 			            	<span class="invoice-icon"><i class="mdi-communication-quick-contacts-mail cyan-text"></i></span>
-			            	<p><span class="strong">www.exampledomain.com</span>
+			            	<p><span class="strong">www.a-1driving.com</span>
 			              		<br/>
-			              		<span>info@exampledomain.com</span>
-			              		<br/>
-			              		<span>admin@exampledomain.com</span>
+			              		<span>info@a-1driving.com</span>
 			            	</p>
 			          	</div>
 	        		</div>
@@ -60,12 +59,12 @@
 	              				<p class="strong">Total Due</p>
 	              				<h4 class="header" id="totDue">₱ {{$invoice->total_amount!=NULL?$invoice->total_amount:0}}</h4>
 	            			</div>
-	            			<div class="col s12 m3 l3">
+	            			<div class="col s12 m3 l2">
 		              			<p class="strong">Invoice No</p>
 		              			<h4 class="header">#{{sprintf("%'.07d\n", $invNumber)}}</h4>
 	            			</div>
 	            			<br>
-	            			<div class="col s12 m3 l3">
+	            			<div class="col s12 m3 l4">
 	              				<div class="input-field col s12 m6 l12 due-date">
 	                				<input type="date" class="datepicker" id="paymentDueDate"  value="{{$invoice->payment_due_date!=NULL?date('d F, Y',strtotime($invoice->payment_due_date)):''}}">
 	                				<label for="birthday" class="white-text">Due Date</label>

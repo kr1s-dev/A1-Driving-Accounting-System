@@ -94,7 +94,7 @@
                                           <tr>
                                             <td>{{$item->item_name}}</td>
                                             <!--td>PHP {{number_format($item->default_value,2)}}</td-->
-                                            <td class="center-align">
+                                            <td>
                                               <a href="{{route('item.edit',$item->id)}}" style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4">
                                                 <i class="mdi-content-create"></i>
                                               </a>
