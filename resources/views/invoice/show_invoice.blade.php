@@ -121,7 +121,7 @@
 
     <!-- Floating Action Button -->
     <div class="fixed-action-btn" style="bottom: 50px; right: 19px;">
-        <a href="{{route('student.invoice',$invoice->studentInfo->id)}}" class="btn-floating btn-large red darken-2">
+        <a href="{{route('invoice.receipt.create',$invoice->id)}}" class="btn-floating btn-large red darken-2">
          	<i class="mdi-content-add-circle"></i>
         </a>
         <ul>
