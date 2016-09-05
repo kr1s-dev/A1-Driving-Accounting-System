@@ -287,7 +287,15 @@ trait UtilityHelper
         $tDataHolder = array();
         $journalEntryList = array();
         $accountReceivableTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Accounts Receivable'));
+        if(is_null($accountReceivableTitle)){
+            $this->insertNewAccountTitle('Accounts Receivable',null);
+            $accountReceivableTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Accounts Receivable'));
+        }
         $cashTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Cash'));
+        if(is_null($cashTitle)){
+            $this->insertNewAccountTitle('Cash',null);
+            $cashTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Cash'));
+        }
         $eAccountGrp = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>($typeName=='Invoice'?'Revenues':'Expenses')));//get account titles
         foreach ($eAccountGrp->accountTitles as $accountTitle) {
             foreach ($accountTitle->items as $item) {
@@ -318,12 +326,6 @@ trait UtilityHelper
 
         }else if($typeName=='Expense'){
             foreach ($dataList as $data) {
-                $dataCreated = $data['created_at'];
-                //for debit in journal
-                // $journalEntryList[] = $this->populateJournalEntry($foreignKey,$foreignValue,$typeName,
-                //                                     $data['account_title_id'],null,$data['amount'],
-                //                                     0.00,$description,$data['created_at'],
-                //                                     date('Y-m-d'));
                 $dataCreated = $data['created_at'];
                 if(!(array_key_exists($itemList[$data['item_id']], $tDataHolder)))
                     $tDataHolder[$itemList[$data['item_id']]] = 0;
@@ -584,5 +586,16 @@ trait UtilityHelper
                                             'action'=>$action,
                                             'created_at' => date('Y-m-d H:i:sa'),
                                             'updated_at' => date('Y-m-d H:i:sa')),false);
+    }
+
+    public function insertNewAccountTitle($accountTitleName,$parentId){
+        $newAcctTitle = array('account_title_name'=>$accountTitleName,
+                                'account_title_id'=>$parentId,
+                                'created_by'=>Auth::user()->id,
+                                'updated_by'=>Auth::user()->id,
+                                'created_at'=>date('Y-m-d h:i:sa'),
+                                'updated_at'=>date('Y-m-d h:i:sa'));
+        $this->insertRecords('account_titles',$newAcctTitle,false);
+                
     }
 }

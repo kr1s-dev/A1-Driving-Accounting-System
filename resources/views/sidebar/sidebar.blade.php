@@ -219,6 +219,8 @@
                             </li>
                             <li><a href="{{route('asset.registry')}}">Asset Registry</a>
                             </li>
+                            <li><a href="{{route('stmtcashflow')}}">Statement of CF</a>
+                            </li>
                             
                         </ul>
                     </div>

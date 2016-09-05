@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Assets;
 
-use Illuminate\Http\Request;
-
-use App\AccountTitleModel;
+use Auth;
 use App\Http\Requests;
+use App\AccountTitleModel;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Assets\AssetRequest;
 use App\Http\Controllers\Utility\UtilityHelper;
@@ -212,6 +212,11 @@ class AssetController extends Controller
         $eAsset = $this->searchAsset($assetId);
         $description = 'Bought item ' . $data['asset_name']  . ' from ' . $data['asset_vendor'];
         $cashAccountTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Cash'));
+        if(is_null($cashAccountTitle)){
+            $this->insertNewAccountTitle('Cash',null);
+            $this->insertRecords('account_titles',$newAcctTitle,false);
+            $cashAccountTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Cash'));
+        }
 
         $journalEntryList[] = $this->populateJournalEntry('asset_id',$assetId,'Asset',
                                                             $data['account_title_id'],null,$data['asset_original_cost'],
@@ -223,7 +228,11 @@ class AssetController extends Controller
                                                                 $data['asset_original_cost'],$description,$isInsert?date('Y-m-d'):$asset->created_at,
                                                                 date('Y-m-d'));
         }else{
-            $accountsPayableAccounTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Accounts Payable'));
+            $accountsPayableAccounTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Notes Payable'));
+            if(is_null($accountsPayableAccounTitle)){
+                $this->insertNewAccountTitle('Notes Payable',null);
+                $accountsPayableAccounTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Notes Payable'));
+            }
             if($data['asset_mode_of_acq']==='Both'){
                 $journalEntryList[] = $this->populateJournalEntry('asset_id',$assetId,'Asset',
                                                                 null,$cashAccountTitle->id,0.00,

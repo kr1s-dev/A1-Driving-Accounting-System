@@ -86,10 +86,32 @@ class DepreciationAutomation_Batch extends Command
 
     public function createJournalEntry($accountTitleName,$typeName,$foreignKey,$foreignValue,$description,$amount,$adminId){
         $journalEntryList = array();
+        $acctTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>$accountTitleName));
         $accountDepExp = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Depreciation Expense'));
+        if(is_null($accountDepExp)){
+            $newAcctTitle = array('account_title_name'=>'Depreciation Expense',
+                                    'created_by'=>$adminId,
+                                    'updated_by'=>$adminId,
+                                    'created_at'=>date('Y-m-d h:i:sa'),
+                                    'updated_at'=>date('Y-m-d h:i:sa'));
+            $this->insertRecords('account_titles',$newAcctTitle,false);
+            $accountDepExp = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Depreciation Expense'));
+        }
         $accountAccExp = DB::table('account_titles')
                                 ->where('account_title_name','LIKE','%Accumulated Depreciation - '.$accountTitleName.'%')
                                 ->first();
+        if(is_null($accountAccExp)){
+            $newAcctTitle = array('account_title_name'=>'Accumulated Depreciation - ' . $accountTitleName,
+                                    'account_title_id'=>$acctTitle->id,
+                                    'created_by'=>$userAdmin->id,
+                                    'updated_by'=>$userAdmin->id,
+                                    'created_at'=>date('Y-m-d h:i:sa'),
+                                    'updated_at'=>date('Y-m-d h:i:sa'));
+            $this->insertRecords('account_titles',$newAcctTitle,false);
+            $accountAccExp = DB::table('account_titles')
+                                ->where('account_title_name','LIKE','%Accumulated Depreciation - '.$accountTitleName.'%')
+                                ->first();
+        }
 
         if(!(is_null($accountDepExp )) && !(is_null($accountAccExp))){
             $journalEntryList[] = $this->populateJournalEntry($foreignKey,$foreignValue,$typeName,

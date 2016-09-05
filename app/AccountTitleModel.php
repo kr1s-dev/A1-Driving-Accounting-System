@@ -37,4 +37,8 @@ class AccountTitleModel extends Model
     public function items(){
         return $this->hasMany('App\InvExpItemModel','account_title_id');
     }
+
+    public function assetsInfo(){
+        return $this->hasMany('App\AssetsModel','account_title_id');
+    }
 }
