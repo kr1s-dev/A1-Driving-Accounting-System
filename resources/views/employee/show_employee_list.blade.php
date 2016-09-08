@@ -36,7 +36,7 @@
                   @if(!(empty($employeeList)))
                     @foreach($employeeList as $employee)
                       <tr>
-                        <td><a href="{{route('students.show',$employee->id)}}">{{sprintf("%'.07d\n", $employee->id)}}</a></td>
+                        <td><a href="{{route('employee.show',$employee->id)}}">{{sprintf("%'.07d\n", $employee->id)}}</a></td>
                         <td>{{$employee->employee_first_name}}</td>
                         <td>{{$employee->employee_middle_name}}</td>
                         <td>{{$employee->employee_last_name}}</td>
