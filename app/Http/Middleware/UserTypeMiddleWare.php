@@ -16,7 +16,7 @@ class UserTypeMiddleWare
     public function handle($request, Closure $next,$objectToAccess)
     {
         $usertype = $request->user()->userType->type;
-        if($objectToAccess == 'users' || $objectToAccess == 'branch'){
+        if($objectToAccess == 'users' || $objectToAccess == 'branch' || $objectToAccess == 'employee'){
             if($usertype === 'Administrator' || 
                 ($request->user()->branch_id != NULL&&$request->user()->branchInfo->main_office)){
                 return $next($request);
