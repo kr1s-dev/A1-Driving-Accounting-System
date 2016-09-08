@@ -53,6 +53,9 @@ Route::group(['middleware' => 'auth'], function () {
 	//Asset Routes
 	Route::resource('asset','Assets\AssetController');
 
+	//Employee Routes
+	Route::resource('employee','Employee\EmployeeController');
+
 	//Account Title Routes
 	Route::resource('accounttitle','AccountTitles\AccountTitleController');
 	Route::get('accounttitle/{id}/create',['as'=>'accounttitle.with.parent.accounttitle','uses'=>'AccountTitles\AccountTitleController@createWithParent']);

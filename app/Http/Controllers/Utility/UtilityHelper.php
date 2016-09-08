@@ -12,11 +12,13 @@ use App\StudentModel;
 use App\InvoiceModel;
 use App\ExpenseModel;
 use App\JournalModel;
+use App\EmployeeModel;
 use App\UserTypeModel;
 use App\InvExpItemModel;
 use App\AccountGroupModel;
 use App\AccountTitleModel;
 use App\PaymentTransactionModel;
+
 trait UtilityHelper
 {
     public function searchUser($id){
@@ -211,6 +213,25 @@ trait UtilityHelper
 
     public function searchItem($id){
         return $id!=NULL?InvExpItemModel::findOrFail($id):InvExpItemModel::all();
+    }
+
+    public function searchEmployee($id){
+        if(Auth::user()->userType->type === 'Administrator' ||
+                (Auth::user()->branch_id!=NULL && Auth::user()->branchInfo->main_office)){
+            return $id!=NULL?EmployeeModel::findOrFail($id):EmployeeModel::all();
+        }elseif(Auth::user()->branch_id!=NULL){
+            $value = Auth::user()->branch_id;
+            $query=EmployeeModel::whereHas('userCreateInfo',function($q) use ($value){
+                                            $q->where('branch_id','=',$value);
+                                        });
+            return $id!=NULL?
+                        $query->where('id','=',$id)->first():$query->get();
+        }
+        return null;
+    }
+
+    public function putEmployee(){
+        return new EmployeeModel;
     }
 
 

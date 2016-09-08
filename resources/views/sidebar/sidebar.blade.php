@@ -53,6 +53,24 @@
                     </li> 
                 </ul>
             </li>
+            <li class="li-hover"><div class="divider"></div></li>
+            <li class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    <li class="bold">
+                    <a class="collapsible-header waves-effect waves-cyan">
+                    <i class="material-icons">location_city</i> Employee
+                    </a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li><a href="{{route('employee.index')}}">View All</a>
+                                </li>
+                                <li><a href="{{route('employee.create')}}">Create New</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li> 
+                </ul>
+            </li>
         @endif
         
         <li class="li-hover"><div class="divider"></div></li>

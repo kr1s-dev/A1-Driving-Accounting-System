@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateJournalEntryTable extends Migration
+class CreateJournalEntriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -35,6 +35,7 @@ class CreateJournalEntryTable extends Migration
                 $table->foreign('credit_title_id')->references('id')->on('account_titles');
                 $table->decimal('debit_amount',10,2)->default(0.00);
                 $table->decimal('credit_amount',10,2)->default(0.00);
+                $table->boolean('is_closed')->default(0);
                 $table->timestamps();
             });
         }
