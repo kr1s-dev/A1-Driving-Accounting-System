@@ -481,14 +481,14 @@ trait UtilityHelper
                                                 ->get();
             foreach ($accountGroup as $accountGrp) {
                 foreach ($accountGrp->accountTitles as $accountTitle) {
-                    $data[$accountTitle->account_title_name] = $accountTitle->opening_balance;
+                    $data[$accountTitle->account_title_name] = 0;
                 }
             }
         }else if(is_null($typeOfData)){
             $accountGroup =  $this->searchAccountGroups(null);
             foreach ($accountGroup as $accountGrp) {
                 foreach ($accountGrp->accountTitles as $accountTitle) {
-                    $data[$accountTitle->account_title_name] = $accountTitle->opening_balance;
+                    $data[$accountTitle->account_title_name] = 0;
                 }
             }
         }
@@ -598,7 +598,7 @@ trait UtilityHelper
                                                                     ->whereMonth('created_at','=',$monthFilter);
         }
         \Log::debug(DB::getQueryLog());
-        return $query->get();
+        return $query->where('is_closed','=',0)->get();
     }
 
     public function createSystemLogs($action){

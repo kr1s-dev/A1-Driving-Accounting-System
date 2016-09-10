@@ -26,14 +26,14 @@
                   						</th>
                 						</thead>
                 						<tbody>
-                              @if($incTotalSum-$arBalance<=0 && count($expenseList)<=0 )
+                              @if(($incTotalSum+$totalPayable)-$arBalance<=0 && count($expenseList)<=0 )
                                 <tr>
                                   <td colspan="3" align="center"><i><strong>No Activity Found</strong></i></td>
                                 </tr>
                               @else
                                 <tr>
                                   <td colspan="2">Cash Received from Customers </td>
-                                  <td align="right"> ₱ {{number_format($incTotalSum-$arBalance,2)}}</td>
+                                  <td align="right"> ₱ {{number_format(($incTotalSum+$totalPayable)-$arBalance,2)}}</td>
                                 </tr>
                                 @if(count($expenseList)>0)
                                   <tr>

@@ -70,6 +70,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('journal/adjustment/create' ,['as'=>'adjustment.create','uses'=>'Journal\JournalEntryController@getAdjustmenstEntry']);
     Route::post('journal/create' ,'Journal\JournalEntryController@store');
     Route::get('journal' ,['as'=>'journal.index','uses'=>'Journal\JournalEntryController@index']);
+    Route::get('account/close' ,['as'=>'journal.close','uses'=>'AccountInformation\AccountInformationController@closeAccountingYear']);
 
     //Acount Information Route
     Route::get('account/details' ,['as'=>'account.details','uses'=>'AccountInformation\AccountInformationController@index']);

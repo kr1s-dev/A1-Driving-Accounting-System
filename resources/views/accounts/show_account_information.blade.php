@@ -5,22 +5,28 @@
       	<div class="section">
           	<div class="row">
             	<div class="col s12 m12 l12">
-              		<div class="card  light-blue">
-                		<div class="card-content white-text">
-                  			<span class="card-title">Account Details</span>
-              				<div class="row">
-                        @if(Auth::user()->userType->type=='Administrator' || (Auth::user()->branch_id!=NULL && Auth::user()->branchInfo->main_office))
-                          <div class="col l2"><h6>Name</h6></div>
-                          <div class="col l4"><h6>A1 Driving School Accounting</h6></div>
-                        @else
-                          <div class="col l2"><h6>Branch</h6></div>
-                          <div class="col l4"><h6>{{Auth::user()->branchInfo->branch_name}}</h6></div>
-                        @endif
-			                    <div class="col l2"><h6>Calendar Year</h6></div>
-			                    <div class="col l4"><h6>{{$dateToday}} - {{$dateNextYear}}</h6></div>
-              				</div>
-                		</div>
+                <div class="row">
+                  <a href="{{route('journal.close')}}" class="btn red darken-2 waves-effect waves-light right"> Closed Accounting Year
+                    <i class="material-icons left">book</i>
+                  </a>
+                </div>
+            		<div class="card  light-blue">
+              		<div class="card-content white-text">
+                			<span class="card-title">Account Details</span>
+                    
+            				<div class="row">
+                      @if(Auth::user()->userType->type=='Administrator' || (Auth::user()->branch_id!=NULL && Auth::user()->branchInfo->main_office))
+                        <div class="col l2"><h6>Name</h6></div>
+                        <div class="col l4"><h6>A1 Driving School Accounting</h6></div>
+                      @else
+                        <div class="col l2"><h6>Branch</h6></div>
+                        <div class="col l4"><h6>{{Auth::user()->branchInfo->branch_name}}</h6></div>
+                      @endif
+		                    <div class="col l2"><h6>Calendar Year</h6></div>
+		                    <div class="col l4"><h6>{{$dateToday}} - {{$dateNextYear}}</h6></div>
+            				</div>
               		</div>
+            		</div>
             	</div>
           	</div>
 

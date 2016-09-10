@@ -66,7 +66,32 @@ class AccountInformationController extends Controller
         }catch(\Exception $ex){
             return view('errors.404');
         }
-    	
+    }
 
+    public function closeAccountingYear(){
+        $accountTitles = array();
+        $accountGroupsList = $this->searchAccountGroups(null);
+        $currYrJourEntryList = $this->getJournalEntryRecordsWithFilter(null,null,date('Y'));
+        $fCurrJournEntList = $this->getItemsAmountList($currYrJourEntryList,null);
+        
+        foreach ($accountGroupsList as $acctGrp) {
+            if($acctGrp->account_group_name != 'Revenues' && $acctGrp->account_group_name != 'Expenses'){
+                foreach ($acctGrp->accountTitles as $acctTitle) {
+                    if(array_key_exists($acctTitle->account_sub_group_name, $fCurrJournEntList)){
+                        $acctTitle->opening_balance += $fCurrJournEntList[$acctTitle->account_sub_group_name];
+                        $acctTitle->save();
+                    }
+                }
+            }
+        }
+
+        foreach ($currYrJourEntryList as $journEntry) {
+            $journEntry->is_closed = true;
+            $journEntry->save();
+        }
+
+        $this->createSystemLogs('Closed Current Accounting Year');
+        flash()->success('Accounting Year Successfully Closed')->important();
+        return redirect('account/details');
     }
 }

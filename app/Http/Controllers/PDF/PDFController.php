@@ -217,6 +217,8 @@ class PDFController extends Controller
         $incTotalSum = $this->getTotalSum($incomeItemsList);
         $expenseItemsList = $this->getItemsAmountList($expStatementItemsList,'Expense');
         $arBalance = 0;
+        $tExpenseList = '';
+        $totalPayable = 0;
         $expenseList = array();
         $investmentList = array();
         $financingList = array();
@@ -233,8 +235,23 @@ class PDFController extends Controller
                         if($actTitle->account_title_name=='Accounts Receivable')
                             $arBalance = $actTitle->opening_balance;
                     }
+                }elseif(strrpos($accountGroup->account_group_name, 'Expense') || $accountGroup->account_group_name == 'Expenses'){
+                    foreach ($accountGroup->accountTitles as $actTitle) {
+                        $tExpenseList .= $tExpenseList==''?($actTitle->account_title_name.','):(','.$actTitle->account_title_name);
+                    }
                 }
             }
+
+            foreach ($accountGroupList as $accountGroup) {
+                if($accountGroup->account_group_name == 'Current Liabilities'){
+                    foreach ($accountGroup->accountTitles as $actTitle) {
+                        if(strrpos($tExpenseList,str_replace('Payable', '', $actTitle->account_title_name)));
+                            $totalPayable += $eBalanceSheetItemsList[$actTitle->account_title_name];
+                    }
+                    
+                }
+            }
+            
             foreach ($accountGroupList as $accountGroup) {
                 if($accountGroup->account_group_name === 'Non-Current Assets'){
                     foreach ($accountGroup->accountTitles as $actTitle) {

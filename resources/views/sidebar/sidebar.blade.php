@@ -58,7 +58,7 @@
                 <ul class="collapsible collapsible-accordion">
                     <li class="bold">
                     <a class="collapsible-header waves-effect waves-cyan">
-                    <i class="material-icons">location_city</i> Employee
+                    <i class="material-icons">perm_identity</i> Employee
                     </a>
                         <div class="collapsible-body">
                             <ul>
