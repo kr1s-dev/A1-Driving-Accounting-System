@@ -271,18 +271,26 @@ class ReportController extends Controller
 
             foreach ($accountGroupList as $accountGroup) {
                 if($accountGroup->account_group_name === 'Non-Current Assets'){
+                    //echo count($accountGroup->accountTitles);
                     foreach ($accountGroup->accountTitles as $actTitle) {
+                        //echo $actTitle->account_title_name;
+                        // if(array_key_exists($actTitle->account_title_name, $eBalanceSheetItemsList)){
+                        //     if(!array_key_exists($actTitle->account_title_name, $investmentList)){
+                        //         $investmentList[$actTitle->account_title_name] = $actTitle->opening_balance;
+                        //     }
+                            
+                        // }
                         $investmentList[$actTitle->account_title_name] = $actTitle->opening_balance;
                         foreach ($actTitle->assetsInfo as $astItem) {
-                            if($astItem->mode_of_acquisition == 'Payable'){
+                            if($astItem->asset_mode_of_acq == 'Payable'){
                                 $investmentList[$actTitle->account_title_name] -= $astItem->asset_original_cost;
-                            }else if($astItem->mode_of_acquisition == 'Both'){
+                            }else if($astItem->asset_mode_of_acq == 'Both'){
                                 $investmentList[$actTitle->account_title_name] -= $astItem->asset_down_payment;
                             }
                         }
                     }
                 }
-
+                
                 if($accountGroup->account_group_name === 'Owners Equity'){
                     foreach ($accountGroup->accountTitles as $actTitle) {
                         $financingList[$actTitle->account_title_name] = $actTitle->opening_balance;
@@ -300,6 +308,7 @@ class ReportController extends Controller
 
         }
 
+        //echo $arBalance;
         $totalCashInHand = ($incTotalSum - $arBalance) - ($this->getTotalSum($expenseList)) - ($this->getTotalSum($investmentList)) + ($this->getTotalSum($financingList));
 
         return view('reports.statement_of_cash_flow',

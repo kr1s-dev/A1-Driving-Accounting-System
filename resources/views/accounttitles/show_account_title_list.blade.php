@@ -37,7 +37,7 @@
                                           </a>
                                        </td>
                                        <td >
-                                          {{$accountTitle->opening_balance}}
+                                          PHP {{$accountTitle->opening_balance}}
                                        </td>
                                     </tr>
                                     @foreach($accountTitle->accountTitleChildren as $accountTitlechild)
@@ -78,7 +78,7 @@
                                           </a>
                                        </td>
                                        <td >
-                                          {{$accountTitle->opening_balance}}
+                                          PHP {{$accountTitle->opening_balance}}
                                        </td>
                                     </tr>
                                     @foreach($accountTitle->accountTitleChildren as $accountTitlechild)
@@ -119,7 +119,7 @@
                                           </a>
                                        </td>
                                        <td >
-                                          {{$accountTitle->opening_balance}}
+                                          PHP {{$accountTitle->opening_balance}}
                                        </td>
                                     </tr>
                                     @foreach($accountTitle->accountTitleChildren as $accountTitlechild)

@@ -47,7 +47,7 @@ class StudentRequest extends Request
                         'stud_company_tel_no' => 'required|min:7|max:11',
                         'stud_contact_name' => 'required|max:255',
                         'stud_contact_mobile_no' => 'required|min:11|max:13',
-                        'stud_contact_tel_no' => 'required|min:7|max:11',];
+                        'stud_contact_tel_no' => 'min:7|max:11',];
             }
             //for update
             case 'PATCH':{  
@@ -68,7 +68,7 @@ class StudentRequest extends Request
                         'stud_company_tel_no' => 'required|min:7|max:11',
                         'stud_contact_name' => 'required|max:255',
                         'stud_contact_mobile_no' => 'required|min:11|max:13',
-                        'stud_contact_tel_no' => 'required|min:7|max:11',];
+                        'stud_contact_tel_no' => 'min:7|max:11',];
             }
             //default
             default: break;

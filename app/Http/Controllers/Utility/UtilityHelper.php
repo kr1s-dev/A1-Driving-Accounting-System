@@ -309,12 +309,12 @@ trait UtilityHelper
         $journalEntryList = array();
         $accountReceivableTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Accounts Receivable'));
         if(is_null($accountReceivableTitle)){
-            $this->insertNewAccountTitle('Accounts Receivable',null);
+            $this->insertNewAccountTitle('Accounts Receivable',null,1);
             $accountReceivableTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Accounts Receivable'));
         }
         $cashTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Cash'));
         if(is_null($cashTitle)){
-            $this->insertNewAccountTitle('Cash',null);
+            $this->insertNewAccountTitle('Cash',null,1);
             $cashTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Cash'));
         }
         $eAccountGrp = $this->getLastRecord('AccountGroupModel',array('account_group_name'=>($typeName=='Invoice'?'Revenues':'Expenses')));//get account titles
@@ -609,13 +609,14 @@ trait UtilityHelper
                                             'updated_at' => date('Y-m-d H:i:sa')),false);
     }
 
-    public function insertNewAccountTitle($accountTitleName,$parentId){
+    public function insertNewAccountTitle($accountTitleName,$parentId,$accountGroupId){
         $newAcctTitle = array('account_title_name'=>$accountTitleName,
                                 'account_title_id'=>$parentId,
                                 'created_by'=>Auth::user()->id,
                                 'updated_by'=>Auth::user()->id,
                                 'created_at'=>date('Y-m-d h:i:sa'),
-                                'updated_at'=>date('Y-m-d h:i:sa'));
+                                'updated_at'=>date('Y-m-d h:i:sa'),
+                                'account_group_id'=>$accountGroupId);
         $this->insertRecords('account_titles',$newAcctTitle,false);
                 
     }

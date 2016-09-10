@@ -422,32 +422,45 @@ Scripts
                 data+=( (c.textContent.replace('₱ ',''))+',');
               });
           });
-          if(vendor_name && vendor_address && vendor_address){
-            if(data){
-              data = data.substring(0,data.length - 1);
-              $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': _token
-                },
-                url: '../../expense' + (_method==='POST'?'':('/'+expenseId)),
-                type: _method,
-                data: { 'data':data,
-                        'total_amount': totalAmount,
-                        'vendor_name':vendor_name,
-                        'vendor_address':vendor_address,
-                        'vendor_number':vendor_number},
-                success: function(response)
-                {
-                  //alert(response);
-                  location.href="../../expense/"+response;
-                }, error: function(xhr, ajaxOptions, thrownError){
-                  alert(xhr.status);
-                  alert(thrownError);
+          if(vendor_name && vendor_address && vendor_number){
+            if(vendor_name.length > 3 && vendor_name.length < 255){
+              if(vendor_address.length > 3 && vendor_address.length < 255){
+                if(vendor_number.length > 6 && vendor_number.length < 13){
+                  if(data){
+                    data = data.substring(0,data.length - 1);
+                    $.ajax({
+                      headers: {
+                          'X-CSRF-TOKEN': _token
+                      },
+                      url: '../../expense' + (_method==='POST'?'':('/'+expenseId)),
+                      type: _method,
+                      data: { 'data':data,
+                              'total_amount': totalAmount,
+                              'vendor_name':vendor_name,
+                              'vendor_address':vendor_address,
+                              'vendor_number':vendor_number},
+                      success: function(response)
+                      {
+                        //alert(response);
+                        location.href="../../expense/"+response;
+                      }, error: function(xhr, ajaxOptions, thrownError){
+                        alert(xhr.status);
+                        alert(thrownError);
+                      }
+                    });
+                  }else{
+                    alert('Please Input data into table.');
+                  }
+                }else{
+                  alert('Vendor Number character Length must be less than 13 or greater than 7');
                 }
-              });
+              }else{
+                alert('Vendor Address character Length must be less than 255 or greater than 3');
+              }
             }else{
-              alert('Please Input data into table.');
+              alert('Vendor Name character Length must be less than 255 or greater than 3');
             }
+            
           }else{
             alert('Please Input Recepients Information.');
           }

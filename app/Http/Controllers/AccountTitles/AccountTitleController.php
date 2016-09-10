@@ -199,6 +199,10 @@ class AccountTitleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+            $this->deleteRecords('account_titles',array('id'=>$id));
+        }catch(\Exception $ex){
+            return view('errors.404');
+        }
     }
 }

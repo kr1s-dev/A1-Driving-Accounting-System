@@ -77,8 +77,8 @@ class AccountInformationController extends Controller
         foreach ($accountGroupsList as $acctGrp) {
             if($acctGrp->account_group_name != 'Revenues' && $acctGrp->account_group_name != 'Expenses'){
                 foreach ($acctGrp->accountTitles as $acctTitle) {
-                    if(array_key_exists($acctTitle->account_sub_group_name, $fCurrJournEntList)){
-                        $acctTitle->opening_balance += $fCurrJournEntList[$acctTitle->account_sub_group_name];
+                    if(array_key_exists($acctTitle->account_title_name, $fCurrJournEntList)){
+                        $acctTitle->opening_balance += $fCurrJournEntList[$acctTitle->account_title_name];
                         $acctTitle->save();
                     }
                 }

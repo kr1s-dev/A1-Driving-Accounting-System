@@ -62,8 +62,6 @@ class AssetController extends Controller
             $input['asset_date_acquired'] = date('Y-m-d',strtotime($input['asset_date_acquired']));
             $input['next_depreciation_date'] = date('Y-m-d',strtotime('+1 Month'));
             $assetId = $this->insertRecords('asset_items',$input,false);
-
-
             $this->insertRecords('journal_entry',
                                     $this->toInsertJournalEntry($input,$assetId,true),
                                     true);
@@ -71,8 +69,8 @@ class AssetController extends Controller
             flash()->success('Record successfully created');
             return redirect('asset/'.$assetId);    
         }catch(\Exception $ex){
-            echo $ex->getmessage();
-            //return view('errors.404');
+            
+            return view('errors.404');
         }
         
     }
@@ -161,7 +159,8 @@ class AssetController extends Controller
             flash()->success('Record successfully Updated');
             return redirect('asset/'.$id);    
         }catch(\Exception $ex){
-            return view('errors.404');
+            echo $ex->getMessage();
+            //return view('errors.404');
         }
         
     }
@@ -213,7 +212,7 @@ class AssetController extends Controller
         $description = 'Bought item ' . $data['asset_name']  . ' from ' . $data['asset_vendor'];
         $cashAccountTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Cash'));
         if(is_null($cashAccountTitle)){
-            $this->insertNewAccountTitle('Cash',null);
+            $this->insertNewAccountTitle('Cash',null,1);
             $this->insertRecords('account_titles',$newAcctTitle,false);
             $cashAccountTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Cash'));
         }
@@ -230,7 +229,7 @@ class AssetController extends Controller
         }else{
             $accountsPayableAccounTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Notes Payable'));
             if(is_null($accountsPayableAccounTitle)){
-                $this->insertNewAccountTitle('Notes Payable',null);
+                $this->insertNewAccountTitle('Notes Payable',null,4);
                 $accountsPayableAccounTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Notes Payable'));
             }
             if($data['asset_mode_of_acq']==='Both'){

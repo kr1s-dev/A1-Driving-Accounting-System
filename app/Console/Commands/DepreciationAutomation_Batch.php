@@ -113,7 +113,8 @@ class DepreciationAutomation_Batch extends Command
                                     'created_by'=>$userAdmin->id,
                                     'updated_by'=>$userAdmin->id,
                                     'created_at'=>date('Y-m-d h:i:sa'),
-                                    'updated_at'=>date('Y-m-d h:i:sa'));
+                                    'updated_at'=>date('Y-m-d h:i:sa'),
+                                    'account_group_id'=>2);
             $this->insertRecords('account_titles',$newAcctTitle,false);
             $accountAccExp = DB::table('account_titles')
                                 ->where('account_title_name','LIKE','%Accumulated Depreciation - '.$accountTitleName.'%')
