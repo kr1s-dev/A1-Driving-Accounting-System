@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use DB;
+use Auth;
 use App\AssetsModel;
 use App\AccountTitleModel;
 use Illuminate\Console\Command;
@@ -110,8 +111,8 @@ class DepreciationAutomation_Batch extends Command
         if(is_null($accountAccExp)){
             $newAcctTitle = array('account_title_name'=>'Accumulated Depreciation - ' . $accountTitleName,
                                     'account_title_id'=>$acctTitle->id,
-                                    'created_by'=>$userAdmin->id,
-                                    'updated_by'=>$userAdmin->id,
+                                    'created_by'=>$adminId,
+                                    'updated_by'=>$adminId,
                                     'created_at'=>date('Y-m-d h:i:sa'),
                                     'updated_at'=>date('Y-m-d h:i:sa'),
                                     'account_group_id'=>2);

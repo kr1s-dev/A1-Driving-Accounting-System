@@ -26,53 +26,87 @@
                   						</th>
                 						</thead>
                 						<tbody>
-                              @if(($incTotalSum+$totalPayable)-$arBalance<=0 && count($expenseList)<=0 )
+                              <tr>
+                                <td>
+                                  Total Profit
+                                </td>
+                                @if($totalProfit>0)
+                                  <td colspan="2" align="right">PHP {{$totalProfit}}</td>
+                                @else
+                                  <td colspan="2" align="left">PHP {{$totalProfit}}</td>
+                                @endif
+                              </tr>
+                              <tr>
+                                <td colspan="3">
+                                  Adjustments for:
+                                </td>
+                              </tr>
+                              @if($depreciationValue != 0)
                                 <tr>
-                                  <td colspan="3" align="center"><i><strong>No Activity Found</strong></i></td>
+                                  <td>
+                                    Depreciation and Amortization
+                                  </td>
+                                  <td colspan="2" align="right">PHP {{$depreciationValue}}</td>
                                 </tr>
-                              @else
-                                <tr>
-                                  <td colspan="2">Cash Received from Customers </td>
-                                  <td align="right"> ₱ {{number_format(($incTotalSum+$totalPayable)-$arBalance,2)}}</td>
-                                </tr>
-                                @if(count($expenseList)>0)
-                                  <tr>
-                                    <td colspan="3">Cash Payments For: </td>
-                                  </tr>
-                                  @foreach($expenseList as $key=>$value)
-                                    @if($value > 0)
-                                      <tr>
-                                        <td>{{str_replace(strpos($key, 'Expense')?'Expense':'Expenses', '', $key)}}</td>
-                                        <td align="right">₱ {{number_format($value,2)}}</td>
-                                        <td></td>
-                                      </tr>
+                              @endif
+                              @foreach($accountTitleList as $key => $value)
+                                @if($key == 'Current Assets')
+                                  @foreach($value as $val)
+                                    @if($val->account_title_name != 'Cash')
+                                      @if($val->opening_balance < 0 )
+                                        @if($key == 'Current Assets')
+                                          <tr>
+                                            <td>Decrease on {{$val->account_title_name}}</td>
+                                            <td colspan="2" align="left">PHP {{$val->opening_balance}}</td>
+                                          </tr>
+                                        @else
+                                          <tr>
+                                            <td>Increase on {{$val->account_title_name}}</td>
+                                            <td colspan="2" align="left">PHP {{$val->opening_balance}}</td>
+                                          </tr>
+                                        @endif
+                                      @elseif($val->opening_balance > 0 )
+                                        @if(strrpos($key, 'Asset'))
+                                          <tr>
+                                            <td>Increase on {{$val->account_title_name}}</td>
+                                            <td colspan="2" align="left">PHP {{$val->opening_balance}}</td>
+                                          </tr>
+                                        @else
+                                          <tr>
+                                            <td>Decrease on {{$val->account_title_name}}</td>
+                                            <td colspan="2" align="left">PHP {{$val->opening_balance}}</td>
+                                          </tr>
+                                        @endif
+                                      @endif
                                     @endif
                                   @endforeach
                                 @endif
-                              @endif
-                              
-                						</tbody>
+                              @endforeach
+                              <tr>
+                                <td colspan="2"> <strong>Cash generated from operations</strong></td>
+                                <td><u>PHP {{($totalProfit+$totalOperationCash+$depreciationValue)}}</u></td>
+                              </tr>
+                            </tbody>
                             <thead class="green white-text">
                               <th colspan="3">
                                   <h1>Cash Flow from Investing Activities</h1>
                               </th>
                             </thead>
                             <tbody>
-                              @if(count($investmentList)<=0)
-                                <tr>
-                                  <td colspan="3" align="center"><i><strong>No Activity Found</strong></i></td>
-                                </tr>
-                              @else
-                                @foreach($investmentList as $key => $value)
-                                  @if($value != 0)
-                                    <tr>
-                                      <td>Acquisition of {{$key}}</td>
-                                      <td align="right">₱ {{number_format($value,2)}}</td>
-                                      <td></td>
-                                    </tr>
-                                  @endif
-                                @endforeach
-                              @endif
+                              @foreach($tThisYearsBalanceSht as $key)
+                                @if($key->asset_id != NULL)
+                                  <tr>
+                                    @if($key->credit_title_id != NULL && $key->credit->account_title_name == 'Cash')
+                                      <td>Purchase of {{$key->asset->accountTitleInfo->account_title_name}}</td>
+                                      <td colspan="2" align="left">PHP {{$key->credit_amount}}</td>
+                                    @endif
+                                  </tr>
+                                @endif
+                              @endforeach
+                              <tr>
+                                <td colspan="2"> <strong>Net cash used in investing activities</strong></td>
+                                <td><u>PHP {{($totalInvestmentCash)}}</u></td>
+                              </tr>
                             </tbody>
                             <thead class="green white-text">
                               <th colspan="3">
@@ -81,25 +115,53 @@
                             </thead>
                             </thead>
                             <tbody>
-                              @if(count($financingList)<=0)
-                                <tr>
-                                  <td colspan="3" align="center"><i><strong>No Activity Found</strong></i></td>
-                                </tr>
-                              @else
-                                @foreach($financingList as $key => $value)
-                                  @if($value != 0)
-                                    <tr>
-                                      <td colspan="2">{{$key}}</td>
-                                      <td align="right">₱ {{number_format($value,2)}}</td>
-                                    </tr>
-                                  @endif
-                                @endforeach
-                              @endif
+                              @foreach($accountTitleList as $key => $value)
+                                @if(strpos('x' . $key, 'Non-Current Liabilities'))
+                                  @foreach($value as $val)
+                                    @if(strrpos('x'.$val->account_title_name,'Loans'))
+                                      @if($val->opening_balance < 0 )
+                                        <tr>
+                                          <td>Paid: {{$val->account_title_name}}</td>
+                                          <td colspan="2" align="left">PHP {{$val->opening_balance}}</td>
+                                        </tr>
+                                      @elseif($val->opening_balance > 0 )
+                                        <tr>
+                                          <td>Borrowed from: {{str_replace('Loans', '', $val->account_title_name)}}</td>
+                                          <td colspan="2" align="left">PHP {{$val->opening_balance}}</td>
+                                        </tr>
+                                      @endif
+                                    @endif
+                                    
+                                  @endforeach
+                                @endif
+                              @endforeach
+
+                              @foreach($accountTitleList as $key => $value)
+                                @if(strpos('x' . $key, 'Equity'))
+                                  @foreach($value as $val)
+                                    @if($val->opening_balance < 0 )
+                                      <tr>
+                                        <td>Decrease: {{$val->account_title_name}}</td>
+                                        <td colspan="2" align="left">PHP {{$val->opening_balance}}</td>
+                                      </tr>
+                                    @elseif($val->opening_balance > 0 )
+                                      <tr>
+                                        <td>Increase in: {{$val->account_title_name}}</td>
+                                        <td colspan="2" align="left">PHP {{$val->opening_balance}}</td>
+                                      </tr>
+                                    @endif
+                                  @endforeach
+                                @endif
+                              @endforeach
+                              <tr>
+                                <td colspan="2"> <strong>Net cash used in financing activities</strong></td>
+                                <td><u>PHP {{($totalFinancingCash)}}</u></td>
+                              </tr>
                             </tbody>
 
                 						<tfoot>
                     						<th style="text-align: right" colspan="3">
-                        						Total Cash in Hand: ₱ {{number_format($totalCashInHand,2)}}
+                        						Total Cash in Hand: ₱ {{number_format(($totalProfit+$totalOperationCash)-$totalInvestmentCash+$totalFinancingCash+$depreciationValue,2)}}
                     						</th>
                 						</tfoot>
               					</table>

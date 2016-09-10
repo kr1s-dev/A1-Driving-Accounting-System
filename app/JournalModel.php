@@ -25,6 +25,7 @@ class JournalModel extends Model
                             'expense_id',
                             'invoice_id',
                             'receipt_id',
+                            'asset_id',
                             'type'];
 
     public function userCreateInfo(){
@@ -37,6 +38,10 @@ class JournalModel extends Model
 
     public function receipt(){
         return $this->belongsTo('App\ReceiptModel');
+    }
+
+    public function asset(){
+        return $this->belongsTo('App\AssetsModel','asset_id');
     }
 
     public function invoice(){

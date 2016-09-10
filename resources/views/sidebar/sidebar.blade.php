@@ -53,7 +53,7 @@
                     </li> 
                 </ul>
             </li>
-            <li class="li-hover"><div class="divider"></div></li>
+            <!--li class="li-hover"><div class="divider"></div></li>
             <li class="no-padding">
                 <ul class="collapsible collapsible-accordion">
                     <li class="bold">
@@ -70,7 +70,7 @@
                         </div>
                     </li> 
                 </ul>
-            </li>
+            </li-->
         @endif
         
         <li class="li-hover"><div class="divider"></div></li>

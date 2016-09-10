@@ -37,7 +37,7 @@ Scripts
       });
 
       if ($("#otherFeeList tbody").children().length == 0) {
-          $("#otherFeeList tbody").html("<tr><td colspan='4' style='text-align: center;'><em><strong> No Records Found </strong></em></td></tr>");
+          $("#otherFeeList tbody").html("<tr><td colspan='5' style='text-align: center;'><em><strong> No Records Found </strong></em></td></tr>");
       }
 
       if ($("#courseFeeList tbody").children().length == 0) {

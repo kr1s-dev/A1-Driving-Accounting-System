@@ -227,120 +227,109 @@ class ReportController extends Controller
 
     public function generateCashFlow($yearFilter){
         $title = 'Reports';
+        $yearFilter = $yearFilter==NULL?date('Y'):$yearFilter;
         $accountGroupList = $this->searchAccountGroups(null);
+        $totalProfit = 0;
+        $depreciationValue = 0;
+        $totalCashInHand = 0;
+        $totalOperationCash = 0;
+        $totalInvestmentCash = 0;
+        $totalFinancingCash = 0;
+        $lastYearsBalanceSht = array();
+        $thisYearsBalanceSht = array();
+        $accountTitleList = array();
         $incStatementItemsList = $this->getJournalEntryRecordsWithFilter('5',null,$yearFilter);
         $expStatementItemsList = $this->getJournalEntryRecordsWithFilter('6',null,$yearFilter);
+
         $incomeItemsList = $this->getItemsAmountList($incStatementItemsList,'Income');
-        $incTotalSum = $this->getTotalSum($incomeItemsList);
         $expenseItemsList = $this->getItemsAmountList($expStatementItemsList,'Expense');
-        $arBalance = 0;
-        $tExpenseList = '';
-        $totalPayable = 0;
-        $expenseList = array();
-        $investmentList = array();
-        $financingList = array();
-        $totalCashInHand = array();
 
-        if($yearFilter == date('Y')){
-            $aTitleItemsList = $this->getJournalEntryRecordsWithFilter(null,null,$yearFilter);
-            $eBalanceSheetItemsList = $this->getItemsAmountList($aTitleItemsList,null);
-            foreach ($accountGroupList as $accountGroup) {
-                if(strrpos($accountGroup->account_group_name, 'Assets') || strrpos($accountGroup->account_group_name, 'Liabilities')){
-                    foreach ($accountGroup->accountTitles as $actTitle) {
-                        if(array_key_exists($actTitle->account_title_name, $eBalanceSheetItemsList))
-                            $actTitle->opening_balance += $eBalanceSheetItemsList[$actTitle->account_title_name];
-                        if($actTitle->account_title_name=='Accounts Receivable')
-                            $arBalance = $actTitle->opening_balance;
-                    }
-                }elseif(strrpos($accountGroup->account_group_name, 'Expense') || $accountGroup->account_group_name == 'Expenses'){
-                    foreach ($accountGroup->accountTitles as $actTitle) {
-                        $tExpenseList .= $tExpenseList==''?($actTitle->account_title_name.','):(','.$actTitle->account_title_name);
-                    }
+        $incTotalSum = $this->getTotalSum($incomeItemsList);
+        $expTotalSum = $this->getTotalSum($expenseItemsList);
+        $totalProfit = ($incTotalSum  - $expTotalSum);
+        $tLastYearsBalanceSht = $this->getJournalEntryRecordsWithFilter(null,null,$yearFilter - 1);
+        $tThisYearsBalanceSht = $this->getJournalEntryRecordsWithFilter(null,null,$yearFilter);
+        //echo count($tThisYearsBalanceSht);  
+        $lastYearsBalanceSht = $this->getItemsAmountList($tLastYearsBalanceSht,null);
+        $thisYearsBalanceSht = $this->getItemsAmountList($tThisYearsBalanceSht,null);
+
+        foreach ($thisYearsBalanceSht as $key => $value) {
+            if(array_key_exists($key, $lastYearsBalanceSht))
+                $thisYearsBalanceSht[$key] -= $lastYearsBalanceSht[$key];
+        }
+
+        foreach ($expenseItemsList as $key => $value) {
+            if(strrpos('x'.$key,'Depreciation'))
+                $depreciationValue += $value;
+        }
+
+        foreach ($accountGroupList as $accountGrp) {
+            $accountTitleList[$accountGrp->account_group_name] = $accountGrp->accountTitles;
+        }
+
+        foreach ($accountTitleList as $key => $value) {
+            foreach ($value as $val) {
+                if(array_key_exists($val->account_title_name, $thisYearsBalanceSht)){
+                    $val->opening_balance = $thisYearsBalanceSht[$val->account_title_name];
                 }
             }
+        }
+        
 
-            foreach ($accountGroupList as $accountGroup) {
-                if($accountGroup->account_group_name == 'Current Liabilities'){
-                    foreach ($accountGroup->accountTitles as $actTitle) {
-                        if(strrpos($tExpenseList,str_replace('Payable', '', $actTitle->account_title_name)));
-                            $totalPayable += $eBalanceSheetItemsList[$actTitle->account_title_name];
-                    }
-                    
-                }
-            }
-
-            foreach ($accountGroupList as $accountGroup) {
-                if($accountGroup->account_group_name === 'Non-Current Assets'){
-                    //echo count($accountGroup->accountTitles);
-                    foreach ($accountGroup->accountTitles as $actTitle) {
-                        //echo $actTitle->account_title_name;
-                        // if(array_key_exists($actTitle->account_title_name, $eBalanceSheetItemsList)){
-                        //     if(!array_key_exists($actTitle->account_title_name, $investmentList)){
-                        //         $investmentList[$actTitle->account_title_name] = $actTitle->opening_balance;
-                        //     }
-                            
-                        // }
-                        $investmentList[$actTitle->account_title_name] = $actTitle->opening_balance;
-                        foreach ($actTitle->assetsInfo as $astItem) {
-                            if($astItem->asset_mode_of_acq == 'Payable'){
-                                $investmentList[$actTitle->account_title_name] -= $astItem->asset_original_cost;
-                            }else if($astItem->asset_mode_of_acq == 'Both'){
-                                $investmentList[$actTitle->account_title_name] -= $astItem->asset_down_payment;
-                            }
+        foreach ($accountTitleList as $key => $value) {
+            if($key == 'Current Assets'){
+                foreach ($value as $val) {
+                    if($val->account_title_name != 'Cash'){
+                        if(strrpos($key, 'Asset')){
+                            $totalOperationCash-=$val->opening_balance;
+                        }else{
+                            $totalOperationCash+=$val->opening_balance;
                         }
                     }
                 }
-                
-                if($accountGroup->account_group_name === 'Owners Equity'){
-                    foreach ($accountGroup->accountTitles as $actTitle) {
-                        $financingList[$actTitle->account_title_name] = $actTitle->opening_balance;
-                    }
-                }
-                foreach ($accountGroup->accountTitles as $actTitle) {
-                    if(strrpos($actTitle->account_title_name,'Loans')){
-                        $financingList[$actTitle->account_title_name] = $actTitle->opening_balance;
-                    }
-                }
-
             }
-            $expenseList = $this->getOperationalExpense($expenseItemsList,$accountGroupList);
-        }else{
-
+        } 
+        //For Acquiring Asset via Cash
+        foreach ($tThisYearsBalanceSht as $key) {
+            if($key->asset_id != NULL){
+                if($key->credit_title_id != NULL && $key->credit->account_title_name == 'Cash'){
+                    $totalInvestmentCash += $key->credit_amount;
+                }
+            }
         }
 
-        //echo $arBalance;
-        $totalCashInHand = ($incTotalSum - $arBalance) - ($this->getTotalSum($expenseList)) - ($this->getTotalSum($investmentList)) + ($this->getTotalSum($financingList));
+        //echo '<strong>Cash flows from financing activities</strong>' . '<br/>';
+        foreach ($accountTitleList as $key => $value) {
+            if(strpos('x' . $key, 'Non-Current Liabilities')){
+                foreach ($value as $val) {
+                    if(strrpos('x'.$val->account_title_name,'Loans')){
+                        $totalFinancingCash+=$val->opening_balance;
+                    }
+                }
+            }
+        }
 
+        foreach ($accountTitleList as $key => $value) {
+            if(strpos('x' . $key, 'Equity')){
+                foreach ($value as $val) {
+                    $totalFinancingCash+=$val->opening_balance;
+                }
+            }
+        }
+
+        
         return view('reports.statement_of_cash_flow',
-                        compact('incTotalSum',
-                                'arBalance',
-                                'expenseList',
+                        compact('totalProfit',
+                                'depreciationValue',
+                                'accountTitleList',
+                                'totalOperationCash',
+                                'totalInvestmentCash',
+                                'totalFinancingCash',
+                                'tThisYearsBalanceSht',
                                 'yearFilter',
-                                'investmentList',
-                                'financingList',
-                                'totalCashInHand',
-                                'title',
-                                'totalPayable'));
+                                'title'));
 
     }
 
-    public function getOperationalExpense($expenseItemsList,$accountGroupList){
-        $expPayableList;
-        foreach ($accountGroupList as $accountGroup) {
-            if($accountGroup->account_group_name == 'Current Liabilities'){
-                $expPayableList = $accountGroup->accountTitles;
-            }
-        }
-
-        foreach ($expenseItemsList as $key=>$value) {
-            foreach ($expPayableList as $exPpay) {
-                $tTitle = str_replace(strpos($key, 'Expense')?'Expense':'Expenses', '', $key);
-                if(strcmp($exPpay->account_title_name,$tTitle) > 1){
-                    $expenseItemsList[$key] -= $exPpay->opening_balance;
-                    break;
-                }
-            }
-        }
-        return $expenseItemsList;
-    }
+    
 }

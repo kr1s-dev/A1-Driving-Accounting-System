@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\AdminDashboard;
 
+use DB;
 use Auth;
 use App\JournalModel;
 use Illuminate\Http\Request;
@@ -88,8 +89,8 @@ class AdminDashboardController extends Controller
     	$incomePerMonth = array();
     	$expensePerMonth = array();
         $filterList = $this->generateFilter('Current Year');
-    	$incStatementItemsList = $this->getJournalEntryRecordsWithFilter('5',$monthFilter,$yearFilter);
-    	$expStatementItemsList = $this->getJournalEntryRecordsWithFilter('6',$monthFilter,$yearFilter);
+    	$incStatementItemsList = $this->customGenerationOfIncomeStatement2('5',$monthFilter,$yearFilter);
+    	$expStatementItemsList = $this->customGenerationOfIncomeStatement2('6',$monthFilter,$yearFilter);
 
     	foreach (range(1, 12) as $month) {
     		$incomePerMonth[date('F/Y',strtotime($yearFilter .'-'.$month))] = 0;
@@ -143,6 +144,57 @@ class AdminDashboardController extends Controller
             }
 
         return $query->whereBetween('created_at',array($startDate,$endDate))->get();
+    }
+
+
+    public function customGenerationOfIncomeStatement2($accountGroupId,$monthFilter,$yearFilter){
+        $yearFilter = $yearFilter==NULL?date('Y'):date($yearFilter);
+        $query = null;
+        if(Auth::user()->branch_id != NULL && !(Auth::user()->branchInfo->main_office) && Auth::user()->userType->type != 'Administrator'){
+            $query = JournalModel::whereHas('userCreateInfo',function($q){
+                                            $q->where('branch_id','!=',NULL)
+                                            ->where('branch_id','=',Auth::user()->branch_id);
+                                            });
+        }
+
+        if(!is_null($accountGroupId)){
+            if($query==NULL){
+                $query = JournalModel::where(function($query) use ($accountGroupId){
+                                                    $query->whereHas('credit',function($q) use ($accountGroupId){
+                                                        $q->where('account_group_id', '=', $accountGroupId);
+                                                    })
+                                                    ->orWhereHas('debit',function($q) use ($accountGroupId){
+                                                        $q->where('account_group_id', '=', $accountGroupId);
+                                                    });
+                                                });
+            }else{
+                $query->where(function($query) use ($accountGroupId){
+                                $query->whereHas('credit',function($q) use ($accountGroupId){
+                                    $q->where('account_group_id', '=', $accountGroupId);
+                                })
+                                ->orWhereHas('debit',function($q) use ($accountGroupId){
+                                    $q->where('account_group_id', '=', $accountGroupId);
+                                });
+                            });
+            }
+            
+            
+        }
+
+        if(empty($monthFilter)){
+            $query  = $query==NULL? JournalModel::whereYear('created_at','=',$yearFilter) : 
+                            $query->whereYear('created_at','=',$yearFilter);
+
+            
+        }else{
+            $monthFilter = $monthFilter==NULL?date('m'):date($monthFilter); 
+            $query  = $query==NULL? JournalModel::whereYear('created_at','=',$yearFilter)
+                                                        ->whereMonth('created_at','=',$monthFilter) : 
+                                                            $query->whereYear('created_at','=',$yearFilter)
+                                                                    ->whereMonth('created_at','=',$monthFilter);
+        }
+        \Log::debug(DB::getQueryLog());
+        return $query->get();
     }
 
 

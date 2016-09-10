@@ -22,7 +22,7 @@
             				</div>
 
             				<div class="input-field col s12 m6 l6" >
-             			 		<input id="vendor_number" type="number" value="{{$expense->vendor_number}}">
+             			 		<input id="vendor_number" type="number" min="1" value="{{$expense->vendor_number}}">
               					<label for="number">Vendor Number</label>
             				</div>
           				</div>
