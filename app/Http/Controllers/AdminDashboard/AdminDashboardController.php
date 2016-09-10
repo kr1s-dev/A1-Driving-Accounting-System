@@ -17,7 +17,7 @@ class AdminDashboardController extends Controller
         try{
             return $this->generateIncomeStatement(null,null);
         }catch(\Exception $ex){
-            return view('errors.500');
+            return view('errors.404');
         }
     }
 

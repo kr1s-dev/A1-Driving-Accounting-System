@@ -16,13 +16,17 @@
                 						<h4 class="header2">Account Title Information</h4>
                             <div class="row right-align">
                               @if($eAccountTitle->account_title_id == NULL)
-                                <div class="col l9 m12 s12 right-align">
+                                <div class="col l7 m12 s12 right-align">
                                   <a href="{{route('accounttitle.with.parent.accounttitle',$eAccountTitle->id)}}" class="btn waves-effect waves-light cyan" type="submit" name="action">Add Contra {{$eAccountTitle->group->account_group_name}}
                                       <i class="mdi-action-receipt left"></i>
                                   </a>
                                 </div>
                               @endif
                               @if(Auth::user()->user_type_id==1)
+                                <div class="col l2 m12 s12 right-align" style="text-align:">
+                                  <a href="{{route('accounttitle.edit', $eAccountTitle->id)}}" class="btn waves-effect waves-light cyan">
+                                      <i class="material-icons left">create</i> Edit </a>
+                                </div>
                                 <div class="col l3 m12 s12 right-align">
                                   {!! Form::model($eAccountTitle, ['method'=>'DELETE','action' => ['AccountTitles\AccountTitleController@destroy',$eAccountTitle->id] , 'class' => 'form-horizontal form-label-left form-wrapper']) !!}
                                     <button type="submit" class="btn waves-effect waves-light cyan" onclick="return confirm('Are you sure you want to delete this record?');"><i class="material-icons left">highlight_off</i> Delete Account Title</button>

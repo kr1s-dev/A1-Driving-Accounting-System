@@ -24,7 +24,7 @@ class AccountTitleRequest extends Request
      */
     public function rules()
     {
-        $accountTitle = AccountTitleModel::find($this->accounttitles);
+        $accountTitle = AccountTitleModel::find($this->accounttitle);
         switch($this->method())
         {
             case 'GET': break;

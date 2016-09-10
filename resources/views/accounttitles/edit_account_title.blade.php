@@ -10,8 +10,8 @@
                			<div class="card-panel">
                   			<h4 class="header2">Account Title Information</h4>
                  			<div class="row">
-                              {!! Form::model($accounttitle, ['method'=>'PATCH','action' => ['AccountTitles\AccountTitleController@update',$branch->id] , 'class' => 'col s12']) !!}
-                                 @include('branches.branches_form',['submitButton'=>'Update Account Title']);
+                              {!! Form::model($accountTitle, ['method'=>'PATCH','action' => ['AccountTitles\AccountTitleController@update',$accountTitle->id] , 'class' => 'col s12']) !!}
+                                 @include('accounttitles.account_title_form',['submitButton'=>'Update Account Title']);
                               {!! Form::close() !!}
                   			</div>
                			</div>

@@ -72,7 +72,8 @@ class AccountTitleController extends Controller
                                     'accountTitle',
                                     'title'));
         }catch(\Exception $ex){
-            return view('errors.404');
+            echo $ex->getMessage();
+            //return view('errors.404');
         }
     }
 
@@ -93,7 +94,8 @@ class AccountTitleController extends Controller
                                     'accountTitle',
                                     'title'));
         }catch(\Exception $ex){
-            return view('errors.404');
+            echo $ex->getMessage();
+            //return view('errors.404');
         }
     }
 
@@ -159,9 +161,11 @@ class AccountTitleController extends Controller
         try{
             $title = 'Account Title';
             $accountTitle = $this->searchAccountTitle($id);
+            $eAccountTitle = $this->putAccountTitle();  
             $accountGroupsList = $this->getAccountsAccountGroups($accountTitle->account_group_id);
-            return view('accounttitles.create_account_title',
+            return view('accounttitles.edit_account_title',
                             compact('accountTitle',
+                                    'eAccountTitle',
                                     'accountGroupsList',
                                     'title'));    
         }catch(\Exception $ex){
@@ -201,6 +205,7 @@ class AccountTitleController extends Controller
     {
         try{
             $this->deleteRecords('account_titles',array('id'=>$id));
+            redirect('accounttitle');
         }catch(\Exception $ex){
             return view('errors.404');
         }

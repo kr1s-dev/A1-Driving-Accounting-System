@@ -16,7 +16,6 @@
             <label for="account_title_name" class="active">Account Title</label>
          @else
             <select name="account_group_id">
-               <option value="" disabled selected>Parent Group</option>
                @foreach($accountGroupsList as $key=>$value)
                   <option value="{{$key}}">{{$value}}</option>
                @endforeach
