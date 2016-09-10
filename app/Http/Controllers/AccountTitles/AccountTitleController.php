@@ -66,7 +66,7 @@ class AccountTitleController extends Controller
             $eAccountTitle = $this->searchAccountTitle($id);
             $accountGroupsList = $this->getAccountsAccountGroups(null);
             $accountTitle = $this->putAccountTitle();
-            return view('accountTitles.create_account_title',
+            return view('accounttitles.create_account_title',
                             compact('accountGroupsList',
                                     'eAccountTitle',
                                     'accountTitle',
@@ -88,7 +88,7 @@ class AccountTitleController extends Controller
             $accountGroupsList = AccountGroupModel::findOrFail($id);
             $eAccountTitle = $this->putAccountTitle();
             $accountTitle = $this->putAccountTitle();
-            return view('accountTitles.create_account_title',
+            return view('accounttitles.create_account_title',
                             compact('accountGroupsList',
                                     'eAccountTitle',
                                     'accountTitle',
