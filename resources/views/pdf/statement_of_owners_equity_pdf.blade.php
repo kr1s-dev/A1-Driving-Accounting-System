@@ -9,7 +9,6 @@
 	        .header p, .header h4{
 	          margin: 3px;
 	        }
-	        
 	        th {
 	          background: #eee;
 	        }
