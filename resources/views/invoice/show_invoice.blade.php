@@ -122,7 +122,7 @@
     <!-- Floating Action Button -->
     <div class="fixed-action-btn" style="bottom: 50px; right: 19px;">
         <a href="{{route('invoice.receipt.create',$invoice->id)}}" class="btn-floating btn-large red darken-2">
-         	<i class="mdi-content-add-circle"></i>
+         	<i class="material-icons">receipt</i>
         </a>
         <ul>
         	<li><a href="app-widget.html" class="btn-floating red darken-2" style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;"><i class="large mdi-action-lock"></i></a></li>
