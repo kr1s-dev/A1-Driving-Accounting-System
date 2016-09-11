@@ -95,7 +95,7 @@ class PDFController extends Controller
 
     	$incTotalSum = $this->getTotalSum($incomeItemsList);
     	$expTotalSum = $this->getTotalSum($expenseItemsList);
-
+        $totalProfit = ($incTotalSum-$expTotalSum);
 		return PDF::loadView('pdf.income_statement_pdf',
 						compact('incomeItemsList',
 								'expenseItemsList',
@@ -103,7 +103,8 @@ class PDFController extends Controller
 								'expTotalSum',
 								'yearFilter',
 								'monthFilter',
-								'title'));
+								'title',
+                                'totalProfit'));
     }
 
     public function generateOwnersEquityStatement($monthFilter,$yearFilter){

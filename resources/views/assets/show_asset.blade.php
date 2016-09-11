@@ -72,11 +72,11 @@
                         					<div class="row">
                               					<div class="col s12 m6 l6">
                             						<label for=""><h6>Monthly Depreciation</h6></label>
-                            						<h5>{{number_format($asset->monthly_depreciation,2,'.',',')}}</h5>
+                            						<h5>PHP {{number_format($asset->monthly_depreciation,2,'.',',')}}</h5>
                           						</div>
                           						<div class="col s12 m6 l6">
                             						<label for=""><h6>Net Value</h6></label>
-                            						<h5>{{number_format($asset->net_value,2,'.',',')}}</h5>
+                            						<h5>PHP {{number_format($asset->net_value,2,'.',',')}}</h5>
                           						</div>
                         					</div>
                       					</div>

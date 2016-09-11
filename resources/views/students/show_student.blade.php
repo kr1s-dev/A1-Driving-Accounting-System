@@ -93,6 +93,21 @@
                     <div class="divider"></div>
                     <div class="row">
                       <div class="col l3 m3 s12">
+                        <h6><strong> Vehicle Plate No.</strong></h6>
+                      </div>
+                      <div class="col l3 m3 s12">
+                        <h6>{{$student->vehicle_plate_no}}</h6>
+                      </div>
+                      <div class="col l3 m3 s12">
+                        <h6><strong>Vehicle Machine No.</strong></h6>
+                      </div>
+                      <div class="col l3 m3 s12">
+                        <h6>{{$student->vehicle_engine_no}}</h6>
+                      </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                      <div class="col l3 m3 s12">
                         <h6><strong>Birthplace</strong></h6>
                       </div>
                       <div class="col l3 m3 s12">

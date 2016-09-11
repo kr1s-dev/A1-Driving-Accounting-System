@@ -56,7 +56,7 @@ class AssetController extends Controller
         try{
             $input = $this->removeKeys($request->all(),true,true);
             $input['net_value'] =  $input['asset_original_cost'];
-            $input['asset_salvage_value'] = $input['asset_original_cost'] / (1 + $input['asset_salvage_percentage']/100);
+            $input['asset_salvage_value'] = $input['asset_original_cost'] * ($input['asset_salvage_percentage']/100);
             $input['monthly_depreciation'] = ($input['net_value']-$input['asset_salvage_value']) / $input['asset_lifespan'];  
             $toConvertData = explode(' ',$input['asset_date_acquired']);
             $input['asset_date_acquired'] = str_replace(',',' ',$toConvertData[1]) . $toConvertData[0] . ' ,' . $toConvertData[2];

@@ -109,7 +109,7 @@ class ReportController extends Controller
 
     	$incTotalSum = $this->getTotalSum($incomeItemsList);
     	$expTotalSum = $this->getTotalSum($expenseItemsList);
-
+        $totalProfit = ($incTotalSum-$expTotalSum);
 		return view('reports.income_statements',
 						compact('incomeItemsList',
 								'expenseItemsList',
@@ -117,7 +117,8 @@ class ReportController extends Controller
 								'expTotalSum',
 								'yearFilter',
 								'monthFilter',
-								'title'));
+								'title',
+                                'totalProfit'));
     }
 
     public function generateOwnersEquityStatement($monthFilter,$yearFilter){
