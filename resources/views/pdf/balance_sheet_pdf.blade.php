@@ -51,9 +51,9 @@
       					<td align="center" width="30%">{{$key}}</td>
       					<td width="35%" align="right">
       						@if($val>=0)
-          						PHP {{number_format($val,2)}}
+          						PHP {{number_format($val,2,'.',',')}}
           					@else
-          						(PHP {{number_format(($val*-1),2)}})
+          						(PHP {{number_format(($val*-1),2,'.',',')}})
           					@endif
           				</td>
           				<td align="right" width="35%"></td>
@@ -65,9 +65,9 @@
       			<td width="30%"><strong>Total Assets:<strong></td>
 				<td width="35%" align="right"> <u>
 					@if($totalAssets>=0)
-						PHP {{number_format($totalAssets,2)}}
+						PHP {{number_format($totalAssets,2,'.',',')}}
 					@else
-						(PHP {{number_format(($totalAssets*-1),2)}})
+						(PHP {{number_format(($totalAssets*-1),2,'.',',')}})
 					@endif
 					</u>
 				</td>
@@ -95,9 +95,9 @@
 	  					<td align="right" width="35%"></td>
       					<td width="35%" align="right">
       						@if($val>=0)
-          						PHP {{number_format($val,2)}}
+          						PHP {{number_format($val,2,'.',',')}}
           					@else
-          						(PHP {{number_format(($val*-1),2)}})
+          						(PHP {{number_format(($val*-1),2,'.',',')}})
           					@endif
           				</td>
 	  				</tr>
@@ -109,9 +109,9 @@
 				<td align="right" width="35%"></td>
 				<td width="35%" align="right">
 					@if($totalLiability>=0)
-						PHP {{number_format($totalLiability,2)}}
+						PHP {{number_format($totalLiability,2,'.',',')}}
 					@else
-						(PHP {{number_format(($totalLiability*-1),2)}})
+						(PHP {{number_format(($totalLiability*-1),2,'.',',')}})
 					@endif
 				</td>
 	  		</tr>
@@ -130,9 +130,9 @@
 	  					<td align="right" width="35%"></td>
       					<td width="35%" align="right">
       						@if($val>=0)
-          						PHP {{number_format($val,2)}}
+          						PHP {{number_format($val,2,'.',',')}}
           					@else
-          						(PHP {{number_format(($val*-1),2)}})
+          						(PHP {{number_format(($val*-1),2,'.',',')}})
           					@endif
           				</td>
 	  				</tr>
@@ -144,9 +144,9 @@
 				<td align="right" width="35%"></td>
 				<td width="35%" align="right">
 					@if($totalEquity>=0)
-						PHP {{number_format($totalEquity,2)}}
+						PHP {{number_format($totalEquity,2,'.',',')}}
 					@else
-						(PHP {{number_format(($totalEquity*-1),2)}})
+						(PHP {{number_format(($totalEquity*-1),2,'.',',')}})
 					@endif
 				</td>
 	  		</tr>
@@ -155,9 +155,9 @@
 				<td align="right" width="35%"></td>
 				<td width="35%" align="right"> <u>
 					@if(($totalLiability + $totalEquity)>=0)
-						PHP {{number_format($totalLiability + $totalEquity,2)}}
+						PHP {{number_format($totalLiability + $totalEquity,2,'.',',')}}
 					@else
-						(PHP {{number_format((($totalLiability + $totalEquity)*-1),2)}})
+						(PHP {{number_format((($totalLiability + $totalEquity)*-1),2,'.',',')}})
 					@endif
 					</u>
 				</td>

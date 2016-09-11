@@ -26,6 +26,7 @@ class CreateAssetTable extends Migration
                 $table->String('asset_vendor',255);
                 $table->timestamp('asset_date_acquired');
                 $table->Decimal('asset_original_cost',10,2)->default(0);
+                $table->Decimal('asset_salvage_percentage',10,2)->default(0);
                 $table->Decimal('asset_salvage_value',10,2)->default(0);
                 $table->Integer('asset_lifespan')->default(0);
                 $table->Decimal('monthly_depreciation',10,2)->default(0);

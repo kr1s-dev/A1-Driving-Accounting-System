@@ -33,7 +33,7 @@ class AssetRequest extends Request
                         'asset_vendor' => 'required|min:0|max:255',
                         'asset_date_acquired'=>'required|before:today',
                         'asset_original_cost'=>'required',
-                        'asset_salvage_value'=>'required',
+                        'asset_salvage_percentage'=>'required',
                         'asset_lifespan'=>'required',
                         'asset_mode_of_acq'=>'required',];
             }
@@ -43,7 +43,7 @@ class AssetRequest extends Request
                         'asset_vendor' => 'required|min:0|max:255',
                         'asset_date_acquired'=>'required|before:today',
                         'asset_original_cost'=>'required',
-                        'asset_salvage_value'=>'required',
+                        'asset_salvage_percentage'=>'required',
                         'asset_lifespan'=>'required',
                         'asset_mode_of_acq'=>'required',];
             }

@@ -36,7 +36,7 @@
                                     <td><a href="{{route('invoice.show',$receipt->invoiceInfo->id)}}">{{sprintf("%'.07d\n",$receipt->invoiceInfo->id)}}</a></td>
                                     <td>{{date('m-d-Y',strtotime($receipt->created_at))}}</td>
                                     <td>{{$receipt->invoiceInfo->studentInfo->stud_first_name}}&nbsp;{{$receipt->invoiceInfo->studentInfo->stud_last_name}}</td>
-                                    <td>₱ {{number_format($receipt->amount_paid,2)}}</td>
+                                    <td>₱ {{number_format($receipt->amount_paid,2,'.',',')}}</td>
                                 </tr>
                                 @endforeach
                     		</tbody>

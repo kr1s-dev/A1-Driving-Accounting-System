@@ -119,23 +119,23 @@
                     			@endforeach
                       			<tr>
                         			<td>Sub Total:</td>
-                        			<td>₱ {{number_format($invoice->total_amount - $invoice->total_amount*.12,2)}}</td>
+                        			<td>₱ {{number_format($invoice->total_amount - $invoice->total_amount/1.12,2)}}</td>
                        			</tr>
                       			<tr>
                         			<td>VAT (12%)</td>
-                        			<td>₱ {{number_format($invoice->total_amount *.12,2)}}</td>
+                        			<td>₱ {{number_format($invoice->total_amount /1.12,2,'.',',')}}</td>
                       			</tr>
                       			<tr>
 			                        <td class="cyan white-text">Grand Total</td>
-			                        <td class="cyan strong white-text">₱ {{number_format($invoice->total_amount,2)}}</td>
+			                        <td class="cyan strong white-text">₱ {{number_format($invoice->total_amount,2,'.',',')}}</td>
                       			</tr>
                       			<tr>
 			                        <td class="cyan white-text">Outstanding Balance</td>
 			                        <td class="cyan strong white-text">₱ 
 			                        	@if($lastInvReceipt === NULL)
-			                        		{{number_format($invoice->total_amount,2)}}
+			                        		{{number_format($invoice->total_amount,2,'.',',')}}
 			                        	@else
-			                        		{{number_format($lastInvReceipt->outstanding_balance,2)}}
+			                        		{{number_format($lastInvReceipt->outstanding_balance,2,'.',',')}}
 			                        	@endif
 			                        </td>
                       			</tr>

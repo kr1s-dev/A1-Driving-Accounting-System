@@ -29,6 +29,8 @@ class CreateStudentsTable extends Migration
                 $table->longtext('stud_address');
                 $table->string('stud_email',255)->unique();
                 $table->string('stud_vehicle',255);
+                $table->string('vehicle_plate_no',255);
+                $table->string('vehicle_engine_no',255);
                 $table->timestamp('stud_date_of_birth');
                 $table->string('stud_birth_place');
                 $table->string('stud_nationality',255);

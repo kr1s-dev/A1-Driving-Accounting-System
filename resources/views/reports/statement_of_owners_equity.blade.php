@@ -64,9 +64,9 @@
 		              				          <td style="text-align: right">
   		              					         ₱ 
   		              					         @if($value>=0)
-  		              						        {{number_format($value,2)}}
+  		              						        {{number_format($value,2,'.',',')}}
   		              					         @else
-  		              						        ({{number_format(($value*-1),2)}})
+  		              						        ({{number_format(($value*-1),2,'.',',')}})
   		              					         @endif
 		              				          </td>
 		              			          </tr>
@@ -79,16 +79,16 @@
                           		  <td style="text-align: right">
                             			₱ 
                             			@if($totalProfit>=0)
-        	              						{{number_format($totalProfit,2)}}
+        	              						{{number_format($totalProfit,2,'.',',')}}
         	              					@else
-        	              						({{number_format(($totalProfit*-1),2)}})
+        	              						({{number_format(($totalProfit*-1),2,'.',',')}})
         	              					@endif
                       					</td>
                     					</tr>
                     				</tbody>
                   					<tfoot>
                     					<th style="text-align: right" colspan="2">
-                        					Balance at the end of period: ₱ {{ number_format($eqTotalSum,2) }}
+                        					Balance at the end of period: ₱ {{ number_format($eqTotalSum,2,'.',',') }}
                     					</th>
                   					</tfoot>
                   				</table>

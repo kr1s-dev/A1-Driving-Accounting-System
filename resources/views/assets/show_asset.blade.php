@@ -43,13 +43,13 @@
                           						</div>
                           						<div class="col s12 m6 l6">
                             						<label for=""><h6>Original Cost</h6></label>
-                            						<h5>₱ {{number_format($asset->asset_original_cost,2)}}</h5>
+                            						<h5>₱ {{number_format($asset->asset_original_cost,2,'.',',')}}</h5>
                           						</div>
                         					</div>
                         					<div class="row">
                               					<div class="col s12 m6 l6">
                             						<label for=""><h6>Salvage Value</h6></label>
-                            						<h5>{{number_format($asset->asset_salvage_value,2)}}</h5>
+                            						<h5>{{number_format($asset->asset_salvage_value,2,'.',',')}}</h5>
                           						</div>
                           						<div class="col s12 m6 l6">
                             						<label for=""><h6>Lifespan (mo/s)</h6></label>
@@ -72,14 +72,21 @@
                         					<div class="row">
                               					<div class="col s12 m6 l6">
                             						<label for=""><h6>Monthly Depreciation</h6></label>
-                            						<h5>{{number_format($asset->monthly_depreciation,2)}}</h5>
+                            						<h5>{{number_format($asset->monthly_depreciation,2,'.',',')}}</h5>
                           						</div>
                           						<div class="col s12 m6 l6">
                             						<label for=""><h6>Net Value</h6></label>
-                            						<h5>{{number_format($asset->net_value,2)}}</h5>
+                            						<h5>{{number_format($asset->net_value,2,'.',',')}}</h5>
                           						</div>
                         					</div>
                       					</div>
+                                <div class="row">
+                                  <div class="col s12 m6 l6">
+                                    <label for=""><h6>Salvage Percentage</h6></label>
+                                    <h5>{{number_format($asset->asset_salvage_percentage,2,'.',',')}}%</h5>
+                                  </div>
+                                </div>
+                              </div>
                     				</div>
                   				</div>
                 			</div>

@@ -38,9 +38,9 @@
                   Total Profit
                 </td>
                 @if($totalProfit>0)
-                  <td colspan="2" align="right">PHP {{$totalProfit}}</td>
+                  <td colspan="2" align="right">PHP {{number_format($totalProfit,2,'.',',')}}</td>
                 @else
-                  <td colspan="2" align="left">PHP {{$totalProfit}}</td>
+                  <td colspan="2" align="left">PHP {{number_format($totalProfit,2,'.',',')}}</td>
                 @endif
               </tr>
               <tr>

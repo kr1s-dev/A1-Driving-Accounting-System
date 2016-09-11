@@ -41,7 +41,7 @@
 
 	                            		</td>
 	                            		<td>{{$invoice->studentInfo->stud_first_name}}&nbsp;{{$invoice->studentInfo->stud_last_name}}</td>
-	                            		<td>₱ {{number_format($invoice->total_amount,2)}}</td>
+	                            		<td>₱ {{number_format($invoice->total_amount,2,'.',',')}}</td>
                                   @if($invoice->is_paid)
                                     <td class="center-align">
                                       <a href="#" style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4">

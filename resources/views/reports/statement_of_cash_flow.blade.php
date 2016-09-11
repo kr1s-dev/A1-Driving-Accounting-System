@@ -31,9 +31,9 @@
                                   Total Profit
                                 </td>
                                 @if($totalProfit>0)
-                                  <td colspan="2" align="right">PHP {{$totalProfit}}</td>
+                                  <td colspan="2" align="right">PHP {{number_format($totalProfit,2,'.',',')}}</td>
                                 @else
-                                  <td colspan="2" align="left">PHP {{$totalProfit}}</td>
+                                  <td colspan="2" align="left">PHP {{number_format($totalProfit,2,'.',',')}}</td>
                                 @endif
                               </tr>
                               <tr>
@@ -46,7 +46,7 @@
                                   <td>
                                     Depreciation and Amortization
                                   </td>
-                                  <td colspan="2" align="right">PHP {{$depreciationValue}}</td>
+                                  <td colspan="2" align="right">PHP {{number_format($depreciationValue,2,'.',',')}}</td>
                                 </tr>
                               @endif
                               @foreach($accountTitleList as $key => $value)
@@ -57,7 +57,7 @@
                                         @if($key == 'Current Assets')
                                           <tr>
                                             <td>Decrease on {{$val->account_title_name}}</td>
-                                            <td colspan="2" align="left">PHP {{$val->opening_balance}}</td>
+                                            <td colspan="2" align="left">PHP {{number_format($val->opening_balance,2,'.',',')}}</td>
                                           </tr>
                                         @else
                                           <tr>
@@ -161,7 +161,7 @@
 
                 						<tfoot>
                     						<th style="text-align: right" colspan="3">
-                        						Total Cash in Hand: ₱ {{number_format(($totalProfit+$totalOperationCash)-$totalInvestmentCash+$totalFinancingCash+$depreciationValue,2)}}
+                        						Total Cash in Hand: ₱ {{number_format(($totalProfit+$totalOperationCash)-$totalInvestmentCash+$totalFinancingCash+$depreciationValue,2,'.',',')}}
                     						</th>
                 						</tfoot>
               					</table>

@@ -66,6 +66,16 @@
 </div>
 <div class="row">
   <div class="input-field col s12 m6 l6">
+    <input id="number" type="text" name="vehicle_plate_no" value="{{count($errors)>0?old('vehicle_plate_no'):$student->vehicle_plate_no}}">
+    <label for="email">Vehicle Plate No.</label>
+  </div>
+  <div class="input-field col s12 m6 l6">
+    <input id="number" type="text" name="vehicle_engine_no" value="{{count($errors)>0?old('vehicle_engine_no'):$student->vehicle_engine_no}}">
+    <label for="email">Vehicle Engine No.</label>
+  </div>
+</div>
+<div class="row">
+  <div class="input-field col s12 m6 l6">
     <input type="date" class="datepicker" name="stud_date_of_birth" value="{{count($errors)>0?old('stud_date_of_birth'):date('d F, Y',strtotime($student->stud_date_of_birth))}}">
     <label for="birthday">Date of Birth</label>
   </div>

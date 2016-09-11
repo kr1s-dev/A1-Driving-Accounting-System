@@ -56,6 +56,7 @@ class AssetController extends Controller
         try{
             $input = $this->removeKeys($request->all(),true,true);
             $input['net_value'] =  $input['asset_original_cost'];
+            $input['asset_salvage_value'] = $input['asset_original_cost'] / (1 + $input['asset_salvage_percentage']/100);
             $input['monthly_depreciation'] = ($input['net_value']-$input['asset_salvage_value']) / $input['asset_lifespan'];  
             $toConvertData = explode(' ',$input['asset_date_acquired']);
             $input['asset_date_acquired'] = str_replace(',',' ',$toConvertData[1]) . $toConvertData[0] . ' ,' . $toConvertData[2];
@@ -142,6 +143,7 @@ class AssetController extends Controller
         try{
             $input = $this->removeKeys($request->all(),false,true);
             $input['net_value'] =  $input['asset_original_cost'];
+            $input['asset_salvage_value'] = $input['asset_original_cost'] * ($input['asset_salvage_percentage']/100);
             $input['monthly_depreciation'] = ($input['net_value']-$input['asset_salvage_value']) / $input['asset_lifespan'];
             $toConvertData = explode(' ',$input['asset_date_acquired']);
             $input['asset_date_acquired'] = str_replace(',',' ',$toConvertData[1]) . $toConvertData[0] . ' ,' . $toConvertData[2];
@@ -227,10 +229,10 @@ class AssetController extends Controller
                                                                 $data['asset_original_cost'],$description,$isInsert?date('Y-m-d'):$asset->created_at,
                                                                 date('Y-m-d'));
         }else{
-            $accountsPayableAccounTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Notes Payable'));
+            $accountsPayableAccounTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Accounts Payable'));
             if(is_null($accountsPayableAccounTitle)){
-                $this->insertNewAccountTitle('Notes Payable',null,4);
-                $accountsPayableAccounTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Notes Payable'));
+                $this->insertNewAccountTitle('Accounts Payable',null,4);
+                $accountsPayableAccounTitle = $this->getLastRecord('AccountTitleModel',array('account_title_name'=>'Accounts Payable'));
             }
             if($data['asset_mode_of_acq']==='Both'){
                 $journalEntryList[] = $this->populateJournalEntry('asset_id',$assetId,'Asset',

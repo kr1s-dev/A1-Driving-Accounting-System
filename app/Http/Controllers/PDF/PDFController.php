@@ -73,8 +73,14 @@ class PDFController extends Controller
 
     private function genearateAssetRegistry(){
         $assetItemList = $this->searchAsset(null);
+        $totalNetValue = 0;
+        $assetItemList = $this->searchAsset(null);
+        foreach ($assetItemList as $assetItem) {
+            $totalNetValue+=$assetItem->net_value;
+        }
         return PDF::loadView('pdf.asset_registry',
-                                compact('assetItemList'));
+                                compact('assetItemList',
+                                        'totalNetValue'));
     }
 
 	public function generateIncomeStatement($monthFilter,$yearFilter){

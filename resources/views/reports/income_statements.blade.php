@@ -56,14 +56,14 @@
 						              					{{$key}}
 						              				</td>
 						              				<td style="text-align: right">
-						              					PHP {{number_format($value,2)}}
+						              					PHP {{number_format($value,2,'.',',')}}
 						              				</td>
 						              			</tr>
 						              		@endforeach
                 						</tbody>
                 						<tfoot>
                     						<th style="text-align: right" colspan="2">
-                        						Total Amount: ₱ {{number_format($incTotalSum,2)}}
+                        						Total Amount: ₱ {{number_format($incTotalSum,2,'.',',')}}
                     						</th>
                 						</tfoot>
               					</table>
@@ -83,14 +83,14 @@
 							              					{{$key}}
 							              				</td>
 							              				<td style="text-align: right">
-							              					PHP {{number_format($value)}}
+							              					PHP {{number_format($value,2,'.',',')}}
 							              				</td>
 							              			</tr>
 							              		@endforeach
                 						</tbody>
                 						<tfoot>
                     						<th style="text-align: right" colspan="2">
-                        						Total Amount: ₱ {{number_format($expTotalSum,2)}}
+                        						Total Amount: ₱ {{number_format($expTotalSum,2,'.',',')}}
                     						</th>
                 						</tfoot>
               					</table>

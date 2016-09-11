@@ -49,7 +49,7 @@
                   		<div class="row">
                      		<div class="col s12 m3 l3">
                        	 		<p class="strong">Total Due</p>
-                        		<h4 class="header">₱ {{number_format($invoice->total_amount,2)}}</h4>
+                        		<h4 class="header">₱ {{number_format($invoice->total_amount,2,'.',',')}}</h4>
                      		</div>
                      		<div class="col s12 m3 l2">
                         		<p class="strong">Invoice No</p>
@@ -77,12 +77,12 @@
                      			@foreach($invoice->invoiceItemsInfo as $invoiceItem)
                         		<tr>
                            			<td>{{$invoiceItem->item->item_name}}</td>
-                           			<td>{{$invoiceItem->amount}}</td>
+                           			<td>{{number_format($invoiceItem->amount,2,'.',',')}}</td>
                         		</tr>
                         		@endforeach
                         		<tr>
                            			<td class="grey darken-4 white-text">Grand Total</td>
-                           			<td class="grey darken-4 strong white-text">₱ {{number_format($invoice->total_amount,2)}}</td>
+                           			<td class="grey darken-4 strong white-text">₱ {{number_format($invoice->total_amount,2,'.',',')}}</td>
                         		</tr>
                      		</tbody>
                   		</table>
@@ -125,7 +125,7 @@
          	<i class="material-icons">receipt</i>
         </a>
         <ul>
-        	<li><a href="app-widget.html" class="btn-floating red darken-2" style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;"><i class="large mdi-action-lock"></i></a></li>
+        	<!--li><a href="app-widget.html" class="btn-floating red darken-2" style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;"><i class="large mdi-action-lock"></i></a></li-->
          </ul>
     </div>
      <!-- Floating Action Button -->
