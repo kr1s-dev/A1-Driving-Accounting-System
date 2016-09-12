@@ -41,8 +41,8 @@
     <label for="cost">Original Cost (₱)</label>
   </div>
   <div class="input-field col s12 m6 l6">
-    <input id="cost" type="number" step="0.01" min="1" name="asset_salvage_value" value="{{count($errors)>0?old('asset_salvage_value'):$asset->asset_salvage_value}}">
-    <label for="cost">Salvage Value (₱)</label>
+    <input id="cost" type="number" step="0.01" min="1" max="100" name="asset_salvage_percentage" value="{{count($errors)>0?old('asset_salvage_percentage'):$asset->asset_salvage_percentage}}">
+    <label for="cost">Salvage Percent (%)</label>
   </div>
 </div>
 

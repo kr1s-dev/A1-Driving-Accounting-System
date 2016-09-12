@@ -56,14 +56,14 @@
 						              					{{$key}}
 						              				</td>
 						              				<td style="text-align: right">
-						              					PHP {{number_format($value,2)}}
+						              					PHP {{number_format($value,2,'.',',')}}
 						              				</td>
 						              			</tr>
 						              		@endforeach
                 						</tbody>
                 						<tfoot>
                     						<th style="text-align: right" colspan="2">
-                        						Total Amount: ₱ {{number_format($incTotalSum,2)}}
+                        						Total Amount: ₱ {{number_format($incTotalSum,2,'.',',')}}
                     						</th>
                 						</tfoot>
               					</table>
@@ -83,19 +83,27 @@
 							              					{{$key}}
 							              				</td>
 							              				<td style="text-align: right">
-							              					PHP {{number_format($value)}}
+							              					PHP {{number_format($value,2,'.',',')}}
 							              				</td>
 							              			</tr>
 							              		@endforeach
                 						</tbody>
                 						<tfoot>
                     						<th style="text-align: right" colspan="2">
-                        						Total Amount: ₱ {{number_format($expTotalSum,2)}}
+                        						Total Amount: ₱ {{number_format($expTotalSum,2,'.',',')}}
                     						</th>
                 						</tfoot>
               					</table>
             					</div>
           					</div>
+                    <div class="row">
+                      <div class="col l12 m12 s12">
+                        <div class="right-align blue white-text" style="margin-top: 20px; padding: 15px 5px;">
+                          <strong>Profit/Loss: PHP</strong> {{number_format($totalProfit,2,'.',',')}}
+                        </div>
+                      </div>
+                    </div>
+                    
           					<br><br>
           					<div class="row">
                       <div class="input-field col s12">

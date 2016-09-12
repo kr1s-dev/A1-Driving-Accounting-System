@@ -36,12 +36,16 @@
                                     <td><a href="{{route('asset.show',$assetItem->id)}}"><em><strong>{{sprintf("%'.07d\n", $assetItem->id)}}</strong></em></a></td>
                                     <td>{{$assetItem->asset_name}}</td>
                                     <td>PHP {{number_format($assetItem->monthly_depreciation,2)}}</td>
-                                    <td>PHP {{number_format($assetItem->accumulated_depreciation,2)}}</td>  
+                                    <td>PHP {{number_format($assetItem->accumulated_depreciation,2,'.',',')}}</td>  
                                     <td>{{$assetItem->asset_lifespan}} mo/s</td>
-                                    <td>PHP {{$assetItem->net_value}}</td>  
+                                    <td>PHP {{number_format($assetItem->net_value,2,'.',',')}}</td>  
                                   </tr>
                                 @endforeach
                               @endif
+                              <tr>
+                                <td style=" color: #fff;background: #e53935;text-align: right" colspan="5">Grand Total</td>
+                                <td style="background: #eee;">PHP {{number_format($totalNetValue,2,'.',',')}} </td>
+                              </tr>
                 						</tbody>
                 					</table>
               					</div>		

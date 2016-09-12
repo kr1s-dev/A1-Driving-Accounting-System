@@ -35,7 +35,7 @@
 				                       <td>{{$expense->vendor_name}}</td>
 				                       <td>{{$expense->vendor_address}}</td>
 				                       <td>{{$expense->vendor_number}}</td>
-				                       <td>₱ {{number_format($expense->total_amount,2)}}</td>
+				                       <td>₱ {{number_format($expense->total_amount,2,'.',',')}}</td>
 				                       <td class="center-align">
 	                                        <a href="{{route('expense.edit',$expense->id)}}" style="margin-right: 5%;" class="btn-floating waves-effect waves-light grey darken-4">
 	                                        <i class="mdi-content-create"></i>

@@ -65,9 +65,9 @@
 		              					    <td>{{$key}}</td>
 		              					    <td style="text-align: right">
   		              						  @if($val>=0)
-  			              						  ₱ {{number_format($val,2)}}
+  			              						  ₱ {{number_format($val,2,'.',',')}}
   			              					  @else
-  			              						  (₱ {{number_format(($val*-1),2)}})
+  			              						  (₱ {{number_format(($val*-1),2,'.',',')}})
   			              					  @endif
 			              				   </td>
 		              				    </tr>
@@ -79,7 +79,7 @@
                         		<strong>Total Assets</strong>
                       	  </td>
                       	  <td style="text-align: right">
-                         		<strong>₱ {{number_format($totalAssets,2)}}</strong>
+                         		<strong>₱ {{number_format($totalAssets,2,'.',',')}}</strong>
                       	  </td>
                     	  </tr>
                 	    </tbody>
@@ -106,9 +106,9 @@
 		              					<td>{{$k}}</td>
 		              					<td style="text-align: right">
 		              						@if($val>=0)
-			              						₱ {{number_format($val,2)}}
+			              						₱ {{number_format($val,2,'.',',')}}
 			              					@else
-			              						(₱ {{number_format(($val*-1),2)}})
+			              						(₱ {{number_format(($val*-1),2,'.',',')}})
 			              					@endif
 			              				</td>
 		              				</tr>
@@ -116,10 +116,10 @@
 		              				<tr>
 		              					@if(strpos($key, 'Fixed Liabilities') !== false)
 		              						<td> <strong> Total Liabilities </strong></td>
-				              				<td style="text-align: right"> ₱ {{number_format($totalLiability,2)}} </td>
+				              				<td style="text-align: right"> ₱ {{number_format($totalLiability,2,'.',',')}} </td>
 		              					@elseif(strpos($key, 'Equity') !== false)
 		              						<td> <strong> Total Equity </strong></td>
-				              				<td style="text-align: right"> ₱ {{number_format($totalEquity,2)}} </td>
+				              				<td style="text-align: right"> ₱ {{number_format($totalEquity,2,'.',',')}} </td>
 		              					@endif
 				              		</tr>
 		              			@endif
@@ -129,7 +129,7 @@
                       			<strong>Total Equity and Liabilities</strong>
                     		</td>
                     		<td style="text-align: right">
-                       			<strong>₱ {{number_format($totalLiability + $totalEquity,2)}}</strong>
+                       			<strong>₱ {{number_format($totalLiability + $totalEquity,2,'.',',')}}</strong>
                     		</td>
                   		</tr>
               		  </tbody>

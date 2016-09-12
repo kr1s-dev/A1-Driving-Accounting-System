@@ -73,8 +73,14 @@ class PDFController extends Controller
 
     private function genearateAssetRegistry(){
         $assetItemList = $this->searchAsset(null);
+        $totalNetValue = 0;
+        $assetItemList = $this->searchAsset(null);
+        foreach ($assetItemList as $assetItem) {
+            $totalNetValue+=$assetItem->net_value;
+        }
         return PDF::loadView('pdf.asset_registry',
-                                compact('assetItemList'));
+                                compact('assetItemList',
+                                        'totalNetValue'));
     }
 
 	public function generateIncomeStatement($monthFilter,$yearFilter){
@@ -89,7 +95,7 @@ class PDFController extends Controller
 
     	$incTotalSum = $this->getTotalSum($incomeItemsList);
     	$expTotalSum = $this->getTotalSum($expenseItemsList);
-
+        $totalProfit = ($incTotalSum-$expTotalSum);
 		return PDF::loadView('pdf.income_statement_pdf',
 						compact('incomeItemsList',
 								'expenseItemsList',
@@ -97,7 +103,8 @@ class PDFController extends Controller
 								'expTotalSum',
 								'yearFilter',
 								'monthFilter',
-								'title'));
+								'title',
+                                'totalProfit'));
     }
 
     public function generateOwnersEquityStatement($monthFilter,$yearFilter){

@@ -40,18 +40,18 @@
 			                    <div class="col l4">
                             <h5>
                                 @if($assetTotal<0)
-                                  DR ₱ {{number_format($assetTotal,2)}}
+                                  DR ₱ {{number_format($assetTotal,2,'.',',')}}
                                 @else
-                                  DR ₱ {{number_format($assetTotal,2)}}
+                                  DR ₱ {{number_format($assetTotal,2,'.',',')}}
                                 @endif
                             </h5></div>
 			                    <div class="col l2"><h6>Liabilities</h6></div>
 			                    <div class="col l4">
                             <h5>
                                 @if($liabilitiesTotal<0)
-                                  DR ₱ {{number_format(($liabilitiesTotal*-1),2)}}
+                                  DR ₱ {{number_format(($liabilitiesTotal*-1),2,'.',',')}}
                                 @else
-                                  CR ₱ {{number_format($liabilitiesTotal,2)}}
+                                  CR ₱ {{number_format($liabilitiesTotal,2,'.',',')}}
                                 @endif
                             </h5>
                           </div>
@@ -59,9 +59,9 @@
 			                    <div class="col l4">
                             <h5>
                               @if($incomeTotal<0)
-                                DR ₱ {{number_format(($incomeTotal*-1),2)}}
+                                DR ₱ {{number_format(($incomeTotal*-1),2,'.',',')}}
                               @else
-                                CR ₱ {{number_format($incomeTotal,2)}}
+                                CR ₱ {{number_format($incomeTotal,2,'.',',')}}
                               @endif
                             </h5>
                           </div>
@@ -69,9 +69,9 @@
 			                    <div class="col l4"><h5>
                             <h5>
                               @if($expenseTotal<0)
-                                DR ₱ {{number_format(($expenseTotal*-1),2)}}
+                                DR ₱ {{number_format(($expenseTotal*-1),2,'.',',')}}
                               @else
-                                CR ₱ {{number_format($expenseTotal,2)}}
+                                CR ₱ {{number_format($expenseTotal,2,'.',',')}}
                               @endif
                             </h5>
                           </div>

@@ -69,10 +69,15 @@ class ReportController extends Controller
     public function getGenerateAssetRegistry(){
         try{
             $title = 'Reports';
+            $totalNetValue = 0;
             $assetItemList = $this->searchAsset(null);
+            foreach ($assetItemList as $assetItem) {
+                $totalNetValue+=$assetItem->net_value;
+            }
             return view('reports.asset_registry',
                             compact('assetItemList',
-                                    'title'));    
+                                    'title',
+                                    'totalNetValue'));    
         }catch(\Exception $ex){
             return view('errors.404');
         }
@@ -104,7 +109,7 @@ class ReportController extends Controller
 
     	$incTotalSum = $this->getTotalSum($incomeItemsList);
     	$expTotalSum = $this->getTotalSum($expenseItemsList);
-
+        $totalProfit = ($incTotalSum-$expTotalSum);
 		return view('reports.income_statements',
 						compact('incomeItemsList',
 								'expenseItemsList',
@@ -112,7 +117,8 @@ class ReportController extends Controller
 								'expTotalSum',
 								'yearFilter',
 								'monthFilter',
-								'title'));
+								'title',
+                                'totalProfit'));
     }
 
     public function generateOwnersEquityStatement($monthFilter,$yearFilter){

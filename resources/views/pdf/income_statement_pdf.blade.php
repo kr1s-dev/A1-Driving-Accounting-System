@@ -43,14 +43,14 @@
 			    <tr>
 			        <td align="center" width="30%"> {{$key}}</td>
 			        <td  width="35%"></td>
-			        <td align="right" width="35%">PHP {{number_format($value,2)}}</td>
+			        <td align="right" width="35%">PHP {{number_format($value,2,'.',',')}}</td>
 			    </tr>
 		    @endforeach
 		    <!-- income items -->
 		    <tr>
 		        <td width="30%"> <strong>Total Revenue</strong></td> 
 		        <td  width="35%"></td>
-		        <td align="right" width="35%">PHP {{number_format($incTotalSum,2)}}</td>      
+		        <td align="right" width="35%">PHP {{number_format($incTotalSum,2,'.',',')}}</td>      
 		    </tr>
 		    <tr>
 		        <!-- For margin -->
@@ -63,14 +63,14 @@
 		    @foreach($expenseItemsList as $key => $value)
 			    <tr>
 			        <td align="center" width="30%"> {{$key}}</td>
-			        <td align="right" width="35%">PHP {{number_format($value,2)}}</td>
+			        <td align="right" width="35%">PHP {{number_format($value,2,'.',',')}}</td>
 		        <td width="35%"></td>
 			    </tr>
 		    @endforeach
 		    <!-- Expense Items -->
 		    <tr>
 		        <td width="30%"> <strong>Total Expense</strong></td> 
-		        <td align="right" width="35%">PHP {{number_format($expTotalSum,2)}}</td>
+		        <td align="right" width="35%">PHP {{number_format($expTotalSum,2,'.',',')}}</td>
 		        <td width="35%"></td>      
 		    </tr>
 		    <tr>
@@ -81,7 +81,7 @@
 		    <tr>
 		        <td width="30%"> <strong>Net Income(Loss)</strong></td> 
 		        <td width="35%"></td>
-		        <td align="right" width="35%">PHP {{ number_format($incTotalSum - $expTotalSum,2) }}</td>
+		        <td align="right" width="35%">PHP {{ number_format($incTotalSum - $expTotalSum,2,'.',',') }}</td>
 		    </tr>
   		</table>
   	</body>

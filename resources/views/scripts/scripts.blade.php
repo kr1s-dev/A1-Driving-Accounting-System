@@ -198,7 +198,7 @@ Scripts
         $("#itemsTable tbody td:nth-child(2)").each(function() {
           grandtotal += parseFloat($(this).text().replace('₱ ',''));
         });
-        vatTotal = (grandtotal*.12).toFixed(2);
+        vatTotal = (grandtotal/1.12).toFixed(2);
         subTotal = (grandtotal-vatTotal).toFixed(2);
         //Putting the total amount in another table for viewing
         $("#amountCalc tbody tr:eq(0) td:nth-child(2)").text('₱ ' + subTotal);

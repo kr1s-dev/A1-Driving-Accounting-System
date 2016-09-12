@@ -114,33 +114,33 @@
                     			@foreach($receipt->invoiceInfo->invoiceItemsInfo as $invoiceItem)
                     				<tr>
 				                        <td>{{$invoiceItem->item->item_name}}</td>
-				                        <td>₱ {{$invoiceItem->amount}}</td>
+				                        <td>₱ {{number_format($invoiceItem->amount,2,'.',',')}}</td>
 				                    </tr>
                     			@endforeach
                       			<tr>
                         			<td>Sub Total:</td>
                         			<!--td>₱ {{number_format(number_format($receipt->invoiceInfo->total_amount,2) - number_format($receipt->invoiceInfo->total_amount*.12,2),2)}}</td-->
-                              <td>₱ {{number_format($receipt->invoiceInfo->total_amount - $receipt->invoiceInfo->total_amount*0.12,2)}}</td>
+                              <td>₱ {{number_format($receipt->invoiceInfo->total_amount - $receipt->invoiceInfo->total_amount/1.12,2,'.',',')}}</td>
                        			</tr>
                       			<tr>
                         			<td>VAT (12%)</td>
-                        			<td>₱ {{number_format($receipt->invoiceInfo->total_amount *.12,2)}}</td>
+                        			<td>₱ {{number_format($receipt->invoiceInfo->total_amount *.12,2,'.',',')}}</td>
                       			</tr>
                       			<tr>
 			                        <td class="cyan white-text">Grand Total</td>
-			                        <td class="cyan strong white-text">₱ {{number_format($receipt->invoiceInfo->total_amount,2)}}</td>
+			                        <td class="cyan strong white-text">₱ {{number_format($receipt->invoiceInfo->total_amount,2,'.',',')}}</td>
                       			</tr>
                       			<tr>
                               <td class="red darken-2 white-text">Amount Paid</td>
-                              <td class="red darken-2 white-text">₱ {{$receipt->amount_paid}}</td>
+                              <td class="red darken-2 white-text">₱ {{number_format($receipt->amount_paid,2,'.',',')}}</td>
                             </tr>
                             <tr>
                                 @if($receipt->outstanding_balance==0)
                                   <td class="red white-text">Change</td>
-                                  <td class="red strong white-text">₱ {{number_format($change,2)}}</td>
+                                  <td class="red strong white-text">₱ {{number_format($change,2,'.',',')}}</td>
                                 @else
                                   <td class="red white-text">Outstanding Balance</td>
-                                  <td class="red white-text">₱ {{$receipt->outstanding_balance}}</td>
+                                  <td class="red white-text">₱ {{number_format($receipt->outstanding_balance,2,'.',',')}}</td>
                                 @endif
                             </tr>
                       			<tr>
