@@ -18,7 +18,7 @@ class DepreciationAutomation_Batch extends Command
      *
      * @var string
      */
-    protected $signature = 'begin:depreciation';
+    protected $signature = 'begin:depreciation {--run}';
 
     /**
      * The console command description.
@@ -49,8 +49,9 @@ class DepreciationAutomation_Batch extends Command
         $updateIds = array();
         $toUpdateAssets = array();
         $userAdmin = $this->getLastRecord('User',array('user_type_id'=>1));
+        $command = $this->option('run');
         try{
-            if(Auth::check() && Auth::user()->userType->type=='Tester'){
+            if($command=='1'){
                 $eAssetItemsList = AssetsModel::where('created_at','LIKE','%'.date('Y-m-d').'%')
                                 ->where('asset_lifespan','>',0)
                                 ->get();
